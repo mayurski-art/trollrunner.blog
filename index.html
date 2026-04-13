@@ -8,9 +8,12 @@
     :root {
       --page-bg: #e6f4ff;
       --card-bg: #f5fbff;
+      --header-bg: #d8eeff;
       --text: #12324a;
       --accent: #3a8dcc;
       --muted: #4f6f88;
+      --pill-bg: #ffffff;
+      --pill-border: #9dcdf0;
     }
 
     * {
@@ -25,9 +28,62 @@
       line-height: 1.6;
     }
 
+    .site-header {
+      background: var(--header-bg);
+      border-bottom: 1px solid #b8dbf6;
+      padding: 1rem 1.25rem;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .header-inner {
+      max-width: 980px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .brand {
+      margin: 0;
+      font-size: 1.1rem;
+      letter-spacing: 0.08em;
+      color: #1c4f79;
+    }
+
+    .pill-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      text-decoration: none;
+      background: var(--pill-bg);
+      color: #1f5f91;
+      border: 1px solid var(--pill-border);
+      border-radius: 999px;
+      padding: 0.4rem 0.85rem;
+      font-weight: 600;
+      font-size: 0.92rem;
+      transition: transform 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .pill:hover,
+    .pill:focus-visible {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(58, 141, 204, 0.15);
+    }
+
     .container {
       max-width: 820px;
-      margin: 3rem auto;
+      margin: 2rem auto 3rem;
       padding: 0 1.25rem;
     }
 
@@ -61,6 +117,18 @@
   </style>
 </head>
 <body>
+  <header class="site-header">
+    <div class="header-inner">
+      <p class="brand">TROLLRUNNER.BLOG</p>
+      <nav class="pill-nav" aria-label="Troll Runner network links">
+        <a class="pill" href="https://blog.trollrunner.net">Blog</a>
+        <a class="pill" href="https://nutrition.trollrunner.net">Nutrition</a>
+        <a class="pill" href="https://finance.trollrunner.net">📝 Finance</a>
+        <a class="pill" href="https://trollrunner.net">Main Site</a>
+      </nav>
+    </div>
+  </header>
+
   <main class="container">
     <section class="card" id="marathon-journey">
       <h1>Marathon Training &amp; Life Along the Way</h1>
