@@ -5,15 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Troll Runner Blog</title>
   <style>
+    @import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Manrope:wght@400;500;600;700&display=swap");
+
     :root {
-      --page-bg: #e6f4ff;
-      --card-bg: #f5fbff;
-      --header-bg: #d8eeff;
-      --text: #12324a;
-      --accent: #3a8dcc;
-      --muted: #4f6f88;
-      --pill-bg: #ffffff;
-      --pill-border: #9dcdf0;
+      --bg: #f6f6f1;
+      --surface: #ffffff;
+      --surface-soft: #fbfbf7;
+      --surface-alt: #f1f5ec;
+      --text: #21251f;
+      --muted: #657063;
+      --line: #dfe5da;
+      --accent: #7d9271;
+      --accent-deep: #4f6247;
+      --accent-warm: #ebe6dc;
+      --shadow: 0 18px 36px rgba(41, 53, 37, 0.08);
+      --radius: 22px;
+      --container: 1120px;
+      --cursor-admin: url('https://www.rw-designer.com/cursor-extern.php?id=39757'), auto;
     }
 
     * {
@@ -22,138 +30,1289 @@
 
     body {
       margin: 0;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: var(--page-bg);
+      font-family: "Manrope", sans-serif;
       color: var(--text);
-      line-height: 1.6;
+      background:
+        linear-gradient(180deg, rgba(125, 146, 113, 0.07), rgba(125, 146, 113, 0) 180px),
+        var(--bg);
+      line-height: 1.7;
     }
 
-    .site-header {
-      background: var(--header-bg);
-      border-bottom: 1px solid #b8dbf6;
-      padding: 1rem 1.25rem;
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    .shell {
+      width: min(var(--container), calc(100% - 2rem));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      padding: 1rem 0 0.8rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.84rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand-wrap {
+      padding: 1rem 0 1.5rem;
+      text-align: center;
+    }
+
+    .site-title {
+      margin: 0;
+      font-family: "Libre Baskerville", serif;
+      font-size: clamp(2.4rem, 5vw, 4.3rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+    }
+
+    .site-tagline {
+      width: min(620px, 100%);
+      margin: 0.85rem auto 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .main-nav {
       position: sticky;
       top: 0;
-      z-index: 5;
+      z-index: 20;
+      background: rgba(246, 246, 241, 0.92);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
     }
 
-    .header-inner {
-      max-width: 980px;
+    .nav-inner {
+      width: min(var(--container), calc(100% - 2rem));
       margin: 0 auto;
       display: flex;
-      flex-wrap: wrap;
+      justify-content: center;
       align-items: center;
-      justify-content: space-between;
-      gap: 0.75rem;
-    }
-
-    .brand {
-      margin: 0;
-      font-size: 1.1rem;
-      letter-spacing: 0.08em;
-      color: #1c4f79;
-    }
-
-    .pill-nav {
-      display: flex;
+      gap: 0.3rem;
       flex-wrap: wrap;
-      gap: 0.5rem;
+      padding: 0.8rem 0;
     }
 
-    .pill {
+    .nav-item,
+    .dropdown-toggle {
       display: inline-flex;
       align-items: center;
-      gap: 0.35rem;
-      text-decoration: none;
-      background: var(--pill-bg);
-      color: #1f5f91;
-      border: 1px solid var(--pill-border);
+      justify-content: center;
+      padding: 0.75rem 1rem;
       border-radius: 999px;
-      padding: 0.4rem 0.85rem;
+      font-size: 0.95rem;
       font-weight: 600;
-      font-size: 0.92rem;
-      transition: transform 0.16s ease, box-shadow 0.16s ease;
+      transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
     }
 
-    .pill:hover,
-    .pill:focus-visible {
+    .nav-item:hover,
+    .nav-item:focus-visible,
+    .dropdown-toggle:hover,
+    .dropdown-toggle:focus-visible,
+    .dropdown:hover .dropdown-toggle {
+      background: var(--surface);
+      color: var(--accent-deep);
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(58, 141, 204, 0.15);
     }
 
-    .container {
-      max-width: 820px;
-      margin: 2rem auto 3rem;
-      padding: 0 1.25rem;
+    .dropdown {
+      position: relative;
     }
 
-    .card {
-      background: var(--card-bg);
-      border: 1px solid #c5e4fb;
+    .dropdown-toggle::after {
+      content: "v";
+      margin-left: 0.45rem;
+      font-size: 0.8rem;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      left: 50%;
+      top: calc(100% + 0.55rem);
+      transform: translateX(-50%);
+      width: 230px;
+      padding: 0.55rem;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: var(--shadow);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.18s ease, visibility 0.18s ease, transform 0.18s ease;
+    }
+
+    .dropdown:hover .dropdown-menu,
+    .dropdown:focus-within .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .dropdown-link {
+      display: block;
+      padding: 0.78rem 0.9rem;
       border-radius: 14px;
-      padding: 2rem;
-      box-shadow: 0 10px 30px rgba(58, 141, 204, 0.1);
+      color: var(--text);
     }
 
-    h1 {
-      margin-top: 0;
+    .dropdown-link:hover,
+    .dropdown-link:focus-visible {
+      background: var(--surface-soft);
+      color: var(--accent-deep);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.9fr);
+      gap: 1.4rem;
+      padding: 2rem 0 1.75rem;
+    }
+
+    .hero-card,
+    .sidebar-card,
+    .post-card,
+    .admin-panel,
+    .empty-state {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card {
+      overflow: hidden;
+    }
+
+    .hero-image {
+      min-height: 280px;
+      background:
+        linear-gradient(140deg, rgba(79, 98, 71, 0.88), rgba(125, 146, 113, 0.4)),
+        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.16), transparent 26%),
+        #8fa183;
+      position: relative;
+    }
+
+    .hero-image.visual-1 {
+      background:
+        linear-gradient(145deg, rgba(86, 107, 77, 0.18), rgba(86, 107, 77, 0.62)),
+        radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.28), transparent 18%),
+        #a3b294;
+    }
+
+    .hero-image.visual-2 {
+      background:
+        linear-gradient(145deg, rgba(136, 147, 117, 0.14), rgba(63, 78, 56, 0.68)),
+        radial-gradient(circle at 75% 20%, rgba(255, 255, 255, 0.24), transparent 20%),
+        #909d80;
+    }
+
+    .hero-image.visual-3 {
+      background:
+        linear-gradient(145deg, rgba(116, 129, 103, 0.18), rgba(50, 64, 46, 0.66)),
+        radial-gradient(circle at 20% 75%, rgba(255, 255, 255, 0.22), transparent 20%),
+        #97a488;
+    }
+
+    .hero-image::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(transparent 0 72%, rgba(0, 0, 0, 0.16) 100%),
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.07) 0 1px, transparent 1px 82px);
+    }
+
+    .hero-badge {
+      position: absolute;
+      top: 1.2rem;
+      left: 1.2rem;
+      z-index: 1;
+      padding: 0.45rem 0.75rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      color: #f7faf5;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .hero-image-text {
+      position: absolute;
+      left: 1.3rem;
+      right: 1.3rem;
+      bottom: 1.25rem;
+      z-index: 1;
+      color: #ffffff;
+    }
+
+    .hero-image-text span {
+      display: inline-block;
+      margin-bottom: 0.45rem;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      opacity: 0.9;
+    }
+
+    .hero-image-text h2 {
+      margin: 0;
+      font-family: "Libre Baskerville", serif;
+      font-size: clamp(1.9rem, 3vw, 2.8rem);
+      line-height: 1.15;
+    }
+
+    .hero-copy {
+      padding: 1.5rem;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-bottom: 0.8rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .hero-copy p,
+    .post-copy p,
+    .sidebar-card p,
+    .admin-help {
+      margin: 0;
+      color: #465042;
+    }
+
+    .hero-link,
+    .read-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 1rem;
+      font-weight: 700;
+      color: var(--accent-deep);
+    }
+
+    .hero-link::after,
+    .read-more::after {
+      content: "->";
+      font-size: 0.9rem;
+    }
+
+    .sidebar-column {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .sidebar-card {
+      padding: 1.3rem;
+    }
+
+    .sidebar-label,
+    .admin-kicker {
+      margin-bottom: 0.45rem;
       color: var(--accent);
-      font-size: 2rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
     }
 
-    h2 {
-      color: #2c6ea4;
-      margin-top: 2rem;
+    .sidebar-card h3,
+    .admin-title {
+      margin: 0 0 0.6rem;
+      font-family: "Libre Baskerville", serif;
+      font-size: 1.3rem;
+      line-height: 1.25;
     }
 
-    p {
+    .topic-list {
+      display: grid;
+      gap: 0.7rem;
+      margin: 0.9rem 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .topic-list a {
+      display: block;
+      padding: 0.78rem 0.9rem;
+      border-radius: 14px;
+      background: var(--surface-soft);
+      border: 1px solid #edf1e8;
+      font-weight: 600;
+    }
+
+    .topic-list a:hover,
+    .topic-list a:focus-visible {
+      color: var(--accent-deep);
+      background: #f5f8f1;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.3rem 0 1rem;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-family: "Libre Baskerville", serif;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      line-height: 1.1;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .post-feed {
+      display: grid;
+      gap: 1.2rem;
+      padding-bottom: 2rem;
+    }
+
+    .post-card {
+      display: grid;
+      grid-template-columns: minmax(230px, 0.7fr) minmax(0, 1.2fr);
+      overflow: hidden;
+    }
+
+    .post-visual {
+      min-height: 220px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .visual-1 {
+      background:
+        linear-gradient(145deg, rgba(86, 107, 77, 0.18), rgba(86, 107, 77, 0.62)),
+        radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.28), transparent 18%),
+        #a3b294;
+    }
+
+    .visual-2 {
+      background:
+        linear-gradient(145deg, rgba(136, 147, 117, 0.14), rgba(63, 78, 56, 0.68)),
+        radial-gradient(circle at 75% 20%, rgba(255, 255, 255, 0.24), transparent 20%),
+        #909d80;
+    }
+
+    .visual-3 {
+      background:
+        linear-gradient(145deg, rgba(116, 129, 103, 0.18), rgba(50, 64, 46, 0.66)),
+        radial-gradient(circle at 20% 75%, rgba(255, 255, 255, 0.22), transparent 20%),
+        #97a488;
+    }
+
+    .post-copy {
+      padding: 1.4rem;
+    }
+
+    .post-copy h3 {
+      margin: 0 0 0.7rem;
+      font-family: "Libre Baskerville", serif;
+      font-size: clamp(1.45rem, 2.4vw, 2rem);
+      line-height: 1.2;
+    }
+
+    .post-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-top: 1rem;
+    }
+
+    .post-tags span {
+      display: inline-flex;
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      background: var(--surface-soft);
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .empty-state {
+      padding: 1.6rem;
+    }
+
+    .admin-panel {
+      display: none;
+      margin: 0 0 2rem;
+      padding: 1.4rem;
+      background: linear-gradient(180deg, #ffffff, #f8fbf5);
+    }
+
+    .admin-panel.open {
+      display: block;
+    }
+
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 1rem;
       margin-bottom: 1rem;
     }
 
-    .highlight {
+    .admin-status {
+      margin-top: 0.5rem;
       color: var(--muted);
-      font-style: italic;
+      font-size: 0.92rem;
+    }
+
+    .admin-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+    }
+
+    .admin-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.9fr);
+      gap: 1rem;
+    }
+
+    .admin-card {
+      padding: 1.1rem;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.85);
+    }
+
+    .admin-card h3 {
+      margin: 0 0 0.9rem;
+      font-family: "Libre Baskerville", serif;
+      font-size: 1.18rem;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.85rem;
+    }
+
+    .field {
+      display: grid;
+      gap: 0.35rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .field label {
+      color: var(--muted);
+      font-size: 0.83rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      padding: 0.88rem 0.95rem;
+      border: 1px solid #d7dfd1;
+      border-radius: 14px;
+      background: #fff;
+      color: var(--text);
+    }
+
+    .field textarea {
+      min-height: 132px;
+      resize: vertical;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 0.95rem;
+      color: var(--text);
+    }
+
+    .checkbox-row input {
+      width: 18px;
+      height: 18px;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+    }
+
+    .btn {
+      border: 1px solid transparent;
+      border-radius: 999px;
+      padding: 0.8rem 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    .btn:hover,
+    .btn:focus-visible {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 24px rgba(41, 53, 37, 0.1);
+    }
+
+    .btn-primary {
+      background: var(--accent-deep);
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: var(--surface-soft);
+      border-color: var(--line);
+      color: var(--text);
+    }
+
+    .btn-danger {
+      background: #863e3a;
+      color: #fff;
+    }
+
+    .admin-post-list {
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    .admin-post-item {
+      padding: 0.95rem;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--surface-soft);
+    }
+
+    .admin-post-item strong {
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    .admin-post-meta {
+      color: var(--muted);
+      font-size: 0.82rem;
+      margin-bottom: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .admin-post-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+    }
+
+    .admin-post-controls button {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      padding: 0.55rem 0.8rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .footer {
+      padding: 1.6rem 0 2.4rem;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    #admin-access {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.4rem;
+      border: 1px solid rgba(33, 37, 31, 0.14);
+      border-radius: 14px;
+      background: rgba(33, 37, 31, 0.92);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+      backdrop-filter: blur(10px);
+    }
+
+    #admin-access,
+    #admin-access * {
+      cursor: var(--cursor-admin);
+    }
+
+    #admin-pass {
+      width: 160px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      padding: 0.7rem 0.8rem;
+      font-size: 0.85rem;
+    }
+
+    #admin-pass::placeholder {
+      color: rgba(255, 255, 255, 0.55);
+    }
+
+    #admin-go {
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 10px;
+      background: #007aff;
+      color: #fff;
+      padding: 0.7rem 0.95rem;
+      font-size: 0.84rem;
+      font-weight: 700;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 920px) {
+      .hero,
+      .post-card,
+      .admin-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-image,
+      .post-visual {
+        min-height: 240px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .shell,
+      .nav-inner {
+        width: min(100% - 1rem, var(--container));
+      }
+
+      .site-title {
+        font-size: 2.3rem;
+      }
+
+      .dropdown-menu {
+        left: 0;
+        transform: none;
+        width: min(260px, calc(100vw - 2rem));
+      }
+
+      .dropdown:hover .dropdown-menu,
+      .dropdown:focus-within .dropdown-menu {
+        transform: translateY(0);
+      }
+
+      .hero {
+        padding-top: 1.2rem;
+      }
+
+      .section-head {
+        align-items: start;
+        flex-direction: column;
+      }
+
+      .field-grid,
+      .footer-row {
+        grid-template-columns: 1fr;
+      }
+
+      #admin-pass {
+        width: 126px;
+      }
     }
   </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="header-inner">
-      <p class="brand">📝 TROLLRUNNER.BLOG</p>
-      <nav class="pill-nav" aria-label="Troll Runner network links">
-        <a class="pill" href="https://nutrition.trollrunner.net">Nutrition</a>
-        <a class="pill" href="https://finance.trollrunner.net">Finance</a>
-        <a class="pill" href="https://trollrunner.net">Main Site</a>
-      </nav>
-    </div>
+  <div class="topbar">Troll Runner blog - training notes - race prep - life around the miles</div>
+
+  <header class="shell brand-wrap">
+    <h1 class="site-title">Troll Runner Blog</h1>
+    <p class="site-tagline">
+      A cleaner home for training plans, marathon notes, recovery lessons, and the stories that happen
+      around the run instead of after it.
+    </p>
   </header>
 
-  <main class="container">
-    <section class="card" id="marathon-journey">
-      <h1>Marathon Training &amp; Life Along the Way</h1>
-      <p class="highlight">A personal section about distance running, medicine, and the people I meet on the road.</p>
+  <nav class="main-nav" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a class="nav-item" href="#latest">Blog</a>
+      <div class="dropdown">
+        <a class="dropdown-toggle" href="#training-guides">Training Plans</a>
+        <div class="dropdown-menu" aria-label="Training plan categories">
+          <a class="dropdown-link" href="#latest">5K plans</a>
+          <a class="dropdown-link" href="#latest">10K plans</a>
+          <a class="dropdown-link" href="#latest">Half marathon plans</a>
+          <a class="dropdown-link" href="#latest">Marathon plans</a>
+        </div>
+      </div>
+      <a class="nav-item" href="#topics">Topics</a>
+      <a class="nav-item" href="https://trollrunner.net">Main Site</a>
+      <a class="nav-item" href="https://nutrition.trollrunner.net">Nutrition</a>
+    </div>
+  </nav>
 
-      <h2>My Marathon Training Journey</h2>
-      <p>
-        Marathon training began as a challenge and quickly became a practice in patience, discipline, and growth.
-        Week by week, long runs, recovery days, and small improvements started shaping not only race goals,
-        but also daily life.
-      </p>
+  <main class="shell">
+    <section id="blog-admin" class="admin-panel" aria-label="Blog admin panel">
+      <div class="admin-header">
+        <div>
+          <div class="admin-kicker">Admin access</div>
+          <h2 class="admin-title">Write and publish blog posts from the page itself.</h2>
+          <p class="admin-help">This editor is blog-specific. It saves posts in this browser and instantly refreshes the featured story and post feed below.</p>
+          <p id="admin-status" class="admin-status">Admin unlocked.</p>
+        </div>
+        <div class="admin-actions">
+          <button class="btn btn-secondary" type="button" id="new-post-btn">New post</button>
+          <button class="btn btn-secondary" type="button" id="close-admin-btn">Hide editor</button>
+        </div>
+      </div>
 
-      <h2>Training and Medicine</h2>
-      <p>
-        The deeper I go into marathon preparation, the more I appreciate the connection between endurance
-        training and medicine: injury prevention, recovery science, sleep, nutrition, and understanding how the
-        body adapts under stress. It is a constant reminder that performance and health should move together.
-      </p>
+      <div class="admin-grid">
+        <section class="admin-card">
+          <h3>Post editor</h3>
+          <div class="field">
+            <label for="post-title">Title</label>
+            <input id="post-title" type="text" placeholder="Why I still like a paper training plan" />
+          </div>
 
-      <h2>Life Interactions</h2>
-      <p>
-        Running has also changed how I interact with people. Training partners, race volunteers, strangers on
-        early morning routes, and supportive friends all become part of the story. These moments of encouragement
-        and shared effort are as meaningful as crossing any finish line.
-      </p>
+          <div class="field-grid">
+            <div class="field">
+              <label for="post-category">Category</label>
+              <input id="post-category" type="text" placeholder="Training plans" />
+            </div>
+            <div class="field">
+              <label for="post-date">Date</label>
+              <input id="post-date" type="date" />
+            </div>
+            <div class="field">
+              <label for="post-read-time">Read time</label>
+              <input id="post-read-time" type="text" placeholder="6 min read" />
+            </div>
+            <div class="field">
+              <label for="post-visual">Card visual</label>
+              <select id="post-visual">
+                <option value="visual-1">Visual 1</option>
+                <option value="visual-2">Visual 2</option>
+                <option value="visual-3">Visual 3</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="post-excerpt">Excerpt</label>
+            <textarea id="post-excerpt" placeholder="Write a short summary for the feed card."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="post-body">Body</label>
+            <textarea id="post-body" placeholder="Write the body text used in the featured post area."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="post-tags">Tags</label>
+            <input id="post-tags" type="text" placeholder="recovery, routine, consistency" />
+          </div>
+
+          <label class="checkbox-row" for="post-featured">
+            <input id="post-featured" type="checkbox" />
+            <span>Make this the featured post</span>
+          </label>
+
+          <div class="button-row">
+            <button class="btn btn-primary" type="button" id="save-post-btn">Save post</button>
+            <button class="btn btn-secondary" type="button" id="reset-post-btn">Clear form</button>
+            <button class="btn btn-danger hidden" type="button" id="delete-post-btn">Delete post</button>
+          </div>
+        </section>
+
+        <section class="admin-card">
+          <h3>Published posts</h3>
+          <div id="admin-post-list" class="admin-post-list"></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="hero">
+      <article class="hero-card">
+        <div id="hero-image" class="hero-image">
+          <div class="hero-badge">Featured post</div>
+          <div class="hero-image-text">
+            <span id="hero-category">Marathon training</span>
+            <h2 id="hero-title">Building a plan that fits real life, not an ideal week that never happens.</h2>
+          </div>
+        </div>
+        <div class="hero-copy">
+          <div class="meta">
+            <span id="hero-date">April 29, 2026</span>
+            <span id="hero-category-meta">Training plans</span>
+            <span id="hero-read-time">6 min read</span>
+          </div>
+          <p id="hero-body">
+            This lead story area is modeled after the polished running-blog layout you liked:
+            one strong featured article up top, then a tidy stream of readable posts underneath.
+            The tone is calmer, cleaner, and more coach-like than the earlier troll-typography direction.
+          </p>
+          <a class="hero-link" href="#latest">Read the latest posts</a>
+        </div>
+      </article>
+
+      <aside class="sidebar-column">
+        <section class="sidebar-card" id="topics">
+          <div class="sidebar-label">Popular topics</div>
+          <h3>What this blog can grow into</h3>
+          <ul class="topic-list">
+            <li><a href="#">Race week diaries</a></li>
+            <li><a href="#">Recovery and injury prevention</a></li>
+            <li><a href="#">Nutrition experiments</a></li>
+            <li><a href="#">People and moments on route</a></li>
+          </ul>
+        </section>
+      </aside>
+    </section>
+
+    <section id="latest">
+      <div class="section-head">
+        <h2>Latest from the blog</h2>
+        <p>Sleek, readable, and easy to keep expanding as you add real entries.</p>
+      </div>
+
+      <div id="post-feed" class="post-feed"></div>
+      <div id="empty-state" class="empty-state hidden">
+        <strong>No posts yet.</strong>
+        <p class="admin-help">Use the admin box in the footer to unlock the editor and publish your first entry.</p>
+      </div>
     </section>
   </main>
+
+  <footer class="shell footer">
+    <div class="footer-row">
+      <div>Troll Runner Blog now has in-page admin access for writing and publishing posts.</div>
+      <div id="admin-access">
+        <input id="admin-pass" type="password" placeholder="Admin password" />
+        <button id="admin-go" type="button">Admin</button>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const ADMIN_PASSWORD = '#Mayur2626';
+    const BLOG_ADMIN_AUTH_KEY = 'trollrunner_blog_admin_auth';
+    const BLOG_POSTS_KEY = 'trollrunner_blog_posts';
+    const BLOG_CURRENT_EDIT_KEY = 'trollrunner_blog_editing_id';
+
+    const BLOG_PASSWORD_TROLL_MESSAGES = [
+      'Wrong password. Back to the warm-up lap.',
+      'Nice try. The troll cursor is judging you.',
+      'Admin access denied. Go run a recovery mile and try again.',
+      'Still no. Elite blog posting privileges only.'
+    ];
+
+    const DEFAULT_POSTS = [
+      {
+        id: 'post-1',
+        title: 'Why a paper training plan still works when your life feels chaotic.',
+        category: 'Training plans',
+        date: '2026-04-29',
+        readTime: '6 min read',
+        excerpt: 'Some plans fail because they are too advanced, but a lot of them fail because they do not leave room for work, fatigue, weather, appointments, or plain human messiness.',
+        body: 'Some plans fail because they are too advanced, but a lot of them fail because they do not leave room for work, fatigue, weather, appointments, or plain human messiness. A good plan should feel supportive instead of bossy, clear instead of punishing, and flexible enough to survive a real week.',
+        tags: ['planning', 'routine', 'consistency'],
+        visual: 'visual-1',
+        featured: true,
+        createdAt: '2026-04-29T08:00:00.000Z'
+      },
+      {
+        id: 'post-2',
+        title: 'What post-run recovery really looks like on an ordinary weekday.',
+        category: 'Recovery',
+        date: '2026-04-29',
+        readTime: '5 min read',
+        excerpt: 'Recovery content works best when it is honest. Not every run ends with a perfect cooldown and protein shake.',
+        body: 'Recovery content works best when it is honest. Not every run ends with a perfect cooldown and protein shake. Sometimes recovery is stretching for three minutes in the kitchen, reheating leftovers, drinking water late, and still trying to be a person after the miles are done.',
+        tags: ['recovery', 'sleep', 'fueling'],
+        visual: 'visual-2',
+        featured: false,
+        createdAt: '2026-04-29T07:00:00.000Z'
+      },
+      {
+        id: 'post-3',
+        title: 'The people you meet during training end up shaping the race too.',
+        category: 'Marathon diary',
+        date: '2026-04-29',
+        readTime: '4 min read',
+        excerpt: 'This gives you room for the more personal side of the site: training partners, volunteers, strangers on the route, and the tiny interactions that break up heavy weeks.',
+        body: 'This gives you room for the more personal side of the site: training partners, volunteers, strangers on the route, and the tiny interactions that break up heavy weeks. Those small exchanges keep the training from becoming only a spreadsheet with sore legs attached to it.',
+        tags: ['community', 'marathon', 'journal'],
+        visual: 'visual-3',
+        featured: false,
+        createdAt: '2026-04-29T06:00:00.000Z'
+      }
+    ];
+
+    let adminFailedAttempts = 0;
+    let currentEditingId = null;
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, s => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[s]));
+    }
+
+    function slugId() {
+      return `blog-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    }
+
+    function formatDisplayDate(value) {
+      const parsed = new Date(`${value}T12:00:00`);
+      if (Number.isNaN(parsed.getTime())) return value;
+      return parsed.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    function normalizeTags(value) {
+      if (Array.isArray(value)) return value.map(tag => String(tag).trim()).filter(Boolean);
+      return String(value || '').split(',').map(tag => tag.trim()).filter(Boolean);
+    }
+
+    function normalizePost(post) {
+      if (!post || typeof post !== 'object') return null;
+      const title = String(post.title || '').trim();
+      const category = String(post.category || '').trim();
+      const date = String(post.date || '').trim();
+      const excerpt = String(post.excerpt || '').trim();
+      const body = String(post.body || '').trim();
+      if (!title || !category || !date || !excerpt || !body) return null;
+      const visual = ['visual-1', 'visual-2', 'visual-3'].includes(post.visual) ? post.visual : 'visual-1';
+      return {
+        id: String(post.id || slugId()),
+        title,
+        category,
+        date,
+        readTime: String(post.readTime || '5 min read').trim() || '5 min read',
+        excerpt,
+        body,
+        tags: normalizeTags(post.tags),
+        visual,
+        featured: Boolean(post.featured),
+        createdAt: post.createdAt || new Date().toISOString()
+      };
+    }
+
+    function getPosts() {
+      try {
+        const raw = localStorage.getItem(BLOG_POSTS_KEY);
+        if (!raw) return DEFAULT_POSTS.map(normalizePost).filter(Boolean);
+        const items = JSON.parse(raw);
+        if (!Array.isArray(items)) return DEFAULT_POSTS.map(normalizePost).filter(Boolean);
+        const normalized = items.map(normalizePost).filter(Boolean);
+        return normalized.length ? normalized : DEFAULT_POSTS.map(normalizePost).filter(Boolean);
+      } catch {
+        return DEFAULT_POSTS.map(normalizePost).filter(Boolean);
+      }
+    }
+
+    function ensureFeatured(posts) {
+      const items = posts.map(normalizePost).filter(Boolean);
+      if (!items.length) return [];
+      const featuredIndex = items.findIndex(item => item.featured);
+      if (featuredIndex === -1) {
+        items[0].featured = true;
+        return items;
+      }
+      return items.map((item, index) => ({ ...item, featured: index === featuredIndex }));
+    }
+
+    function savePosts(posts) {
+      const normalized = ensureFeatured(posts);
+      localStorage.setItem(BLOG_POSTS_KEY, JSON.stringify(normalized));
+      return normalized;
+    }
+
+    function sortPosts(posts) {
+      return [...posts].sort((a, b) => {
+        const dateDiff = new Date(b.date).getTime() - new Date(a.date).getTime();
+        if (dateDiff !== 0) return dateDiff;
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      });
+    }
+
+    function getFeaturedPost(posts) {
+      return posts.find(item => item.featured) || posts[0] || null;
+    }
+
+    function renderHero(posts) {
+      const featured = getFeaturedPost(posts);
+      if (!featured) return;
+      const heroImage = document.getElementById('hero-image');
+      heroImage.className = `hero-image ${featured.visual}`;
+      document.getElementById('hero-category').textContent = featured.category;
+      document.getElementById('hero-title').textContent = featured.title;
+      document.getElementById('hero-date').textContent = formatDisplayDate(featured.date);
+      document.getElementById('hero-category-meta').textContent = featured.category;
+      document.getElementById('hero-read-time').textContent = featured.readTime;
+      document.getElementById('hero-body').textContent = featured.body;
+    }
+
+    function renderFeed(posts) {
+      const feed = document.getElementById('post-feed');
+      const emptyState = document.getElementById('empty-state');
+      const sorted = sortPosts(posts);
+      if (!sorted.length) {
+        feed.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+      emptyState.classList.add('hidden');
+      feed.innerHTML = sorted.map(post => `
+        <article class="post-card">
+          <div class="post-visual ${escapeHtml(post.visual)}" aria-hidden="true"></div>
+          <div class="post-copy">
+            <div class="meta">
+              <span>${escapeHtml(post.category)}</span>
+              <span>${escapeHtml(formatDisplayDate(post.date))}</span>
+              <span>${escapeHtml(post.readTime)}</span>
+            </div>
+            <h3>${escapeHtml(post.title)}</h3>
+            <p>${escapeHtml(post.excerpt)}</p>
+            <div class="post-tags">
+              ${post.tags.map(tag => `<span>${escapeHtml(tag)}</span>`).join('')}
+            </div>
+            <a class="read-more" href="#blog-admin">Read more</a>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function renderAdminList(posts) {
+      const list = document.getElementById('admin-post-list');
+      const sorted = sortPosts(posts);
+      if (!sorted.length) {
+        list.innerHTML = '<p class="admin-help">No published posts yet.</p>';
+        return;
+      }
+
+      list.innerHTML = sorted.map(post => `
+        <article class="admin-post-item">
+          <strong>${escapeHtml(post.title)}</strong>
+          <div class="admin-post-meta">${escapeHtml(post.category)} · ${escapeHtml(formatDisplayDate(post.date))}${post.featured ? ' · Featured' : ''}</div>
+          <div class="admin-post-controls">
+            <button type="button" data-action="edit" data-id="${escapeHtml(post.id)}">Edit</button>
+            <button type="button" data-action="feature" data-id="${escapeHtml(post.id)}">${post.featured ? 'Featured' : 'Make featured'}</button>
+            <button type="button" data-action="delete" data-id="${escapeHtml(post.id)}">Delete</button>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function renderBlog() {
+      const posts = getPosts();
+      renderHero(posts);
+      renderFeed(posts);
+      renderAdminList(posts);
+    }
+
+    function setAdminStatus(message) {
+      document.getElementById('admin-status').textContent = message;
+    }
+
+    function resetForm() {
+      currentEditingId = null;
+      localStorage.removeItem(BLOG_CURRENT_EDIT_KEY);
+      document.getElementById('post-title').value = '';
+      document.getElementById('post-category').value = '';
+      document.getElementById('post-date').value = '';
+      document.getElementById('post-read-time').value = '';
+      document.getElementById('post-visual').value = 'visual-1';
+      document.getElementById('post-excerpt').value = '';
+      document.getElementById('post-body').value = '';
+      document.getElementById('post-tags').value = '';
+      document.getElementById('post-featured').checked = false;
+      document.getElementById('delete-post-btn').classList.add('hidden');
+      setAdminStatus('Ready for a new post.');
+    }
+
+    function fillForm(post) {
+      currentEditingId = post.id;
+      localStorage.setItem(BLOG_CURRENT_EDIT_KEY, post.id);
+      document.getElementById('post-title').value = post.title;
+      document.getElementById('post-category').value = post.category;
+      document.getElementById('post-date').value = post.date;
+      document.getElementById('post-read-time').value = post.readTime;
+      document.getElementById('post-visual').value = post.visual;
+      document.getElementById('post-excerpt').value = post.excerpt;
+      document.getElementById('post-body').value = post.body;
+      document.getElementById('post-tags').value = post.tags.join(', ');
+      document.getElementById('post-featured').checked = post.featured;
+      document.getElementById('delete-post-btn').classList.remove('hidden');
+      setAdminStatus(`Editing "${post.title}".`);
+    }
+
+    function openAdminPanel() {
+      document.getElementById('blog-admin').classList.add('open');
+    }
+
+    function closeAdminPanel() {
+      document.getElementById('blog-admin').classList.remove('open');
+    }
+
+    function isAdminUnlocked() {
+      return localStorage.getItem(BLOG_ADMIN_AUTH_KEY) === '1';
+    }
+
+    function unlockAdmin() {
+      localStorage.setItem(BLOG_ADMIN_AUTH_KEY, '1');
+      adminFailedAttempts = 0;
+      openAdminPanel();
+      setAdminStatus('Admin unlocked. Write something good.');
+    }
+
+    function goToAdmin() {
+      const pass = document.getElementById('admin-pass').value;
+      if (pass !== ADMIN_PASSWORD) {
+        adminFailedAttempts += 1;
+        const index = Math.min(adminFailedAttempts - 1, BLOG_PASSWORD_TROLL_MESSAGES.length - 1);
+        alert(BLOG_PASSWORD_TROLL_MESSAGES[index]);
+        return;
+      }
+      unlockAdmin();
+      document.getElementById('admin-pass').value = '';
+      document.getElementById('blog-admin').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function readFormPost() {
+      return normalizePost({
+        id: currentEditingId || slugId(),
+        title: document.getElementById('post-title').value,
+        category: document.getElementById('post-category').value,
+        date: document.getElementById('post-date').value,
+        readTime: document.getElementById('post-read-time').value,
+        visual: document.getElementById('post-visual').value,
+        excerpt: document.getElementById('post-excerpt').value,
+        body: document.getElementById('post-body').value,
+        tags: document.getElementById('post-tags').value,
+        featured: document.getElementById('post-featured').checked,
+        createdAt: new Date().toISOString()
+      });
+    }
+
+    function savePostFromForm() {
+      const post = readFormPost();
+      if (!post) {
+        alert('Please fill in title, category, date, excerpt, and body.');
+        return;
+      }
+      const posts = getPosts();
+      const nextPosts = posts.filter(item => item.id !== post.id);
+      if (post.featured) {
+        nextPosts.forEach(item => { item.featured = false; });
+      }
+      nextPosts.push(post);
+      savePosts(nextPosts);
+      renderBlog();
+      fillForm(post);
+      setAdminStatus(`Saved "${post.title}".`);
+    }
+
+    function setFeaturedPost(id) {
+      const posts = getPosts().map(post => ({ ...post, featured: post.id === id }));
+      savePosts(posts);
+      renderBlog();
+      const selected = posts.find(post => post.id === id);
+      if (selected) fillForm(selected);
+      setAdminStatus('Featured post updated.');
+    }
+
+    function deleteCurrentPost() {
+      if (!currentEditingId) return;
+      const posts = getPosts();
+      const target = posts.find(post => post.id === currentEditingId);
+      if (!target) return;
+      if (!confirm(`Delete "${target.title}"?`)) return;
+      const nextPosts = posts.filter(post => post.id !== currentEditingId);
+      savePosts(nextPosts);
+      renderBlog();
+      resetForm();
+      setAdminStatus(`Deleted "${target.title}".`);
+    }
+
+    function handleAdminListClick(event) {
+      const button = event.target.closest('button[data-action]');
+      if (!button) return;
+      const { action, id } = button.dataset;
+      const posts = getPosts();
+      const post = posts.find(item => item.id === id);
+      if (!post) return;
+      if (action === 'edit') {
+        openAdminPanel();
+        fillForm(post);
+        return;
+      }
+      if (action === 'feature') {
+        setFeaturedPost(id);
+        return;
+      }
+      if (action === 'delete') {
+        if (!confirm(`Delete "${post.title}"?`)) return;
+        const nextPosts = posts.filter(item => item.id !== id);
+        savePosts(nextPosts);
+        renderBlog();
+        if (currentEditingId === id) resetForm();
+        setAdminStatus(`Deleted "${post.title}".`);
+      }
+    }
+
+    function initAdmin() {
+      savePosts(getPosts());
+      renderBlog();
+      if (isAdminUnlocked()) openAdminPanel();
+
+      const savedEditingId = localStorage.getItem(BLOG_CURRENT_EDIT_KEY);
+      const posts = getPosts();
+      const matching = posts.find(post => post.id === savedEditingId);
+      if (matching && isAdminUnlocked()) {
+        fillForm(matching);
+      } else {
+        resetForm();
+      }
+
+      document.getElementById('admin-go').addEventListener('click', goToAdmin);
+      document.getElementById('admin-pass').addEventListener('keydown', event => {
+        if (event.key === 'Enter') goToAdmin();
+      });
+      document.getElementById('new-post-btn').addEventListener('click', resetForm);
+      document.getElementById('close-admin-btn').addEventListener('click', closeAdminPanel);
+      document.getElementById('save-post-btn').addEventListener('click', savePostFromForm);
+      document.getElementById('reset-post-btn').addEventListener('click', resetForm);
+      document.getElementById('delete-post-btn').addEventListener('click', deleteCurrentPost);
+      document.getElementById('admin-post-list').addEventListener('click', handleAdminListClick);
+    }
+
+    initAdmin();
+  </script>
 </body>
 </html>
