@@ -370,6 +370,36 @@
       background: #f5f8f1;
     }
 
+    .nutrition-launch {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1.2rem;
+      padding: 1rem 1.2rem;
+      border: 1px solid #dbe5d1;
+      border-radius: 18px;
+      background: linear-gradient(130deg, #f4f9ec, #ffffff);
+    }
+
+    .nutrition-launch strong {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-size: 1.02rem;
+    }
+
+    .nutrition-launch p {
+      margin: 0;
+      color: #465042;
+    }
+
+    .nutrition-launch a {
+      display: inline-flex;
+      white-space: nowrap;
+      font-weight: 700;
+      color: var(--accent-deep);
+    }
+
     .nutrition-highlight {
       margin-bottom: 1.3rem;
       padding: 1.2rem;
@@ -796,6 +826,14 @@
   </nav>
 
   <main class="shell">
+    <section class="nutrition-launch" aria-label="Nutrition section announcement">
+      <div>
+        <strong>New Nutrition Section Added</strong>
+        <p>Explore evidence-inspired fueling guidance and open the dedicated hub at nutrition.trollrunner.net.</p>
+      </div>
+      <a href="https://nutrition.trollrunner.net" target="_blank" rel="noopener noreferrer">Open Nutrition Hub -></a>
+    </section>
+
     <section id="blog-admin" class="admin-panel" aria-label="Blog admin panel">
       <div class="admin-header">
         <div>
@@ -1052,15 +1090,23 @@
     }
 
     function getPosts() {
+      const fallbackPosts = DEFAULT_POSTS.map(normalizePost).filter(Boolean);
       try {
         const raw = localStorage.getItem(BLOG_POSTS_KEY);
-        if (!raw) return DEFAULT_POSTS.map(normalizePost).filter(Boolean);
+        if (!raw) return fallbackPosts;
         const items = JSON.parse(raw);
-        if (!Array.isArray(items)) return DEFAULT_POSTS.map(normalizePost).filter(Boolean);
+        if (!Array.isArray(items)) return fallbackPosts;
         const normalized = items.map(normalizePost).filter(Boolean);
-        return normalized.length ? normalized : DEFAULT_POSTS.map(normalizePost).filter(Boolean);
+        if (!normalized.length) return fallbackPosts;
+        const hasNutrition = normalized.some(item => item.category.toLowerCase().includes('nutrition'));
+        if (!hasNutrition) {
+          const nutritionSeed = fallbackPosts.find(item => item.id === 'post-2');
+          if (nutritionSeed) normalized.push({ ...nutritionSeed, id: slugId(), featured: false });
+          localStorage.setItem(BLOG_POSTS_KEY, JSON.stringify(ensureFeatured(normalized)));
+        }
+        return normalized;
       } catch {
-        return DEFAULT_POSTS.map(normalizePost).filter(Boolean);
+        return fallbackPosts;
       }
     }
 
