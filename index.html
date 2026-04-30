@@ -683,16 +683,6 @@
       color: rgba(255, 255, 255, 0.55);
     }
 
-    #admin-go {
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      border-radius: 10px;
-      background: #007aff;
-      color: #fff;
-      padding: 0.7rem 0.95rem;
-      font-size: 0.84rem;
-      font-weight: 700;
-    }
-
     .hidden {
       display: none !important;
     }
@@ -776,7 +766,6 @@
       </div>
       <a class="nav-item" href="#topics">Topics</a>
       <a class="nav-item" href="https://trollrunner.net">Main Site</a>
-      <a class="nav-item" href="https://nutrition.trollrunner.net">Nutrition</a>
     </div>
   </nav>
 
@@ -891,7 +880,6 @@
           <ul class="topic-list">
             <li><a href="#">Race week diaries</a></li>
             <li><a href="#">Recovery and injury prevention</a></li>
-            <li><a href="#">Nutrition experiments</a></li>
             <li><a href="#">People and moments on route</a></li>
           </ul>
         </section>
@@ -917,7 +905,6 @@
       <div>Troll Runner Blog now has in-page admin access for writing and publishing posts.</div>
       <div id="admin-access">
         <input id="admin-pass" type="password" placeholder="Admin password" />
-        <button id="admin-go" type="button">Admin</button>
       </div>
     </div>
   </footer>
@@ -1300,7 +1287,6 @@
         resetForm();
       }
 
-      document.getElementById('admin-go').addEventListener('click', goToAdmin);
       document.getElementById('admin-pass').addEventListener('keydown', event => {
         if (event.key === 'Enter') goToAdmin();
       });
