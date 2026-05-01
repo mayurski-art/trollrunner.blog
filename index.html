@@ -836,12 +836,12 @@
   </nav>
 
   <main class="shell">
-    <section class="nutrition-launch" aria-label="Nutrition section announcement">
+    <section id="nutrition-launch" class="nutrition-launch" aria-label="Nutrition section announcement">
       <div>
-        <strong>New Nutrition Section Added</strong>
-        <p>Explore evidence-inspired fueling guidance and open the dedicated hub at nutrition.trollrunner.net.</p>
+        <strong id="nutrition-launch-title">New Nutrition Section Added</strong>
+        <p id="nutrition-launch-description">Explore evidence-inspired fueling guidance and open the dedicated hub at nutrition.trollrunner.net.</p>
       </div>
-      <a href="https://nutrition.trollrunner.net" target="_blank" rel="noopener noreferrer">Open Nutrition Hub -></a>
+      <a id="nutrition-launch-link" href="https://nutrition.trollrunner.net" target="_blank" rel="noopener noreferrer">Open Nutrition Hub -></a>
     </section>
 
     <section id="blog-admin" class="admin-panel" aria-label="Blog admin panel">
@@ -913,6 +913,35 @@
             <button class="btn btn-primary" type="button" id="save-post-btn">Save post</button>
             <button class="btn btn-secondary" type="button" id="reset-post-btn">Clear form</button>
             <button class="btn btn-danger hidden" type="button" id="delete-post-btn">Delete post</button>
+          </div>
+        </section>
+
+        <section class="admin-card">
+          <h3>Announcement bar</h3>
+          <div class="field">
+            <label for="launch-title">Title</label>
+            <input id="launch-title" type="text" placeholder="New Nutrition Section Added" />
+          </div>
+          <div class="field">
+            <label for="launch-description">Description</label>
+            <textarea id="launch-description" placeholder="Explore evidence-inspired fueling guidance and open the dedicated hub at nutrition.trollrunner.net."></textarea>
+          </div>
+          <div class="field-grid">
+            <div class="field">
+              <label for="launch-link-label">Button label</label>
+              <input id="launch-link-label" type="text" placeholder="Open Nutrition Hub ->" />
+            </div>
+            <div class="field">
+              <label for="launch-link-url">Button URL</label>
+              <input id="launch-link-url" type="url" placeholder="https://nutrition.trollrunner.net" />
+            </div>
+          </div>
+          <label class="checkbox-row" for="launch-visible">
+            <input id="launch-visible" type="checkbox" />
+            <span>Show announcement bar</span>
+          </label>
+          <div class="button-row">
+            <button class="btn btn-primary" type="button" id="save-launch-btn">Save announcement</button>
           </div>
         </section>
 
@@ -1003,6 +1032,7 @@
     const BLOG_ADMIN_AUTH_KEY = 'trollrunner_blog_admin_auth';
     const BLOG_POSTS_KEY = 'trollrunner_blog_posts';
     const BLOG_CURRENT_EDIT_KEY = 'trollrunner_blog_editing_id';
+    const BLOG_LAUNCH_KEY = 'trollrunner_blog_launch_announcement';
 
     const BLOG_PASSWORD_TROLL_MESSAGES = [
       'Wrong password. Back to the warm-up lap.',
@@ -1055,6 +1085,13 @@
 
     let adminFailedAttempts = 0;
     let currentEditingId = null;
+    const DEFAULT_LAUNCH = {
+      visible: false,
+      title: 'New Nutrition Section Added',
+      description: 'Explore evidence-inspired fueling guidance and open the dedicated hub at nutrition.trollrunner.net.',
+      linkLabel: 'Open Nutrition Hub ->',
+      linkUrl: 'https://nutrition.trollrunner.net'
+    };
 
     function escapeHtml(str) {
       return String(str).replace(/[&<>"']/g, s => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[s]));
@@ -1145,6 +1182,38 @@
       });
     }
 
+    function getLaunchAnnouncement() {
+      try {
+        const raw = localStorage.getItem(BLOG_LAUNCH_KEY);
+        if (!raw) return { ...DEFAULT_LAUNCH };
+        const parsed = JSON.parse(raw);
+        return {
+          visible: Boolean(parsed.visible),
+          title: String(parsed.title || DEFAULT_LAUNCH.title).trim(),
+          description: String(parsed.description || DEFAULT_LAUNCH.description).trim(),
+          linkLabel: String(parsed.linkLabel || DEFAULT_LAUNCH.linkLabel).trim(),
+          linkUrl: String(parsed.linkUrl || DEFAULT_LAUNCH.linkUrl).trim()
+        };
+      } catch {
+        return { ...DEFAULT_LAUNCH };
+      }
+    }
+
+    function saveLaunchAnnouncement(announcement) {
+      localStorage.setItem(BLOG_LAUNCH_KEY, JSON.stringify(announcement));
+    }
+
+    function renderLaunchAnnouncement() {
+      const announcement = getLaunchAnnouncement();
+      const launch = document.getElementById('nutrition-launch');
+      launch.classList.toggle('hidden', !announcement.visible);
+      document.getElementById('nutrition-launch-title').textContent = announcement.title;
+      document.getElementById('nutrition-launch-description').textContent = announcement.description;
+      const link = document.getElementById('nutrition-launch-link');
+      link.textContent = announcement.linkLabel;
+      link.href = announcement.linkUrl;
+    }
+
     function getFeaturedPost(posts) {
       return posts.find(item => item.featured) || posts[0] || null;
     }
@@ -1218,6 +1287,7 @@
       renderHero(posts);
       renderFeed(posts);
       renderAdminList(posts);
+      renderLaunchAnnouncement();
     }
 
     function setAdminStatus(message) {
@@ -1254,6 +1324,32 @@
       document.getElementById('post-featured').checked = post.featured;
       document.getElementById('delete-post-btn').classList.remove('hidden');
       setAdminStatus(`Editing "${post.title}".`);
+    }
+
+    function fillLaunchForm() {
+      const announcement = getLaunchAnnouncement();
+      document.getElementById('launch-title').value = announcement.title;
+      document.getElementById('launch-description').value = announcement.description;
+      document.getElementById('launch-link-label').value = announcement.linkLabel;
+      document.getElementById('launch-link-url').value = announcement.linkUrl;
+      document.getElementById('launch-visible').checked = announcement.visible;
+    }
+
+    function saveLaunchFromForm() {
+      const announcement = {
+        visible: document.getElementById('launch-visible').checked,
+        title: document.getElementById('launch-title').value.trim(),
+        description: document.getElementById('launch-description').value.trim(),
+        linkLabel: document.getElementById('launch-link-label').value.trim(),
+        linkUrl: document.getElementById('launch-link-url').value.trim()
+      };
+      if (!announcement.title || !announcement.description || !announcement.linkLabel || !announcement.linkUrl) {
+        alert('Please complete all announcement fields.');
+        return;
+      }
+      saveLaunchAnnouncement(announcement);
+      renderLaunchAnnouncement();
+      setAdminStatus('Announcement settings updated.');
     }
 
     function openAdminPanel() {
@@ -1383,6 +1479,7 @@
       } else {
         resetForm();
       }
+      fillLaunchForm();
 
       document.getElementById('admin-pass').addEventListener('keydown', event => {
         if (event.key === 'Enter') goToAdmin();
@@ -1393,6 +1490,7 @@
       document.getElementById('reset-post-btn').addEventListener('click', resetForm);
       document.getElementById('delete-post-btn').addEventListener('click', deleteCurrentPost);
       document.getElementById('admin-post-list').addEventListener('click', handleAdminListClick);
+      document.getElementById('save-launch-btn').addEventListener('click', saveLaunchFromForm);
     }
 
     initAdmin();
