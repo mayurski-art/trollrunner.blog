@@ -104,11 +104,17 @@
       width: min(var(--container), calc(100% - 2rem));
       margin: 0 auto;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.8rem 0;
+    }
+
+    .nav-group {
+      display: flex;
       align-items: center;
       gap: 0.3rem;
       flex-wrap: wrap;
-      padding: 0.8rem 0;
     }
 
     .nav-item,
@@ -368,6 +374,60 @@
     .topic-list a:focus-visible {
       color: var(--accent-deep);
       background: #f5f8f1;
+    }
+
+    .nutrition-launch {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1.2rem;
+      padding: 1rem 1.2rem;
+      border: 1px solid #dbe5d1;
+      border-radius: 18px;
+      background: linear-gradient(130deg, #f4f9ec, #ffffff);
+    }
+
+    .nutrition-launch strong {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-size: 1.02rem;
+    }
+
+    .nutrition-launch p {
+      margin: 0;
+      color: #465042;
+    }
+
+    .nutrition-launch a {
+      display: inline-flex;
+      white-space: nowrap;
+      font-weight: 700;
+      color: var(--accent-deep);
+    }
+
+    .nutrition-highlight {
+      margin-bottom: 1.3rem;
+      padding: 1.2rem;
+      border-radius: 18px;
+      background: linear-gradient(155deg, #f6f9f1, #ffffff);
+      border: 1px solid #e1e9d8;
+    }
+
+    .nutrition-highlight h4 {
+      margin: 0 0 0.45rem;
+      font-family: "Libre Baskerville", serif;
+      font-size: 1.15rem;
+    }
+
+    .nutrition-highlight p {
+      margin: 0 0 0.75rem;
+    }
+
+    .nutrition-link {
+      display: inline-flex;
+      font-weight: 700;
+      color: var(--accent-deep);
     }
 
     .section-head {
@@ -748,28 +808,42 @@
     <h1 class="site-title">Troll Runner Blog</h1>
     <p class="site-tagline">
       A cleaner home for training plans, marathon notes, recovery lessons, and the stories that happen
-      around the run instead of after it.
+      around the run instead of after it. Now with a nutrition-focused section inspired by evidence-first guides.
     </p>
   </header>
 
   <nav class="main-nav" aria-label="Main navigation">
     <div class="nav-inner">
-      <a class="nav-item" href="#latest">Blog</a>
-      <div class="dropdown">
-        <a class="dropdown-toggle" href="#training-guides">Training Plans</a>
-        <div class="dropdown-menu" aria-label="Training plan categories">
-          <a class="dropdown-link" href="#latest">5K plans</a>
-          <a class="dropdown-link" href="#latest">10K plans</a>
-          <a class="dropdown-link" href="#latest">Half marathon plans</a>
-          <a class="dropdown-link" href="#latest">Marathon plans</a>
+      <div class="nav-group" aria-label="Core sections">
+        <a class="nav-item" href="#latest">Blog</a>
+        <div class="dropdown">
+          <a class="dropdown-toggle" href="#training-guides">Training Plans</a>
+          <div class="dropdown-menu" aria-label="Training plan categories">
+            <a class="dropdown-link" href="#latest">5K plans</a>
+            <a class="dropdown-link" href="#latest">10K plans</a>
+            <a class="dropdown-link" href="#latest">Half marathon plans</a>
+            <a class="dropdown-link" href="#latest">Marathon plans</a>
+          </div>
         </div>
+        <a class="nav-item" href="https://nutrition.trollrunner.net" target="_blank" rel="noopener noreferrer">Nutrition</a>
       </div>
-      <a class="nav-item" href="#topics">Topics</a>
-      <a class="nav-item" href="https://trollrunner.net">Main Site</a>
+
+      <div class="nav-group" aria-label="External sections">
+        <a class="nav-item" href="https://finance.trollrunner.net" target="_blank" rel="noopener noreferrer">Finance</a>
+        <a class="nav-item" href="https://trollrunner.net" target="_blank" rel="noopener noreferrer">Main Site</a>
+      </div>
     </div>
   </nav>
 
   <main class="shell">
+    <section class="nutrition-launch" aria-label="Nutrition section announcement">
+      <div>
+        <strong>New Nutrition Section Added</strong>
+        <p>Explore evidence-inspired fueling guidance and open the dedicated hub at nutrition.trollrunner.net.</p>
+      </div>
+      <a href="https://nutrition.trollrunner.net" target="_blank" rel="noopener noreferrer">Open Nutrition Hub -></a>
+    </section>
+
     <section id="blog-admin" class="admin-panel" aria-label="Blog admin panel">
       <div class="admin-header">
         <div>
@@ -874,6 +948,21 @@
       </article>
 
       <aside class="sidebar-column">
+        <section class="sidebar-card" id="nutrition">
+          <div class="sidebar-label">Nutrition hub</div>
+          <h3>Fuel smarter, train stronger</h3>
+          <div class="nutrition-highlight">
+            <h4>New: Troll Runner Nutrition</h4>
+            <p>A dedicated destination for practical, research-inspired nutrition explainers, meal strategy breakdowns, and runner-friendly guidance.</p>
+            <a class="nutrition-link" href="https://nutrition.trollrunner.net" target="_blank" rel="noopener noreferrer">Visit nutrition.trollrunner.net -></a>
+          </div>
+          <ul class="topic-list">
+            <li><a href="#latest">Pre-run fueling timing</a></li>
+            <li><a href="#latest">Hydration & electrolyte basics</a></li>
+            <li><a href="#latest">Recovery plates and protein</a></li>
+          </ul>
+        </section>
+
         <section class="sidebar-card" id="topics">
           <div class="sidebar-label">Popular topics</div>
           <h3>What this blog can grow into</h3>
@@ -889,7 +978,7 @@
     <section id="latest">
       <div class="section-head">
         <h2>Latest from the blog</h2>
-        <p>Sleek, readable, and easy to keep expanding as you add real entries.</p>
+        <p>Sleek, readable, and now expanded for nutrition and performance content as you add real entries.</p>
       </div>
 
       <div id="post-feed" class="post-feed"></div>
@@ -938,13 +1027,13 @@
       },
       {
         id: 'post-2',
-        title: 'What post-run recovery really looks like on an ordinary weekday.',
-        category: 'Recovery',
+        title: 'A simple runner nutrition plate for busy weekdays.',
+        category: 'Nutrition',
         date: '2026-04-29',
         readTime: '5 min read',
-        excerpt: 'Recovery content works best when it is honest. Not every run ends with a perfect cooldown and protein shake.',
-        body: 'Recovery content works best when it is honest. Not every run ends with a perfect cooldown and protein shake. Sometimes recovery is stretching for three minutes in the kitchen, reheating leftovers, drinking water late, and still trying to be a person after the miles are done.',
-        tags: ['recovery', 'sleep', 'fueling'],
+        excerpt: 'Inspired by evidence-based nutrition explainers, this post template balances carbs, protein, colorful produce, and hydration into a practical meal framework.',
+        body: 'Inspired by evidence-based nutrition explainers, this post template balances carbs, protein, colorful produce, and hydration into a practical meal framework. It is not about perfection; it is about repeatable choices that support recovery and consistent training volume.',
+        tags: ['nutrition', 'fueling', 'recovery'],
         visual: 'visual-2',
         featured: false,
         createdAt: '2026-04-29T07:00:00.000Z'
@@ -1011,15 +1100,23 @@
     }
 
     function getPosts() {
+      const fallbackPosts = DEFAULT_POSTS.map(normalizePost).filter(Boolean);
       try {
         const raw = localStorage.getItem(BLOG_POSTS_KEY);
-        if (!raw) return DEFAULT_POSTS.map(normalizePost).filter(Boolean);
+        if (!raw) return fallbackPosts;
         const items = JSON.parse(raw);
-        if (!Array.isArray(items)) return DEFAULT_POSTS.map(normalizePost).filter(Boolean);
+        if (!Array.isArray(items)) return fallbackPosts;
         const normalized = items.map(normalizePost).filter(Boolean);
-        return normalized.length ? normalized : DEFAULT_POSTS.map(normalizePost).filter(Boolean);
+        if (!normalized.length) return fallbackPosts;
+        const hasNutrition = normalized.some(item => item.category.toLowerCase().includes('nutrition'));
+        if (!hasNutrition) {
+          const nutritionSeed = fallbackPosts.find(item => item.id === 'post-2');
+          if (nutritionSeed) normalized.push({ ...nutritionSeed, id: slugId(), featured: false });
+          localStorage.setItem(BLOG_POSTS_KEY, JSON.stringify(ensureFeatured(normalized)));
+        }
+        return normalized;
       } catch {
-        return DEFAULT_POSTS.map(normalizePost).filter(Boolean);
+        return fallbackPosts;
       }
     }
 
