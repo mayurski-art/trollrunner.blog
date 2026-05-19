@@ -143,6 +143,10 @@
       position: relative;
     }
 
+    .dropdown-nested {
+      position: relative;
+    }
+
     .dropdown-toggle::after {
       content: "v";
       margin-left: 0.45rem;
@@ -172,8 +176,34 @@
       transform: translateX(-50%) translateY(0);
     }
 
+    .dropdown-submenu {
+      position: absolute;
+      left: calc(100% + 0.45rem);
+      top: 0;
+      width: 180px;
+      padding: 0.55rem;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: var(--shadow);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(0.35rem);
+      transition: opacity 0.18s ease, visibility 0.18s ease, transform 0.18s ease;
+    }
+
+    .dropdown-nested:hover .dropdown-submenu,
+    .dropdown-nested:focus-within .dropdown-submenu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
     .dropdown-link {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.7rem;
       padding: 0.78rem 0.9rem;
       border-radius: 14px;
       color: var(--text);
@@ -183,6 +213,10 @@
     .dropdown-link:focus-visible {
       background: var(--surface-soft);
       color: var(--accent-deep);
+    }
+
+    .dropdown-caret {
+      font-size: 0.75rem;
     }
 
     .hero {
@@ -776,6 +810,12 @@
         width: min(260px, calc(100vw - 2rem));
       }
 
+      .dropdown-submenu {
+        left: 0;
+        top: calc(100% + 0.35rem);
+        width: min(220px, calc(100vw - 2rem));
+      }
+
       .dropdown:hover .dropdown-menu,
       .dropdown:focus-within .dropdown-menu {
         transform: translateY(0);
@@ -823,9 +863,18 @@
             <a class="dropdown-link" href="#latest">10K plans</a>
             <a class="dropdown-link" href="#latest">Half marathon plans</a>
             <a class="dropdown-link" href="#latest">Marathon plans</a>
+            <div class="dropdown-nested">
+              <a class="dropdown-link" href="#weightlifting">Weightlifting <span class="dropdown-caret" aria-hidden="true">&#9656;</span></a>
+              <div class="dropdown-submenu" aria-label="Weightlifting training plans">
+                <a class="dropdown-link" href="#leg-day">Leg Day</a>
+                <a class="dropdown-link" href="#push-day">Push Day</a>
+                <a class="dropdown-link" href="#pull-day">Pull Day</a>
+              </div>
+            </div>
           </div>
         </div>
         <a class="nav-item" href="https://nutrition.trollrunner.net" target="_blank" rel="noopener noreferrer">Nutrition</a>
+        <a class="nav-item" href="https://gardening.trollrunner.net" target="_blank" rel="noopener noreferrer">Gardening</a>
       </div>
 
       <div class="nav-group" aria-label="External sections">
@@ -989,6 +1038,21 @@
             <li><a href="#latest">Pre-run fueling timing</a></li>
             <li><a href="#latest">Hydration & electrolyte basics</a></li>
             <li><a href="#latest">Recovery plates and protein</a></li>
+          </ul>
+        </section>
+
+        <section class="sidebar-card" id="gardening">
+          <div class="sidebar-label">Gardening hub</div>
+          <h3>Grow something between runs</h3>
+          <div class="nutrition-highlight">
+            <h4>New: Troll Runner Gardening</h4>
+            <p>A dedicated destination for garden notes, planting updates, and the slower side of the Troll Runner universe.</p>
+            <a class="nutrition-link" href="https://gardening.trollrunner.net" target="_blank" rel="noopener noreferrer">Visit gardening.trollrunner.net -></a>
+          </div>
+          <ul class="topic-list">
+            <li><a href="#latest">Seasonal planting ideas</a></li>
+            <li><a href="#latest">Backyard progress logs</a></li>
+            <li><a href="#latest">Low-maintenance garden wins</a></li>
           </ul>
         </section>
 
