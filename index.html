@@ -201,6 +201,13 @@
       transform: translateY(0);
     }
 
+    .dropdown.is-click-closed .dropdown-menu,
+    .dropdown-nested.is-click-closed .dropdown-submenu {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
     .dropdown-link {
       display: flex;
       align-items: center;
@@ -1590,16 +1597,26 @@
 
       function setNestedOpen(isOpen) {
         nested.classList.toggle('is-open', isOpen);
+        nested.classList.toggle('is-click-closed', !isOpen);
         nestedToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
         if (!isOpen) nestedToggle.blur();
       }
 
       function setDropdownOpen(isOpen) {
         dropdown.classList.toggle('is-open', isOpen);
+        dropdown.classList.toggle('is-click-closed', !isOpen);
         dropdownToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
         if (!isOpen) setNestedOpen(false);
         if (!isOpen) dropdownToggle.blur();
       }
+
+      dropdown.addEventListener('mouseenter', () => {
+        dropdown.classList.remove('is-click-closed');
+      });
+
+      nested.addEventListener('mouseenter', () => {
+        nested.classList.remove('is-click-closed');
+      });
 
       dropdownToggle.addEventListener('click', event => {
         event.preventDefault();
