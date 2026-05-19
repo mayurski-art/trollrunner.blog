@@ -170,7 +170,8 @@
     }
 
     .dropdown:hover .dropdown-menu,
-    .dropdown:focus-within .dropdown-menu {
+    .dropdown:focus-within .dropdown-menu,
+    .dropdown.is-open .dropdown-menu {
       opacity: 1;
       visibility: visible;
       transform: translateX(-50%) translateY(0);
@@ -193,7 +194,8 @@
     }
 
     .dropdown-nested:hover .dropdown-submenu,
-    .dropdown-nested:focus-within .dropdown-submenu {
+    .dropdown-nested:focus-within .dropdown-submenu,
+    .dropdown-nested.is-open .dropdown-submenu {
       opacity: 1;
       visibility: visible;
       transform: translateY(0);
@@ -792,6 +794,45 @@
       .post-visual {
         min-height: 240px;
       }
+
+      .dropdown-menu {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, calc(-50% + 0.35rem));
+        width: min(300px, calc(100vw - 2rem));
+        max-height: min(420px, calc(100vh - 5rem));
+        overflow: auto;
+        z-index: 50;
+      }
+
+      .dropdown-submenu {
+        position: static;
+        width: 100%;
+        margin-top: 0.35rem;
+        box-shadow: none;
+        background: var(--surface-soft);
+      }
+
+      .dropdown:hover .dropdown-menu,
+      .dropdown:focus-within .dropdown-menu,
+      .dropdown.is-open .dropdown-menu {
+        transform: translate(-50%, -50%);
+      }
+
+      .dropdown:hover .dropdown-menu,
+      .dropdown-nested:hover .dropdown-submenu {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      .dropdown.is-open .dropdown-menu,
+      .dropdown-nested.is-open .dropdown-submenu,
+      .dropdown:focus-within .dropdown-menu,
+      .dropdown-nested:focus-within .dropdown-submenu {
+        opacity: 1;
+        visibility: visible;
+      }
     }
 
     @media (max-width: 640px) {
@@ -802,23 +843,6 @@
 
       .site-title {
         font-size: 2.3rem;
-      }
-
-      .dropdown-menu {
-        left: 0;
-        transform: none;
-        width: min(260px, calc(100vw - 2rem));
-      }
-
-      .dropdown-submenu {
-        left: 0;
-        top: calc(100% + 0.35rem);
-        width: min(220px, calc(100vw - 2rem));
-      }
-
-      .dropdown:hover .dropdown-menu,
-      .dropdown:focus-within .dropdown-menu {
-        transform: translateY(0);
       }
 
       .hero {
@@ -857,14 +881,14 @@
       <div class="nav-group" aria-label="Core sections">
         <a class="nav-item" href="#latest">Blog</a>
         <div class="dropdown">
-          <a class="dropdown-toggle" href="#training-guides">Training Plans</a>
+          <a class="dropdown-toggle" href="#training-guides" aria-expanded="false">Training Plans</a>
           <div class="dropdown-menu" aria-label="Training plan categories">
             <a class="dropdown-link" href="#latest">5K plans</a>
             <a class="dropdown-link" href="#latest">10K plans</a>
             <a class="dropdown-link" href="#latest">Half marathon plans</a>
             <a class="dropdown-link" href="#latest">Marathon plans</a>
             <div class="dropdown-nested">
-              <a class="dropdown-link" href="#weightlifting">Weightlifting <span class="dropdown-caret" aria-hidden="true">&#9656;</span></a>
+              <a class="dropdown-link dropdown-submenu-toggle" href="#weightlifting" aria-expanded="false">Weightlifting <span class="dropdown-caret" aria-hidden="true">&#9656;</span></a>
               <div class="dropdown-submenu" aria-label="Weightlifting training plans">
                 <a class="dropdown-link" href="#leg-day">Leg Day</a>
                 <a class="dropdown-link" href="#push-day">Push Day</a>
@@ -1557,6 +1581,46 @@
       document.getElementById('save-launch-btn').addEventListener('click', saveLaunchFromForm);
     }
 
+    function initTrainingPlanMenus() {
+      const dropdown = document.querySelector('.dropdown');
+      const dropdownToggle = document.querySelector('.dropdown-toggle');
+      const nested = document.querySelector('.dropdown-nested');
+      const nestedToggle = document.querySelector('.dropdown-submenu-toggle');
+      if (!dropdown || !dropdownToggle || !nested || !nestedToggle) return;
+
+      function setNestedOpen(isOpen) {
+        nested.classList.toggle('is-open', isOpen);
+        nestedToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        if (!isOpen) nestedToggle.blur();
+      }
+
+      function setDropdownOpen(isOpen) {
+        dropdown.classList.toggle('is-open', isOpen);
+        dropdownToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        if (!isOpen) setNestedOpen(false);
+        if (!isOpen) dropdownToggle.blur();
+      }
+
+      dropdownToggle.addEventListener('click', event => {
+        event.preventDefault();
+        setDropdownOpen(!dropdown.classList.contains('is-open'));
+      });
+
+      nestedToggle.addEventListener('click', event => {
+        event.preventDefault();
+        setNestedOpen(!nested.classList.contains('is-open'));
+      });
+
+      document.addEventListener('click', event => {
+        if (!dropdown.contains(event.target)) setDropdownOpen(false);
+      });
+
+      document.addEventListener('keydown', event => {
+        if (event.key === 'Escape') setDropdownOpen(false);
+      });
+    }
+
+    initTrainingPlanMenus();
     initAdmin();
   </script>
 </body>
