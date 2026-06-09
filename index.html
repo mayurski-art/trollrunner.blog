@@ -992,6 +992,16 @@
       cursor: var(--cursor-admin);
     }
 
+    .admin-status-pill {
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0 0.2rem 0 0.35rem;
+      white-space: nowrap;
+    }
+
     #admin-go {
       border: 0;
       border-radius: 999px;
@@ -1007,6 +1017,27 @@
     #admin-go:hover,
     #admin-go:focus-visible {
       background: #21291a;
+    }
+
+    #admin-lock {
+      border: 0;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 0.64rem 0.9rem;
+      text-transform: uppercase;
+    }
+
+    #admin-lock:hover,
+    #admin-lock:focus-visible {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    #admin-toggle {
+      cursor: pointer;
     }
 
     @media (max-width: 920px) {
@@ -1144,6 +1175,7 @@
       <div class="nav-group" aria-label="External sections">
         <a class="nav-item" href="https://finance.trollrunner.net">Finance</a>
         <a class="nav-item" href="https://trollrunner.net">Main Site</a>
+        <a class="nav-item" href="admin.html">Admin</a>
       </div>
     </div>
   </nav>
@@ -1292,8 +1324,9 @@
   <footer class="shell footer">
     <div class="footer-row">
       <div>Troll Runner Blog keeps the archive public while the editor stays behind a password.</div>
-      <div id="admin-access">
-        <button id="admin-go" type="button">Unlock admin</button>
+      <div id="admin-access" class="hidden" aria-live="polite">
+        <span class="admin-status-pill">Admin unlocked</span>
+        <button id="admin-lock" type="button">Lock admin</button>
       </div>
     </div>
   </footer>
@@ -1701,14 +1734,34 @@
       return localStorage.getItem(BLOG_ADMIN_AUTH_KEY) === '1';
     }
 
+    function syncAdminAccessVisibility() {
+      const access = document.getElementById('admin-access');
+      if (!access) return;
+      access.classList.toggle('hidden', !isAdminUnlocked());
+    }
+
     function unlockAdmin() {
       localStorage.setItem(BLOG_ADMIN_AUTH_KEY, '1');
       adminFailedAttempts = 0;
       openAdminPanel();
+      syncAdminAccessVisibility();
       setAdminStatus('Admin unlocked. Write something good.');
     }
 
-    function goToAdmin() {
+    function lockAdmin() {
+      localStorage.removeItem(BLOG_ADMIN_AUTH_KEY);
+      closeAdminPanel();
+      syncAdminAccessVisibility();
+      setAdminStatus('Admin locked.');
+    }
+
+    function goToAdmin(event) {
+      if (event?.preventDefault) event.preventDefault();
+      if (isAdminUnlocked()) {
+        openAdminPanel();
+        document.getElementById('blog-admin').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
       const pass = prompt('Enter the blog admin password');
       if (pass === null) return;
       if (pass !== ADMIN_PASSWORD) {
@@ -1813,6 +1866,7 @@
     function initAdmin() {
       savePosts(getPosts());
       renderBlog();
+      syncAdminAccessVisibility();
       if (isAdminUnlocked()) openAdminPanel();
 
       const savedEditingId = localStorage.getItem(BLOG_CURRENT_EDIT_KEY);
@@ -1825,7 +1879,7 @@
       }
       fillLaunchForm();
 
-      document.getElementById('admin-go').addEventListener('click', goToAdmin);
+      document.getElementById('admin-lock').addEventListener('click', lockAdmin);
       document.getElementById('new-post-btn').addEventListener('click', resetForm);
       document.getElementById('close-admin-btn').addEventListener('click', closeAdminPanel);
       document.getElementById('save-post-btn').addEventListener('click', savePostFromForm);

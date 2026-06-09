@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Troll Runner Blog Admin</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0f1210;
+      --panel: #151a16;
+      --panel-2: #1b211c;
+      --line: rgba(255,255,255,0.12);
+      --text: #f5f5ef;
+      --muted: rgba(245,245,239,0.68);
+      --accent: #d4aa5a;
+      --accent-2: #7dd36f;
+      --danger: #c84f45;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(212, 170, 90, 0.12), transparent 36%),
+        linear-gradient(180deg, #0c0f0c 0%, #101411 100%);
+      color: var(--text);
+    }
+
+    a { color: inherit; }
+
+    .wrap {
+      width: min(1100px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 24px 0 40px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .brand {
+      display: grid;
+      gap: 4px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: clamp(1.5rem, 2vw, 2.1rem);
+      letter-spacing: -0.03em;
+    }
+
+    .brand p,
+    .panel p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.92rem;
+    }
+
+    .pill:hover {
+      background: rgba(255,255,255,0.08);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .panel {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      backdrop-filter: blur(10px);
+    }
+
+    .panel h2 {
+      margin: 0 0 10px;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+      margin-top: 14px;
+    }
+
+    label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 999px;
+      padding: 11px 14px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      background: #f0d18a;
+      color: #111;
+      cursor: pointer;
+    }
+
+    button.secondary {
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    button.danger {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    .hidden { display: none !important; }
+
+    .stat {
+      display: grid;
+      gap: 4px;
+      padding: 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--line);
+    }
+
+    .stat strong {
+      font-size: 1.3rem;
+      letter-spacing: -0.03em;
+    }
+
+    .post-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .post-item {
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--line);
+      display: grid;
+      gap: 4px;
+    }
+
+    .post-item small {
+      color: var(--muted);
+    }
+
+    @media (max-width: 920px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <h1>Troll Runner Blog Admin</h1>
+        <p>Manage the blog archive and jump into the editor when you need it.</p>
+      </div>
+      <nav class="nav" aria-label="Admin links">
+        <a class="pill" href="index.html">Blog</a>
+        <a class="pill" href="https://trollrunner.net">Main Site</a>
+      </nav>
+    </div>
+
+    <section id="login-panel" class="panel">
+      <h2>Unlock access</h2>
+      <p>Enter the blog admin password to reveal the editor links and post summary.</p>
+      <div class="field">
+        <label for="admin-pass">Admin password</label>
+        <input id="admin-pass" type="password" placeholder="Enter password">
+      </div>
+      <div class="row">
+        <button id="unlock-btn" type="button">Unlock admin</button>
+      </div>
+    </section>
+
+    <section id="dashboard" class="grid hidden" aria-label="Admin dashboard">
+      <div class="panel">
+        <h2>Editor access</h2>
+        <p>Open the blog editor to manage posts, categories, and the launch announcement.</p>
+        <div class="row">
+          <a class="pill" href="index.html#blog-admin">Open blog editor</a>
+          <a class="pill" href="index.html">View blog</a>
+          <button id="lock-btn" class="danger" type="button">Lock admin</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Current archive</h2>
+        <div class="stat">
+          <small>Published posts</small>
+          <strong id="post-count">0</strong>
+        </div>
+        <div class="post-list" id="post-list"></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const ADMIN_PASSWORD = '#Mayur2626';
+    const BLOG_ADMIN_AUTH_KEY = 'trollrunner_blog_admin_auth';
+    const BLOG_POSTS_KEY = 'trollrunner_blog_posts_v2';
+
+    function isAdminUnlocked() {
+      return localStorage.getItem(BLOG_ADMIN_AUTH_KEY) === '1';
+    }
+
+    function unlockAdmin() {
+      localStorage.setItem(BLOG_ADMIN_AUTH_KEY, '1');
+      render();
+    }
+
+    function lockAdmin() {
+      localStorage.removeItem(BLOG_ADMIN_AUTH_KEY);
+      render();
+    }
+
+    function getPosts() {
+      try {
+        const raw = localStorage.getItem(BLOG_POSTS_KEY) || '[]';
+        const items = JSON.parse(raw);
+        return Array.isArray(items) ? items : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function sortPosts(posts) {
+      return [...posts].sort((a, b) => {
+        const dateDiff = new Date(b.date).getTime() - new Date(a.date).getTime();
+        if (dateDiff !== 0) return dateDiff;
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      });
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, s => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[s]));
+    }
+
+    function renderDashboard() {
+      const posts = sortPosts(getPosts());
+      document.getElementById('post-count').textContent = String(posts.length);
+      const list = document.getElementById('post-list');
+      if (!posts.length) {
+        list.innerHTML = '<div class="post-item"><strong>No posts yet</strong><small>The archive will appear here once the blog has entries.</small></div>';
+        return;
+      }
+      list.innerHTML = posts.slice(0, 8).map(post => `
+        <div class="post-item">
+          <strong>${escapeHtml(post.title || 'Untitled')}</strong>
+          <small>${escapeHtml(post.category || 'Uncategorized')} · ${escapeHtml(post.date || '')}</small>
+        </div>
+      `).join('');
+    }
+
+    function render() {
+      const unlocked = isAdminUnlocked();
+      document.getElementById('login-panel').classList.toggle('hidden', unlocked);
+      document.getElementById('dashboard').classList.toggle('hidden', !unlocked);
+      if (unlocked) renderDashboard();
+    }
+
+    document.getElementById('unlock-btn').addEventListener('click', () => {
+      const pass = document.getElementById('admin-pass').value;
+      if (pass !== ADMIN_PASSWORD) {
+        alert('Wrong password. Try again.');
+        return;
+      }
+      unlockAdmin();
+    });
+
+    document.getElementById('admin-pass').addEventListener('keydown', event => {
+      if (event.key === 'Enter') document.getElementById('unlock-btn').click();
+    });
+
+    document.getElementById('lock-btn').addEventListener('click', lockAdmin);
+
+    render();
+  </script>
+</body>
+</html>
