@@ -1348,6 +1348,24 @@
       return String(value || '').split(',').map(tag => tag.trim()).filter(Boolean);
     }
 
+    function mergeWithFallback(savedPosts, fallbackPosts) {
+      const fallbackById = new Map(fallbackPosts.map(post => [post.id, post]));
+      const merged = savedPosts.map(post => {
+        const fallback = fallbackById.get(post.id);
+        if (!fallback) return post;
+        return {
+          ...fallback,
+          ...post,
+          art: post.art || fallback.art || ''
+        };
+      });
+      const seen = new Set(merged.map(post => post.id));
+      fallbackPosts.forEach(post => {
+        if (!seen.has(post.id)) merged.push(post);
+      });
+      return merged;
+    }
+
     function normalizePost(post) {
       if (!post || typeof post !== 'object') return null;
       const title = String(post.title || '').trim();
@@ -1383,9 +1401,7 @@
         if (!Array.isArray(items)) return fallbackPosts;
         const normalized = items.map(normalizePost).filter(Boolean);
         if (!normalized.length) return fallbackPosts;
-        const merged = new Map(fallbackPosts.map(post => [post.id, post]));
-        normalized.forEach(post => merged.set(post.id, post));
-        return ensureFeatured([...merged.values()]);
+        return ensureFeatured(mergeWithFallback(normalized, fallbackPosts));
       } catch {
         return fallbackPosts;
       }
