@@ -426,6 +426,48 @@
         art: 'assets/images/blog-activations/fueling-experiments.png',
         featured: false,
         createdAt: '2026-06-08T06:00:00.000Z'
+      },
+      {
+        id: 'post-4',
+        title: 'Troll Runner Essentials',
+        category: 'Essentials',
+        date: '2026-06-08',
+        readTime: 'Placeholder',
+        excerpt: 'The core home for gear notes, route habits, and the practical pieces that keep the miles moving.',
+        body: 'The core home for gear notes, route habits, and the practical pieces that keep the miles moving.',
+        tags: ['essentials', 'gear', 'running'],
+        visual: 'visual-1',
+        art: 'assets/images/blog-activations/troll-runner-essentials.png',
+        featured: false,
+        createdAt: '2026-06-08T05:00:00.000Z'
+      },
+      {
+        id: 'post-5',
+        title: 'Video Drops and Edits',
+        category: 'Videos',
+        date: '2026-06-08',
+        readTime: 'Placeholder',
+        excerpt: 'A future home for edited clips, behind-the-scenes notes, route footage, and links into the videos site.',
+        body: 'A future home for edited clips, behind-the-scenes notes, route footage, and links into the videos site.',
+        tags: ['video', 'edits', 'routes'],
+        visual: 'visual-2',
+        art: 'assets/images/blog-activations/video-drops-and-edits.png',
+        featured: false,
+        createdAt: '2026-06-08T04:00:00.000Z'
+      },
+      {
+        id: 'post-6',
+        title: 'Community and Route Moments',
+        category: 'Community',
+        date: '2026-06-08',
+        readTime: 'Placeholder',
+        excerpt: 'A slot for people, places, small interactions, volunteer moments, and the stories that make the run feel bigger.',
+        body: 'A slot for people, places, small interactions, volunteer moments, and the stories that make the run feel bigger.',
+        tags: ['community', 'routes', 'journal'],
+        visual: 'visual-3',
+        art: 'assets/images/blog-activations/community-and-route-moments.png',
+        featured: false,
+        createdAt: '2026-06-08T03:00:00.000Z'
       }
     ];
 
@@ -495,7 +537,10 @@
         const items = JSON.parse(raw);
         if (!Array.isArray(items)) return fallbackPosts;
         const normalized = items.map(normalizePost).filter(Boolean);
-        return normalized.length ? ensureFeatured(normalized) : fallbackPosts;
+        if (!normalized.length) return fallbackPosts;
+        const merged = new Map(fallbackPosts.map(post => [post.id, post]));
+        normalized.forEach(post => merged.set(post.id, post));
+        return ensureFeatured([...merged.values()]);
       } catch {
         return fallbackPosts;
       }

@@ -650,102 +650,6 @@
       border: 1px solid var(--line);
     }
 
-    .story-archive {
-      margin-top: 2rem;
-      padding-top: 0.25rem;
-    }
-
-    .story-posts {
-      display: grid;
-      gap: 1rem;
-    }
-
-    .story-post {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-      min-height: 320px;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      background: #fbf8ef;
-      scroll-margin-top: 110px;
-    }
-
-    .story-post-art {
-      position: relative;
-      min-height: 280px;
-      background: var(--story-art, linear-gradient(160deg, #1a1f2d 0%, #31445d 45%, #a1b3c2 100%));
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
-
-    .story-post-art::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(10, 11, 10, 0.08) 0%, rgba(10, 11, 10, 0.34) 100%);
-    }
-
-    .story-post-content {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 1rem;
-      padding: 1.35rem;
-    }
-
-    .story-post-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-      color: var(--muted);
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .story-post h3 {
-      margin: 0;
-      font-family: "Libre Baskerville", serif;
-      font-size: clamp(1.45rem, 2.2vw, 2.35rem);
-      line-height: 1.08;
-      letter-spacing: -0.04em;
-    }
-
-    .story-post p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.65;
-    }
-
-    .story-post .story-post-body {
-      max-width: 52ch;
-    }
-
-    .story-post-link {
-      align-self: flex-start;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.55rem;
-      padding: 0.78rem 1rem;
-      border: 1px solid var(--text);
-      background: var(--text);
-      color: #f8f4df;
-      font-size: 0.8rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease;
-    }
-
-    .story-post-link:hover,
-    .story-post-link:focus-visible {
-      transform: translateY(-1px);
-      background: transparent;
-      color: var(--text);
-    }
-
     .activation-card {
       position: relative;
       min-height: 240px;
@@ -1218,14 +1122,6 @@
         min-height: 210px;
       }
 
-      .story-post {
-        grid-template-columns: 1fr;
-      }
-
-      .story-post-art {
-        min-height: 220px;
-      }
-
       .field-grid,
       .footer-row {
         grid-template-columns: 1fr;
@@ -1299,7 +1195,7 @@
     <section id="latest" class="activation-archive">
       <div class="section-head">
         <h2>Blog activations</h2>
-        <p>Filter by topic, then open a tile to jump into its matching post below.</p>
+        <p>Filter by topic, then open one of the six image-led cards below.</p>
       </div>
 
       <div id="post-filters" class="activation-filters" aria-label="Filter posts"></div>
@@ -1308,10 +1204,6 @@
         <strong>No posts yet.</strong>
         <p class="admin-help">Use the unlock button in the footer to publish your first entry.</p>
       </div>
-    </section>
-
-    <section id="posts" class="story-archive" aria-label="Individual blog posts">
-      <div id="story-posts" class="story-posts"></div>
     </section>
   </main>
 
@@ -1392,6 +1284,7 @@
         body: 'The core home for gear notes, route habits, and the practical pieces that keep the miles moving.',
         tags: ['essentials', 'gear', 'running'],
         visual: 'visual-1',
+        art: 'assets/images/blog-activations/troll-runner-essentials.png',
         featured: false,
         createdAt: '2026-06-08T05:00:00.000Z'
       },
@@ -1405,6 +1298,7 @@
         body: 'A future home for edited clips, behind-the-scenes notes, route footage, and links into the videos site.',
         tags: ['video', 'edits', 'routes'],
         visual: 'visual-2',
+        art: 'assets/images/blog-activations/video-drops-and-edits.png',
         featured: false,
         createdAt: '2026-06-08T04:00:00.000Z'
       },
@@ -1418,6 +1312,7 @@
         body: 'A slot for people, places, small interactions, volunteer moments, and the stories that make the run feel bigger.',
         tags: ['community', 'routes', 'journal'],
         visual: 'visual-3',
+        art: 'assets/images/blog-activations/community-and-route-moments.png',
         featured: false,
         createdAt: '2026-06-08T03:00:00.000Z'
       }
@@ -1488,7 +1383,9 @@
         if (!Array.isArray(items)) return fallbackPosts;
         const normalized = items.map(normalizePost).filter(Boolean);
         if (!normalized.length) return fallbackPosts;
-        return normalized;
+        const merged = new Map(fallbackPosts.map(post => [post.id, post]));
+        normalized.forEach(post => merged.set(post.id, post));
+        return ensureFeatured([...merged.values()]);
       } catch {
         return fallbackPosts;
       }
@@ -1607,7 +1504,7 @@
       }
       emptyState.classList.add('hidden');
       feed.innerHTML = sorted.map(post => `
-        <a class="activation-card ${escapeHtml(post.visual)}" href="#post-${escapeHtml(post.id)}" aria-label="${escapeHtml(post.title)}" style="${post.art ? `--card-art: url('${escapeHtml(post.art)}');` : ''}">
+        <a class="activation-card ${escapeHtml(post.visual)}" href="#latest" aria-label="${escapeHtml(post.title)}" style="${post.art ? `--card-art: url('${escapeHtml(post.art)}');` : ''}">
           <span class="activation-meta">
             <span>${escapeHtml(post.category)}</span>
             <span>${escapeHtml(formatDisplayDate(post.date))}</span>
@@ -1621,33 +1518,6 @@
             <span class="activation-arrow" aria-hidden="true">-></span>
           </span>
         </a>
-      `).join('');
-    }
-
-    function renderStoryPosts(posts) {
-      const wrap = document.getElementById('story-posts');
-      if (!wrap) return;
-      const sorted = sortPosts(posts).filter(post => activeArchiveFilter === 'All' || post.category === activeArchiveFilter);
-      if (!sorted.length) {
-        wrap.innerHTML = '';
-        return;
-      }
-      wrap.innerHTML = sorted.map(post => `
-        <article id="post-${escapeHtml(post.id)}" class="story-post">
-          <div class="story-post-art" style="${post.art ? `--story-art: url('${escapeHtml(post.art)}');` : ''}"></div>
-          <div class="story-post-content">
-            <div>
-              <div class="story-post-meta">
-                <span>${escapeHtml(post.category)}</span>
-                <span>${escapeHtml(formatDisplayDate(post.date))}</span>
-                <span>${escapeHtml(post.readTime)}</span>
-              </div>
-              <h3>${escapeHtml(post.title)}</h3>
-              <p class="story-post-body">${escapeHtml(post.body)}</p>
-            </div>
-            <a class="story-post-link" href="#latest">Back to tiles -></a>
-          </div>
-        </article>
       `).join('');
     }
 
@@ -1677,7 +1547,6 @@
       renderHero(posts);
       renderFilters(posts);
       renderFeed(posts);
-      renderStoryPosts(posts);
       renderLaunchAnnouncement();
     }
 
