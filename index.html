@@ -645,6 +645,7 @@
     }
 
     .activation-card {
+      position: relative;
       min-height: 240px;
       display: flex;
       flex-direction: column;
@@ -652,7 +653,66 @@
       gap: 1.3rem;
       padding: 1.25rem;
       background: var(--bg);
+      overflow: hidden;
       transition: background 0.18s ease, color 0.18s ease;
+    }
+
+    .activation-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      filter: saturate(1.02) contrast(1.02);
+      transform: scale(1.02);
+      z-index: 0;
+      opacity: 0.94;
+    }
+
+    .activation-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background:
+        linear-gradient(180deg, rgba(10, 12, 10, 0.18) 0%, rgba(10, 12, 10, 0.58) 100%),
+        linear-gradient(90deg, rgba(11, 14, 11, 0.72) 0%, rgba(11, 14, 11, 0.18) 56%, rgba(11, 14, 11, 0.4) 100%);
+    }
+
+    .activation-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .activation-card.visual-1::before {
+      background-image:
+        radial-gradient(circle at 18% 22%, rgba(255, 212, 122, 0.98) 0 12%, rgba(255, 212, 122, 0.12) 12.5%, transparent 13%),
+        radial-gradient(circle at 23% 72%, rgba(254, 210, 115, 0.38) 0 4%, transparent 5%),
+        linear-gradient(180deg, rgba(255, 190, 92, 0.18), rgba(255, 120, 68, 0.08)),
+        linear-gradient(150deg, #2d1f18 0%, #5a3821 38%, #d99d5d 69%, #f8dca7 100%);
+    }
+
+    .activation-card.visual-1::after {
+      background:
+        linear-gradient(180deg, rgba(7, 9, 10, 0.05) 0%, rgba(7, 9, 10, 0.48) 100%),
+        linear-gradient(90deg, rgba(7, 9, 10, 0.68) 0%, rgba(7, 9, 10, 0.18) 54%, rgba(7, 9, 10, 0.38) 100%);
+    }
+
+    .activation-card.visual-2::before {
+      background-image:
+        radial-gradient(circle at 20% 18%, rgba(211, 160, 102, 0.86) 0 8%, transparent 8.5%),
+        radial-gradient(circle at 28% 28%, rgba(237, 225, 201, 0.28) 0 10%, transparent 10.5%),
+        linear-gradient(135deg, rgba(90, 63, 39, 0.18), rgba(40, 29, 21, 0.06)),
+        linear-gradient(160deg, #36251c 0%, #6d4f3b 30%, #b58a64 59%, #f2dfbf 100%);
+    }
+
+    .activation-card.visual-3::before {
+      background-image:
+        radial-gradient(circle at 76% 22%, rgba(255, 163, 76, 0.88) 0 8%, transparent 8.5%),
+        radial-gradient(circle at 46% 56%, rgba(79, 138, 255, 0.44) 0 2.5%, transparent 3%),
+        radial-gradient(circle at 52% 57%, rgba(79, 138, 255, 0.18) 0 18%, transparent 18.5%),
+        linear-gradient(160deg, #121622 0%, #1d2835 37%, #344a5a 64%, #9fb2bd 100%);
     }
 
     .activation-card:hover,
@@ -1512,7 +1572,7 @@
       }
       emptyState.classList.add('hidden');
       feed.innerHTML = sorted.map(post => `
-        <a class="activation-card" href="#blog-admin" aria-label="${escapeHtml(post.title)}">
+        <a class="activation-card ${escapeHtml(post.visual)}" href="#blog-admin" aria-label="${escapeHtml(post.title)}">
           <span class="activation-meta">
             <span>${escapeHtml(post.category)}</span>
             <span>${escapeHtml(formatDisplayDate(post.date))}</span>
