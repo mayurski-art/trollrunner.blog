@@ -6,16 +6,16 @@
   <title>Troll Runner Blog Admin</title>
   <style>
     :root {
-      color-scheme: dark;
-      --bg: #0f1210;
-      --panel: #151a16;
-      --panel-2: #1b211c;
-      --line: rgba(255,255,255,0.12);
-      --text: #f5f5ef;
-      --muted: rgba(245,245,239,0.68);
-      --accent: #d4aa5a;
-      --accent-2: #7dd36f;
+      --bg: #f4f7f1;
+      --surface: #ffffff;
+      --surface-soft: #f8faf6;
+      --text: #11140f;
+      --muted: #5e6657;
+      --line: rgba(17, 20, 15, 0.12);
+      --accent: #11140f;
+      --accent-soft: #d8b36a;
       --danger: #c84f45;
+      --shadow: 0 18px 50px rgba(14, 17, 13, 0.08);
     }
 
     * { box-sizing: border-box; }
@@ -23,50 +23,44 @@
       margin: 0;
       font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background:
-        radial-gradient(circle at top, rgba(212, 170, 90, 0.12), transparent 36%),
-        linear-gradient(180deg, #0c0f0c 0%, #101411 100%);
+        radial-gradient(circle at top, rgba(216, 179, 106, 0.18), transparent 30%),
+        linear-gradient(180deg, #eef2e9 0%, #f7faf4 100%);
       color: var(--text);
     }
 
-    a { color: inherit; }
-
+    a { color: inherit; text-decoration: none; }
     .wrap {
-      width: min(1100px, calc(100vw - 32px));
+      width: min(1180px, calc(100vw - 32px));
       margin: 0 auto;
-      padding: 24px 0 40px;
+      padding: 20px 0 36px;
     }
 
     .topbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
       flex-wrap: wrap;
       margin-bottom: 18px;
     }
 
-    .brand {
-      display: grid;
-      gap: 4px;
-    }
-
     .brand h1 {
       margin: 0;
-      font-size: clamp(1.5rem, 2vw, 2.1rem);
-      letter-spacing: -0.03em;
+      font-family: "Libre Baskerville", serif;
+      font-size: clamp(1.65rem, 2.5vw, 2.35rem);
+      letter-spacing: -0.04em;
     }
 
-    .brand p,
-    .panel p {
-      margin: 0;
+    .brand p {
+      margin: 6px 0 0;
       color: var(--muted);
       line-height: 1.5;
     }
 
     .nav {
       display: flex;
-      flex-wrap: wrap;
       gap: 8px;
+      flex-wrap: wrap;
     }
 
     .pill {
@@ -77,36 +71,33 @@
       padding: 0 14px;
       border-radius: 999px;
       border: 1px solid var(--line);
-      background: rgba(255,255,255,0.04);
-      text-decoration: none;
+      background: rgba(255,255,255,0.88);
       font-weight: 700;
-      font-size: 0.92rem;
+      box-shadow: var(--shadow);
     }
 
-    .pill:hover {
-      background: rgba(255,255,255,0.08);
+    .pill:hover { background: #fff; }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      padding: 18px;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
       gap: 16px;
-      margin-top: 18px;
     }
 
-    .panel {
-      padding: 18px;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      backdrop-filter: blur(10px);
+    .editor-grid {
+      display: grid;
+      gap: 16px;
     }
 
-    .panel h2 {
-      margin: 0 0 10px;
-      font-size: 1.15rem;
-      letter-spacing: -0.02em;
-    }
+    .hidden { display: none !important; }
 
     .field {
       display: grid;
@@ -114,25 +105,33 @@
       margin-top: 14px;
     }
 
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
     label {
+      color: var(--muted);
       font-size: 0.78rem;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: var(--muted);
       font-weight: 800;
     }
 
-    input {
+    input, textarea, select {
       width: 100%;
       border: 1px solid var(--line);
       border-radius: 12px;
       padding: 12px 14px;
-      background: rgba(255,255,255,0.05);
+      background: #fff;
       color: var(--text);
-      font-size: 0.95rem;
+      font: inherit;
     }
 
-    .row {
+    textarea { min-height: 120px; resize: vertical; }
+
+    .button-row {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
@@ -145,13 +144,13 @@
       padding: 11px 14px;
       font-weight: 800;
       letter-spacing: 0.04em;
-      background: #f0d18a;
-      color: #111;
+      background: var(--accent);
+      color: #fff;
       cursor: pointer;
     }
 
     button.secondary {
-      background: rgba(255,255,255,0.08);
+      background: rgba(17, 20, 15, 0.08);
       color: var(--text);
       border: 1px solid var(--line);
     }
@@ -161,43 +160,75 @@
       color: #fff;
     }
 
-    .hidden { display: none !important; }
-
-    .stat {
-      display: grid;
-      gap: 4px;
-      padding: 14px;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--line);
+    .stat-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 8px;
     }
 
-    .stat strong {
-      font-size: 1.3rem;
-      letter-spacing: -0.03em;
+    .admin-meta {
+      color: var(--muted);
+      line-height: 1.5;
+      margin: 0 0 16px;
     }
 
     .post-list {
       display: grid;
       gap: 10px;
-      margin-top: 12px;
     }
 
     .post-item {
       padding: 12px 14px;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.04);
       border: 1px solid var(--line);
-      display: grid;
-      gap: 4px;
+      border-radius: 14px;
+      background: var(--surface-soft);
     }
 
-    .post-item small {
+    .post-item strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .post-meta {
       color: var(--muted);
+      font-size: 0.88rem;
+      margin-bottom: 10px;
     }
 
-    @media (max-width: 920px) {
+    .post-controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .auth-panel {
+      max-width: 560px;
+      margin-top: 18px;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(17, 20, 15, 0.05);
+      padding: 8px 12px;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .section-title {
+      margin: 0 0 10px;
+      font-family: "Libre Baskerville", serif;
+      font-size: 1.15rem;
+    }
+
+    @media (max-width: 960px) {
       .grid { grid-template-columns: 1fr; }
+      .field-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -206,7 +237,7 @@
     <div class="topbar">
       <div class="brand">
         <h1>Troll Runner Blog Admin</h1>
-        <p>Manage the blog archive and jump into the editor when you need it.</p>
+        <p>All post editing happens here. The public blog stays clean.</p>
       </div>
       <nav class="nav" aria-label="Admin links">
         <a class="pill" href="index.html">Blog</a>
@@ -214,36 +245,112 @@
       </nav>
     </div>
 
-    <section id="login-panel" class="panel">
-      <h2>Unlock access</h2>
-      <p>Enter the blog admin password to reveal the editor links and post summary.</p>
+    <section id="login-panel" class="panel auth-panel">
+      <h2 class="section-title">Unlock access</h2>
+      <p class="admin-meta">Enter the blog password to reveal the editor, the announcement bar, and the current post list.</p>
       <div class="field">
         <label for="admin-pass">Admin password</label>
-        <input id="admin-pass" type="password" placeholder="Enter password">
+        <input id="admin-pass" type="password" placeholder="Enter password" autocomplete="current-password">
       </div>
-      <div class="row">
+      <div class="button-row">
         <button id="unlock-btn" type="button">Unlock admin</button>
       </div>
     </section>
 
-    <section id="dashboard" class="grid hidden" aria-label="Admin dashboard">
-      <div class="panel">
-        <h2>Editor access</h2>
-        <p>Open the blog editor to manage posts, categories, and the launch announcement.</p>
-        <div class="row">
-          <a class="pill" href="index.html#blog-admin">Open blog editor</a>
-          <a class="pill" href="index.html">View blog</a>
-          <button id="lock-btn" class="danger" type="button">Lock admin</button>
+    <section id="dashboard" class="grid hidden" aria-label="Blog admin dashboard">
+      <div class="editor-grid">
+        <div class="panel">
+          <div class="stat-line">
+            <h2 class="section-title">Post editor</h2>
+            <span class="status-pill" id="admin-status">Ready for a new post.</span>
+          </div>
+          <div class="field">
+            <label for="post-title">Title</label>
+            <input id="post-title" type="text" placeholder="Why I still like a paper training plan">
+          </div>
+          <div class="field-grid">
+            <div class="field">
+              <label for="post-category">Category</label>
+              <input id="post-category" type="text" placeholder="Training plans">
+            </div>
+            <div class="field">
+              <label for="post-date">Date</label>
+              <input id="post-date" type="date">
+            </div>
+            <div class="field">
+              <label for="post-read-time">Read time</label>
+              <input id="post-read-time" type="text" placeholder="6 min read">
+            </div>
+            <div class="field">
+              <label for="post-visual">Card visual</label>
+              <select id="post-visual">
+                <option value="visual-1">Visual 1</option>
+                <option value="visual-2">Visual 2</option>
+                <option value="visual-3">Visual 3</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="post-excerpt">Excerpt</label>
+            <textarea id="post-excerpt" placeholder="Write a short summary for the feed card."></textarea>
+          </div>
+          <div class="field">
+            <label for="post-body">Body</label>
+            <textarea id="post-body" placeholder="Write the body text used in the featured post area."></textarea>
+          </div>
+          <div class="field">
+            <label for="post-tags">Tags</label>
+            <input id="post-tags" type="text" placeholder="recovery, routine, consistency">
+          </div>
+          <label class="field" style="display:flex;align-items:center;gap:10px;margin-top:14px;">
+            <input id="post-featured" type="checkbox" style="width:auto;">
+            <span>Make this the featured post</span>
+          </label>
+          <div class="button-row">
+            <button id="save-post-btn" type="button">Save post</button>
+            <button id="reset-post-btn" class="secondary" type="button">Clear form</button>
+            <button id="delete-post-btn" class="danger hidden" type="button">Delete post</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2 class="section-title">Announcement bar</h2>
+          <p class="admin-meta">This updates the public launch banner shown on the blog homepage.</p>
+          <div class="field">
+            <label for="launch-title">Title</label>
+            <input id="launch-title" type="text" placeholder="New Nutrition Section Added">
+          </div>
+          <div class="field">
+            <label for="launch-description">Description</label>
+            <textarea id="launch-description" placeholder="Explore evidence-inspired fueling guidance and open the dedicated hub at nutrition.trollrunner.net."></textarea>
+          </div>
+          <div class="field-grid">
+            <div class="field">
+              <label for="launch-link-label">Button label</label>
+              <input id="launch-link-label" type="text" placeholder="Open Nutrition Hub ->">
+            </div>
+            <div class="field">
+              <label for="launch-link-url">Button URL</label>
+              <input id="launch-link-url" type="url" placeholder="https://nutrition.trollrunner.net">
+            </div>
+          </div>
+          <label class="field" style="display:flex;align-items:center;gap:10px;margin-top:14px;">
+            <input id="launch-visible" type="checkbox" style="width:auto;">
+            <span>Show announcement bar</span>
+          </label>
+          <div class="button-row">
+            <button id="save-launch-btn" type="button">Save announcement</button>
+            <button id="lock-btn" class="secondary" type="button">Lock admin</button>
+          </div>
         </div>
       </div>
 
       <div class="panel">
-        <h2>Current archive</h2>
-        <div class="stat">
-          <small>Published posts</small>
-          <strong id="post-count">0</strong>
+        <div class="stat-line">
+          <h2 class="section-title">Published posts</h2>
+          <span class="status-pill" id="post-count">0 posts</span>
         </div>
-        <div class="post-list" id="post-list"></div>
+        <div id="admin-post-list" class="post-list"></div>
       </div>
     </section>
   </div>
@@ -252,29 +359,134 @@
     const ADMIN_PASSWORD = '#Mayur2626';
     const BLOG_ADMIN_AUTH_KEY = 'trollrunner_blog_admin_auth';
     const BLOG_POSTS_KEY = 'trollrunner_blog_posts_v2';
+    const BLOG_CURRENT_EDIT_KEY = 'trollrunner_blog_editing_id';
+    const BLOG_LAUNCH_KEY = 'trollrunner_blog_launch_announcement';
 
-    function isAdminUnlocked() {
-      return localStorage.getItem(BLOG_ADMIN_AUTH_KEY) === '1';
+    const DEFAULT_LAUNCH = {
+      visible: false,
+      title: 'New Nutrition Section Added',
+      description: 'Explore evidence-inspired fueling guidance and open the dedicated hub at nutrition.trollrunner.net.',
+      linkLabel: 'Open Nutrition Hub ->',
+      linkUrl: 'https://nutrition.trollrunner.net'
+    };
+
+    const DEFAULT_POSTS = [
+      {
+        id: 'post-1',
+        title: 'Troll Runner Stories',
+        category: 'Stories',
+        date: '2026-06-08',
+        readTime: 'Placeholder',
+        excerpt: 'A place for longer-form stories, route snapshots, and the little moments that turn a run into a narrative.',
+        body: 'A place for longer-form stories, route snapshots, and the little moments that turn a run into a narrative.',
+        tags: ['intro', 'identity', 'running'],
+        visual: 'visual-1',
+        featured: true,
+        createdAt: '2026-06-08T08:00:00.000Z'
+      },
+      {
+        id: 'post-2',
+        title: 'Mile Log: Training Notes',
+        category: 'Logs',
+        date: '2026-06-08',
+        readTime: 'Placeholder',
+        excerpt: 'A place for training breakdowns, mileage reflections, recovery notes, and what actually happened on the road.',
+        body: 'A place for training breakdowns, mileage reflections, recovery notes, and what actually happened on the road.',
+        tags: ['training', 'miles', 'recovery'],
+        visual: 'visual-2',
+        featured: false,
+        createdAt: '2026-06-08T07:00:00.000Z'
+      },
+      {
+        id: 'post-3',
+        title: 'Notes From The Run',
+        category: 'Notes From The Run',
+        date: '2026-06-08',
+        readTime: 'Placeholder',
+        excerpt: 'A compact home for quick notes, route observations, and the kind of field details that can become a post later.',
+        body: 'A compact home for quick notes, route observations, and the kind of field details that can become a post later.',
+        tags: ['notes', 'map', 'field notes'],
+        visual: 'visual-3',
+        featured: false,
+        createdAt: '2026-06-08T06:00:00.000Z'
+      }
+    ];
+
+    let editingId = null;
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, s => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[s]));
     }
 
-    function unlockAdmin() {
-      localStorage.setItem(BLOG_ADMIN_AUTH_KEY, '1');
-      render();
+    function slugId() {
+      return `blog-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
     }
 
-    function lockAdmin() {
-      localStorage.removeItem(BLOG_ADMIN_AUTH_KEY);
-      render();
+    function formatDisplayDate(value) {
+      const parsed = new Date(`${value}T12:00:00`);
+      if (Number.isNaN(parsed.getTime())) return value;
+      return parsed.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    function normalizeTags(value) {
+      if (Array.isArray(value)) return value.map(tag => String(tag).trim()).filter(Boolean);
+      return String(value || '').split(',').map(tag => tag.trim()).filter(Boolean);
+    }
+
+    function normalizePost(post) {
+      if (!post || typeof post !== 'object') return null;
+      const title = String(post.title || '').trim();
+      const category = String(post.category || '').trim();
+      const date = String(post.date || '').trim();
+      const excerpt = String(post.excerpt || '').trim();
+      const body = String(post.body || '').trim();
+      if (!title || !category || !date || !excerpt || !body) return null;
+      const visual = ['visual-1', 'visual-2', 'visual-3'].includes(post.visual) ? post.visual : 'visual-1';
+      return {
+        id: String(post.id || slugId()),
+        title,
+        category,
+        date,
+        readTime: String(post.readTime || '5 min read').trim() || '5 min read',
+        excerpt,
+        body,
+        tags: normalizeTags(post.tags),
+        visual,
+        featured: Boolean(post.featured),
+        createdAt: post.createdAt || new Date().toISOString()
+      };
+    }
+
+    function ensureFeatured(posts) {
+      const items = posts.map(normalizePost).filter(Boolean);
+      if (!items.length) return [];
+      const featuredIndex = items.findIndex(item => item.featured);
+      if (featuredIndex === -1) {
+        items[0].featured = true;
+      } else {
+        items.forEach((item, index) => { item.featured = index === featuredIndex; });
+      }
+      return items;
     }
 
     function getPosts() {
+      const fallbackPosts = DEFAULT_POSTS.map(normalizePost).filter(Boolean);
       try {
-        const raw = localStorage.getItem(BLOG_POSTS_KEY) || '[]';
+        const raw = localStorage.getItem(BLOG_POSTS_KEY);
+        if (!raw) return fallbackPosts;
         const items = JSON.parse(raw);
-        return Array.isArray(items) ? items : [];
+        if (!Array.isArray(items)) return fallbackPosts;
+        const normalized = items.map(normalizePost).filter(Boolean);
+        return normalized.length ? ensureFeatured(normalized) : fallbackPosts;
       } catch {
-        return [];
+        return fallbackPosts;
       }
+    }
+
+    function savePosts(posts) {
+      const normalized = ensureFeatured(posts);
+      localStorage.setItem(BLOG_POSTS_KEY, JSON.stringify(normalized));
+      return normalized;
     }
 
     function sortPosts(posts) {
@@ -285,22 +497,76 @@
       });
     }
 
-    function escapeHtml(str) {
-      return String(str).replace(/[&<>"']/g, s => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[s]));
+    function getLaunchAnnouncement() {
+      try {
+        const raw = localStorage.getItem(BLOG_LAUNCH_KEY);
+        if (!raw) return { ...DEFAULT_LAUNCH };
+        const parsed = JSON.parse(raw);
+        return {
+          visible: Boolean(parsed.visible),
+          title: String(parsed.title || DEFAULT_LAUNCH.title).trim(),
+          description: String(parsed.description || DEFAULT_LAUNCH.description).trim(),
+          linkLabel: String(parsed.linkLabel || DEFAULT_LAUNCH.linkLabel).trim(),
+          linkUrl: String(parsed.linkUrl || DEFAULT_LAUNCH.linkUrl).trim()
+        };
+      } catch {
+        return { ...DEFAULT_LAUNCH };
+      }
     }
 
-    function renderDashboard() {
+    function saveLaunchAnnouncement(announcement) {
+      localStorage.setItem(BLOG_LAUNCH_KEY, JSON.stringify(announcement));
+    }
+
+    function isAdminUnlocked() {
+      return localStorage.getItem(BLOG_ADMIN_AUTH_KEY) === '1';
+    }
+
+    function unlockAdmin() {
+      localStorage.setItem(BLOG_ADMIN_AUTH_KEY, '1');
+      editingId = null;
+      render();
+      fillLaunchForm();
+    }
+
+    function lockAdmin() {
+      localStorage.removeItem(BLOG_ADMIN_AUTH_KEY);
+      editingId = null;
+      render();
+      resetForm();
+    }
+
+    function setAdminStatus(message) {
+      const el = document.getElementById('admin-status');
+      if (el) el.textContent = message;
+    }
+
+    function renderLaunchAnnouncement() {
+      const announcement = getLaunchAnnouncement();
+      document.getElementById('launch-title').value = announcement.title;
+      document.getElementById('launch-description').value = announcement.description;
+      document.getElementById('launch-link-label').value = announcement.linkLabel;
+      document.getElementById('launch-link-url').value = announcement.linkUrl;
+      document.getElementById('launch-visible').checked = announcement.visible;
+    }
+
+    function renderAdminList() {
       const posts = sortPosts(getPosts());
-      document.getElementById('post-count').textContent = String(posts.length);
-      const list = document.getElementById('post-list');
+      document.getElementById('post-count').textContent = `${posts.length} post${posts.length === 1 ? '' : 's'}`;
+      const list = document.getElementById('admin-post-list');
       if (!posts.length) {
-        list.innerHTML = '<div class="post-item"><strong>No posts yet</strong><small>The archive will appear here once the blog has entries.</small></div>';
+        list.innerHTML = '<div class="post-item"><strong>No published posts yet.</strong><div class="post-meta">Use the form above to publish the first entry.</div></div>';
         return;
       }
-      list.innerHTML = posts.slice(0, 8).map(post => `
+      list.innerHTML = posts.map(post => `
         <div class="post-item">
-          <strong>${escapeHtml(post.title || 'Untitled')}</strong>
-          <small>${escapeHtml(post.category || 'Uncategorized')} · ${escapeHtml(post.date || '')}</small>
+          <strong>${escapeHtml(post.title)}</strong>
+          <div class="post-meta">${escapeHtml(post.category)} · ${escapeHtml(formatDisplayDate(post.date))}${post.featured ? ' · Featured' : ''}</div>
+          <div class="post-controls">
+            <button type="button" data-action="edit" data-id="${escapeHtml(post.id)}">Edit</button>
+            <button type="button" data-action="feature" data-id="${escapeHtml(post.id)}">${post.featured ? 'Featured' : 'Make featured'}</button>
+            <button type="button" class="danger" data-action="delete" data-id="${escapeHtml(post.id)}">Delete</button>
+          </div>
         </div>
       `).join('');
     }
@@ -309,25 +575,176 @@
       const unlocked = isAdminUnlocked();
       document.getElementById('login-panel').classList.toggle('hidden', unlocked);
       document.getElementById('dashboard').classList.toggle('hidden', !unlocked);
-      if (unlocked) renderDashboard();
+      if (unlocked) {
+        renderLaunchAnnouncement();
+        renderAdminList();
+      }
     }
 
-    document.getElementById('unlock-btn').addEventListener('click', () => {
-      const pass = document.getElementById('admin-pass').value;
-      if (pass !== ADMIN_PASSWORD) {
-        alert('Wrong password. Try again.');
+    function resetForm() {
+      editingId = null;
+      localStorage.removeItem(BLOG_CURRENT_EDIT_KEY);
+      document.getElementById('post-title').value = '';
+      document.getElementById('post-category').value = '';
+      document.getElementById('post-date').value = '';
+      document.getElementById('post-read-time').value = '';
+      document.getElementById('post-visual').value = 'visual-1';
+      document.getElementById('post-excerpt').value = '';
+      document.getElementById('post-body').value = '';
+      document.getElementById('post-tags').value = '';
+      document.getElementById('post-featured').checked = false;
+      document.getElementById('delete-post-btn').classList.add('hidden');
+      setAdminStatus('Ready for a new post.');
+    }
+
+    function fillForm(post) {
+      editingId = post.id;
+      localStorage.setItem(BLOG_CURRENT_EDIT_KEY, post.id);
+      document.getElementById('post-title').value = post.title;
+      document.getElementById('post-category').value = post.category;
+      document.getElementById('post-date').value = post.date;
+      document.getElementById('post-read-time').value = post.readTime;
+      document.getElementById('post-visual').value = post.visual;
+      document.getElementById('post-excerpt').value = post.excerpt;
+      document.getElementById('post-body').value = post.body;
+      document.getElementById('post-tags').value = post.tags.join(', ');
+      document.getElementById('post-featured').checked = post.featured;
+      document.getElementById('delete-post-btn').classList.remove('hidden');
+      setAdminStatus(`Editing "${post.title}".`);
+    }
+
+    function readFormPost() {
+      return normalizePost({
+        id: editingId || slugId(),
+        title: document.getElementById('post-title').value,
+        category: document.getElementById('post-category').value,
+        date: document.getElementById('post-date').value,
+        readTime: document.getElementById('post-read-time').value,
+        visual: document.getElementById('post-visual').value,
+        excerpt: document.getElementById('post-excerpt').value,
+        body: document.getElementById('post-body').value,
+        tags: document.getElementById('post-tags').value,
+        featured: document.getElementById('post-featured').checked,
+        createdAt: new Date().toISOString()
+      });
+    }
+
+    function savePostFromForm() {
+      const post = readFormPost();
+      if (!post) {
+        alert('Please fill in title, category, date, excerpt, and body.');
         return;
       }
-      unlockAdmin();
-    });
+      const posts = getPosts();
+      const nextPosts = posts.filter(item => item.id !== post.id);
+      if (post.featured) {
+        nextPosts.forEach(item => { item.featured = false; });
+      }
+      nextPosts.push(post);
+      savePosts(nextPosts);
+      render();
+      fillForm(post);
+      setAdminStatus(`Saved "${post.title}".`);
+    }
 
-    document.getElementById('admin-pass').addEventListener('keydown', event => {
-      if (event.key === 'Enter') document.getElementById('unlock-btn').click();
-    });
+    function setFeaturedPost(id) {
+      const posts = getPosts().map(post => ({ ...post, featured: post.id === id }));
+      savePosts(posts);
+      render();
+      const selected = posts.find(post => post.id === id);
+      if (selected) fillForm(selected);
+      setAdminStatus('Featured post updated.');
+    }
 
-    document.getElementById('lock-btn').addEventListener('click', lockAdmin);
+    function deleteCurrentPost() {
+      if (!editingId) return;
+      const posts = getPosts();
+      const target = posts.find(post => post.id === editingId);
+      if (!target) return;
+      if (!confirm(`Delete "${target.title}"?`)) return;
+      const nextPosts = posts.filter(post => post.id !== editingId);
+      savePosts(nextPosts);
+      render();
+      resetForm();
+      setAdminStatus(`Deleted "${target.title}".`);
+    }
 
-    render();
+    function handlePostListClick(event) {
+      const button = event.target.closest('button[data-action]');
+      if (!button) return;
+      const post = getPosts().find(item => item.id === button.dataset.id);
+      if (!post) return;
+      if (button.dataset.action === 'edit') fillForm(post);
+      if (button.dataset.action === 'feature') setFeaturedPost(post.id);
+      if (button.dataset.action === 'delete') deleteCurrentPostForId(post.id);
+    }
+
+    function deleteCurrentPostForId(id) {
+      const posts = getPosts();
+      const target = posts.find(post => post.id === id);
+      if (!target) return;
+      if (!confirm(`Delete "${target.title}"?`)) return;
+      const nextPosts = posts.filter(post => post.id !== id);
+      savePosts(nextPosts);
+      render();
+      if (editingId === id) resetForm();
+      setAdminStatus(`Deleted "${target.title}".`);
+    }
+
+    function saveLaunchFromForm() {
+      const announcement = {
+        visible: document.getElementById('launch-visible').checked,
+        title: document.getElementById('launch-title').value.trim(),
+        description: document.getElementById('launch-description').value.trim(),
+        linkLabel: document.getElementById('launch-link-label').value.trim(),
+        linkUrl: document.getElementById('launch-link-url').value.trim()
+      };
+      if (!announcement.title || !announcement.description || !announcement.linkLabel || !announcement.linkUrl) {
+        alert('Please complete all announcement fields.');
+        return;
+      }
+      saveLaunchAnnouncement(announcement);
+      setAdminStatus('Announcement settings updated.');
+      render();
+    }
+
+    function fillLaunchForm() {
+      const announcement = getLaunchAnnouncement();
+      document.getElementById('launch-title').value = announcement.title;
+      document.getElementById('launch-description').value = announcement.description;
+      document.getElementById('launch-link-label').value = announcement.linkLabel;
+      document.getElementById('launch-link-url').value = announcement.linkUrl;
+      document.getElementById('launch-visible').checked = announcement.visible;
+    }
+
+    function init() {
+      savePosts(getPosts());
+      render();
+      if (isAdminUnlocked()) {
+        fillLaunchForm();
+      }
+
+      document.getElementById('unlock-btn').addEventListener('click', () => {
+        const pass = document.getElementById('admin-pass').value;
+        if (pass !== ADMIN_PASSWORD) {
+          alert('Wrong password. Try again.');
+          return;
+        }
+        unlockAdmin();
+      });
+
+      document.getElementById('admin-pass').addEventListener('keydown', event => {
+        if (event.key === 'Enter') document.getElementById('unlock-btn').click();
+      });
+      document.getElementById('save-post-btn').addEventListener('click', savePostFromForm);
+      document.getElementById('reset-post-btn').addEventListener('click', resetForm);
+      document.getElementById('delete-post-btn').addEventListener('click', deleteCurrentPost);
+      document.getElementById('save-launch-btn').addEventListener('click', saveLaunchFromForm);
+      document.getElementById('lock-btn').addEventListener('click', lockAdmin);
+      document.getElementById('admin-post-list').addEventListener('click', handlePostListClick);
+    }
+
+    init();
   </script>
 </body>
 </html>

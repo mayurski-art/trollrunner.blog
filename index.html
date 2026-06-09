@@ -1189,114 +1189,6 @@
       <a id="nutrition-launch-link" href="https://nutrition.trollrunner.net" target="_blank" rel="noopener noreferrer">Open Nutrition Hub -></a>
     </section>
 
-    <section id="blog-admin" class="admin-panel" aria-label="Blog admin panel">
-      <div class="admin-header">
-        <div>
-          <div class="admin-kicker">Admin access</div>
-          <h2 class="admin-title">Write and publish blog posts from the page itself.</h2>
-          <p class="admin-help">This editor is blog-specific. It saves posts in this browser and instantly refreshes the featured story and post feed below.</p>
-          <p id="admin-status" class="admin-status">Admin unlocked.</p>
-        </div>
-        <div class="admin-actions">
-          <button class="btn btn-secondary" type="button" id="new-post-btn">New post</button>
-          <button class="btn btn-secondary" type="button" id="close-admin-btn">Hide editor</button>
-        </div>
-      </div>
-
-      <div class="admin-grid">
-        <section class="admin-card">
-          <h3>Post editor</h3>
-          <div class="field">
-            <label for="post-title">Title</label>
-            <input id="post-title" type="text" placeholder="Why I still like a paper training plan" />
-          </div>
-
-          <div class="field-grid">
-            <div class="field">
-              <label for="post-category">Category</label>
-              <input id="post-category" type="text" placeholder="Training plans" />
-            </div>
-            <div class="field">
-              <label for="post-date">Date</label>
-              <input id="post-date" type="date" />
-            </div>
-            <div class="field">
-              <label for="post-read-time">Read time</label>
-              <input id="post-read-time" type="text" placeholder="6 min read" />
-            </div>
-            <div class="field">
-              <label for="post-visual">Card visual</label>
-              <select id="post-visual">
-                <option value="visual-1">Visual 1</option>
-                <option value="visual-2">Visual 2</option>
-                <option value="visual-3">Visual 3</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="field">
-            <label for="post-excerpt">Excerpt</label>
-            <textarea id="post-excerpt" placeholder="Write a short summary for the feed card."></textarea>
-          </div>
-
-          <div class="field">
-            <label for="post-body">Body</label>
-            <textarea id="post-body" placeholder="Write the body text used in the featured post area."></textarea>
-          </div>
-
-          <div class="field">
-            <label for="post-tags">Tags</label>
-            <input id="post-tags" type="text" placeholder="recovery, routine, consistency" />
-          </div>
-
-          <label class="checkbox-row" for="post-featured">
-            <input id="post-featured" type="checkbox" />
-            <span>Make this the featured post</span>
-          </label>
-
-          <div class="button-row">
-            <button class="btn btn-primary" type="button" id="save-post-btn">Save post</button>
-            <button class="btn btn-secondary" type="button" id="reset-post-btn">Clear form</button>
-            <button class="btn btn-danger hidden" type="button" id="delete-post-btn">Delete post</button>
-          </div>
-        </section>
-
-        <section class="admin-card">
-          <h3>Announcement bar</h3>
-          <div class="field">
-            <label for="launch-title">Title</label>
-            <input id="launch-title" type="text" placeholder="New Nutrition Section Added" />
-          </div>
-          <div class="field">
-            <label for="launch-description">Description</label>
-            <textarea id="launch-description" placeholder="Explore evidence-inspired fueling guidance and open the dedicated hub at nutrition.trollrunner.net."></textarea>
-          </div>
-          <div class="field-grid">
-            <div class="field">
-              <label for="launch-link-label">Button label</label>
-              <input id="launch-link-label" type="text" placeholder="Open Nutrition Hub ->" />
-            </div>
-            <div class="field">
-              <label for="launch-link-url">Button URL</label>
-              <input id="launch-link-url" type="url" placeholder="https://nutrition.trollrunner.net" />
-            </div>
-          </div>
-          <label class="checkbox-row" for="launch-visible">
-            <input id="launch-visible" type="checkbox" />
-            <span>Show announcement bar</span>
-          </label>
-          <div class="button-row">
-            <button class="btn btn-primary" type="button" id="save-launch-btn">Save announcement</button>
-          </div>
-        </section>
-
-        <section class="admin-card">
-          <h3>Published posts</h3>
-          <div id="admin-post-list" class="admin-post-list"></div>
-        </section>
-      </div>
-    </section>
-
     <section class="archive-hero" aria-label="Blog archive introduction">
       <p class="archive-eyebrow">Troll Runner archive</p>
       <h2 class="archive-title">Stories, logs, and notes from the run.</h2>
@@ -1323,11 +1215,7 @@
 
   <footer class="shell footer">
     <div class="footer-row">
-      <div>Troll Runner Blog keeps the archive public while the editor stays behind a password.</div>
-      <div id="admin-access" class="hidden" aria-live="polite">
-        <span class="admin-status-pill">Admin unlocked</span>
-        <button id="admin-lock" type="button">Lock admin</button>
-      </div>
+      <div>Troll Runner Blog keeps the archive public and the editor on the admin page.</div>
     </div>
   </footer>
 
@@ -1656,7 +1544,6 @@
       renderHero(posts);
       renderFilters(posts);
       renderFeed(posts);
-      renderAdminList(posts);
       renderLaunchAnnouncement();
     }
 
@@ -1863,30 +1750,9 @@
       renderBlog();
     }
 
-    function initAdmin() {
+    function initBlogPage() {
       savePosts(getPosts());
       renderBlog();
-      syncAdminAccessVisibility();
-      if (isAdminUnlocked()) openAdminPanel();
-
-      const savedEditingId = localStorage.getItem(BLOG_CURRENT_EDIT_KEY);
-      const posts = getPosts();
-      const matching = posts.find(post => post.id === savedEditingId);
-      if (matching && isAdminUnlocked()) {
-        fillForm(matching);
-      } else {
-        resetForm();
-      }
-      fillLaunchForm();
-
-      document.getElementById('admin-lock').addEventListener('click', lockAdmin);
-      document.getElementById('new-post-btn').addEventListener('click', resetForm);
-      document.getElementById('close-admin-btn').addEventListener('click', closeAdminPanel);
-      document.getElementById('save-post-btn').addEventListener('click', savePostFromForm);
-      document.getElementById('reset-post-btn').addEventListener('click', resetForm);
-      document.getElementById('delete-post-btn').addEventListener('click', deleteCurrentPost);
-      document.getElementById('admin-post-list').addEventListener('click', handleAdminListClick);
-      document.getElementById('save-launch-btn').addEventListener('click', saveLaunchFromForm);
       document.getElementById('post-filters').addEventListener('click', handleFilterClick);
     }
 
@@ -1940,7 +1806,7 @@
     }
 
     initTrainingPlanMenus();
-    initAdmin();
+    initBlogPage();
   </script>
 </body>
 </html>
