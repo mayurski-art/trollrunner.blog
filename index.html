@@ -980,10 +980,10 @@
       align-items: center;
       gap: 0.45rem;
       padding: 0.4rem;
-      border: 1px solid rgba(33, 37, 31, 0.14);
-      border-radius: 999px;
-      background: rgba(33, 37, 31, 0.92);
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 14px;
+      background: rgba(18, 18, 20, 0.92);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.32);
       backdrop-filter: blur(10px);
     }
 
@@ -992,52 +992,43 @@
       cursor: var(--cursor-admin);
     }
 
-    .admin-status-pill {
-      color: rgba(255, 255, 255, 0.86);
-      font-size: 0.72rem;
+    .footer-admin-label {
+      color: rgba(255,255,255,0.72);
+      font-size: 0.78rem;
       font-weight: 800;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      padding: 0 0.2rem 0 0.35rem;
-      white-space: nowrap;
     }
 
-    #admin-go {
+    #admin-pass {
+      width: 180px;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+      font-size: 0.88rem;
+      padding: 0.7rem 0.85rem;
+    }
+
+    #admin-pass::placeholder {
+      color: rgba(255,255,255,0.52);
+    }
+
+    #admin-login-btn {
       border: 0;
-      border-radius: 999px;
+      border-radius: 10px;
       background: #11140f;
       color: #fff;
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      padding: 0.72rem 1rem;
+      font-size: 0.84rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      padding: 0.75rem 1rem;
       text-transform: uppercase;
     }
 
-    #admin-go:hover,
-    #admin-go:focus-visible {
+    #admin-login-btn:hover,
+    #admin-login-btn:focus-visible {
       background: #21291a;
-    }
-
-    #admin-lock {
-      border: 0;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.12);
-      color: #fff;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      padding: 0.64rem 0.9rem;
-      text-transform: uppercase;
-    }
-
-    #admin-lock:hover,
-    #admin-lock:focus-visible {
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    #admin-toggle {
-      cursor: pointer;
     }
 
     @media (max-width: 920px) {
@@ -1215,7 +1206,11 @@
 
   <footer class="shell footer">
     <div class="footer-row">
-      <div>Troll Runner Blog keeps the archive public and the editor on the admin page.</div>
+      <div class="footer-admin-label">Admin</div>
+      <div id="admin-access" aria-label="Blog admin login">
+        <input id="admin-pass" type="password" placeholder="Admin password" autocomplete="current-password" />
+        <button id="admin-login-btn" type="button">Login</button>
+      </div>
     </div>
   </footer>
 
@@ -1661,6 +1656,18 @@
       document.getElementById('blog-admin').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
+    function handleFooterAdminLogin() {
+      const input = document.getElementById('admin-pass');
+      const pass = input.value;
+      if (pass !== ADMIN_PASSWORD) {
+        alert(BLOG_PASSWORD_TROLL_MESSAGES[0]);
+        return;
+      }
+      localStorage.setItem(BLOG_ADMIN_AUTH_KEY, '1');
+      input.value = '';
+      window.location.href = 'admin.html';
+    }
+
     function readFormPost() {
       return normalizePost({
         id: currentEditingId || slugId(),
@@ -1754,6 +1761,10 @@
       savePosts(getPosts());
       renderBlog();
       document.getElementById('post-filters').addEventListener('click', handleFilterClick);
+      document.getElementById('admin-login-btn').addEventListener('click', handleFooterAdminLogin);
+      document.getElementById('admin-pass').addEventListener('keydown', event => {
+        if (event.key === 'Enter') handleFooterAdminLogin();
+      });
     }
 
     function initTrainingPlanMenus() {
