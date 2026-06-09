@@ -24,6 +24,10 @@
       --cursor-admin: url('https://www.rw-designer.com/cursor-extern.php?id=39757'), auto;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     * {
       box-sizing: border-box;
     }
@@ -263,7 +267,9 @@
 
     .hero-image {
       min-height: 280px;
-      background:
+      --hero-art: none;
+      background-image:
+        var(--hero-art),
         linear-gradient(140deg, rgba(79, 98, 71, 0.88), rgba(125, 146, 113, 0.4)),
         radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.16), transparent 26%),
         #8fa183;
@@ -644,6 +650,102 @@
       border: 1px solid var(--line);
     }
 
+    .story-archive {
+      margin-top: 2rem;
+      padding-top: 0.25rem;
+    }
+
+    .story-posts {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .story-post {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      min-height: 320px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: #fbf8ef;
+      scroll-margin-top: 110px;
+    }
+
+    .story-post-art {
+      position: relative;
+      min-height: 280px;
+      background: var(--story-art, linear-gradient(160deg, #1a1f2d 0%, #31445d 45%, #a1b3c2 100%));
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .story-post-art::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(10, 11, 10, 0.08) 0%, rgba(10, 11, 10, 0.34) 100%);
+    }
+
+    .story-post-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.35rem;
+    }
+
+    .story-post-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .story-post h3 {
+      margin: 0;
+      font-family: "Libre Baskerville", serif;
+      font-size: clamp(1.45rem, 2.2vw, 2.35rem);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+    }
+
+    .story-post p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .story-post .story-post-body {
+      max-width: 52ch;
+    }
+
+    .story-post-link {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.78rem 1rem;
+      border: 1px solid var(--text);
+      background: var(--text);
+      color: #f8f4df;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease;
+    }
+
+    .story-post-link:hover,
+    .story-post-link:focus-visible {
+      transform: translateY(-1px);
+      background: transparent;
+      color: var(--text);
+    }
+
     .activation-card {
       position: relative;
       min-height: 240px;
@@ -655,12 +757,15 @@
       background: var(--bg);
       overflow: hidden;
       transition: background 0.18s ease, color 0.18s ease;
+      --card-art: none;
+      --card-fallback: linear-gradient(160deg, #121622 0%, #1d2835 37%, #344a5a 64%, #9fb2bd 100%);
     }
 
     .activation-card::before {
       content: "";
       position: absolute;
       inset: 0;
+      background-image: var(--card-art), var(--card-fallback);
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -686,11 +791,9 @@
     }
 
     .activation-card.visual-1::before {
-      background-image:
-        radial-gradient(circle at 20% 18%, rgba(255, 237, 168, 0.95) 0 9%, transparent 9.5%),
-        radial-gradient(circle at 22% 74%, rgba(255, 199, 103, 0.34) 0 5%, transparent 5.5%),
-        linear-gradient(130deg, rgba(62, 35, 25, 0.2), rgba(15, 18, 17, 0.08)),
-        linear-gradient(150deg, #201612 0%, #5a3525 34%, #9c6340 62%, #f1cd90 100%);
+      --card-fallback:
+        linear-gradient(160deg, rgba(20, 16, 14, 0.2), rgba(11, 12, 12, 0.08)),
+        linear-gradient(150deg, #1f1813 0%, #503725 34%, #8f5d3b 62%, #edd2a0 100%);
     }
 
     .activation-card.visual-1::after {
@@ -700,25 +803,22 @@
     }
 
     .activation-card.visual-2::before {
-      background-image:
-        radial-gradient(circle at 22% 20%, rgba(241, 208, 154, 0.72) 0 7%, transparent 7.5%),
-        radial-gradient(circle at 28% 30%, rgba(255, 255, 255, 0.18) 0 9%, transparent 9.5%),
+      --card-fallback:
         linear-gradient(135deg, rgba(88, 63, 34, 0.18), rgba(20, 18, 18, 0.1)),
         linear-gradient(160deg, #231d18 0%, #5a4334 32%, #9a7556 64%, #efe2cc 100%);
     }
 
     .activation-card.visual-3::before {
-      background-image:
-        radial-gradient(circle at 22% 24%, rgba(177, 224, 255, 0.24) 0 10%, transparent 10.5%),
-        radial-gradient(circle at 78% 24%, rgba(255, 210, 159, 0.24) 0 10%, transparent 10.5%),
+      --card-fallback:
         linear-gradient(160deg, rgba(21, 26, 35, 0.24), rgba(10, 10, 14, 0.1)),
         linear-gradient(150deg, #10131b 0%, #284055 34%, #56788f 62%, #d8e0ea 100%);
     }
 
     .activation-card:hover,
     .activation-card:focus-visible {
-      background: #11140f;
+      transform: translateY(-2px);
       color: #f8f4df;
+      box-shadow: 0 16px 26px rgba(0, 0, 0, 0.18);
     }
 
     .activation-card:hover .activation-meta,
@@ -1118,6 +1218,14 @@
         min-height: 210px;
       }
 
+      .story-post {
+        grid-template-columns: 1fr;
+      }
+
+      .story-post-art {
+        min-height: 220px;
+      }
+
       .field-grid,
       .footer-row {
         grid-template-columns: 1fr;
@@ -1191,7 +1299,7 @@
     <section id="latest" class="activation-archive">
       <div class="section-head">
         <h2>Blog activations</h2>
-        <p>Filter by topic, then open a placeholder card. Real article links can drop into this same structure later.</p>
+        <p>Filter by topic, then open a tile to jump into its matching post below.</p>
       </div>
 
       <div id="post-filters" class="activation-filters" aria-label="Filter posts"></div>
@@ -1200,6 +1308,10 @@
         <strong>No posts yet.</strong>
         <p class="admin-help">Use the unlock button in the footer to publish your first entry.</p>
       </div>
+    </section>
+
+    <section id="posts" class="story-archive" aria-label="Individual blog posts">
+      <div id="story-posts" class="story-posts"></div>
     </section>
   </main>
 
@@ -1230,14 +1342,15 @@
     const DEFAULT_POSTS = [
       {
         id: 'post-1',
-        title: 'Troll Runner Stories',
+        title: 'Trail Runner Essentials',
         category: 'Stories',
         date: '2026-06-08',
         readTime: 'Placeholder',
-        excerpt: 'A place for longer-form stories, route snapshots, and the little moments that turn a run into a narrative.',
-        body: 'A place for longer-form stories, route snapshots, and the little moments that turn a run into a narrative.',
+        excerpt: 'Mountain trail notes, essential gear, and the kind of sunrise miles that define the run.',
+        body: 'Mountain trail notes, essential gear, and the kind of sunrise miles that define the run.',
         tags: ['intro', 'identity', 'running'],
         visual: 'visual-1',
+        art: 'assets/images/blog-activations/trail-runner-essentials.png',
         featured: true,
         createdAt: '2026-06-08T08:00:00.000Z'
       },
@@ -1247,23 +1360,25 @@
         category: 'Logs',
         date: '2026-06-08',
         readTime: 'Placeholder',
-        excerpt: 'A place for training breakdowns, mileage reflections, recovery notes, and what actually happened on the road.',
-        body: 'A place for training breakdowns, mileage reflections, recovery notes, and what actually happened on the road.',
+        excerpt: 'Running journal entries, mileage charts, route maps, and watch data from the training block.',
+        body: 'Running journal entries, mileage charts, route maps, and watch data from the training block.',
         tags: ['training', 'miles', 'recovery'],
         visual: 'visual-2',
+        art: 'assets/images/blog-activations/mile-log-training-notes.png',
         featured: false,
         createdAt: '2026-06-08T07:00:00.000Z'
       },
       {
         id: 'post-3',
-        title: 'Notes From The Run',
+        title: 'Fueling Experiments',
         category: 'Notes From The Run',
         date: '2026-06-08',
         readTime: 'Placeholder',
-        excerpt: 'A compact home for quick notes, route observations, and the kind of field details that can become a post later.',
-        body: 'A compact home for quick notes, route observations, and the kind of field details that can become a post later.',
-        tags: ['notes', 'map', 'field notes'],
+        excerpt: 'Energy gels, hydration bottles, electrolytes, and the sports-nutrition notes that keep the miles moving.',
+        body: 'Energy gels, hydration bottles, electrolytes, and the sports-nutrition notes that keep the miles moving.',
+        tags: ['nutrition', 'fueling', 'recovery'],
         visual: 'visual-3',
+        art: 'assets/images/blog-activations/fueling-experiments.png',
         featured: false,
         createdAt: '2026-06-08T06:00:00.000Z'
       },
@@ -1347,6 +1462,7 @@
       const body = String(post.body || '').trim();
       if (!title || !category || !date || !excerpt || !body) return null;
       const visual = ['visual-1', 'visual-2', 'visual-3'].includes(post.visual) ? post.visual : 'visual-1';
+      const art = String(post.art || '').trim();
       return {
         id: String(post.id || slugId()),
         title,
@@ -1357,6 +1473,7 @@
         body,
         tags: normalizeTags(post.tags),
         visual,
+        art,
         featured: Boolean(post.featured),
         createdAt: post.createdAt || new Date().toISOString()
       };
@@ -1371,12 +1488,6 @@
         if (!Array.isArray(items)) return fallbackPosts;
         const normalized = items.map(normalizePost).filter(Boolean);
         if (!normalized.length) return fallbackPosts;
-        const hasNutrition = normalized.some(item => item.category.toLowerCase().includes('nutrition'));
-        if (!hasNutrition) {
-          const nutritionSeed = fallbackPosts.find(item => item.id === 'post-2');
-          if (nutritionSeed) normalized.push({ ...nutritionSeed, id: slugId(), featured: false });
-          localStorage.setItem(BLOG_POSTS_KEY, JSON.stringify(ensureFeatured(normalized)));
-        }
         return normalized;
       } catch {
         return fallbackPosts;
@@ -1450,6 +1561,7 @@
       const heroImage = document.getElementById('hero-image');
       if (!heroImage) return;
       heroImage.className = `hero-image ${featured.visual}`;
+      heroImage.style.setProperty('--hero-art', featured.art ? `url('${featured.art}')` : 'none');
       document.getElementById('hero-category').textContent = featured.category;
       document.getElementById('hero-title').textContent = featured.title;
       document.getElementById('hero-date').textContent = formatDisplayDate(featured.date);
@@ -1495,7 +1607,7 @@
       }
       emptyState.classList.add('hidden');
       feed.innerHTML = sorted.map(post => `
-        <a class="activation-card ${escapeHtml(post.visual)}" href="#latest" aria-label="${escapeHtml(post.title)}">
+        <a class="activation-card ${escapeHtml(post.visual)}" href="#post-${escapeHtml(post.id)}" aria-label="${escapeHtml(post.title)}" style="${post.art ? `--card-art: url('${escapeHtml(post.art)}');` : ''}">
           <span class="activation-meta">
             <span>${escapeHtml(post.category)}</span>
             <span>${escapeHtml(formatDisplayDate(post.date))}</span>
@@ -1509,6 +1621,33 @@
             <span class="activation-arrow" aria-hidden="true">-></span>
           </span>
         </a>
+      `).join('');
+    }
+
+    function renderStoryPosts(posts) {
+      const wrap = document.getElementById('story-posts');
+      if (!wrap) return;
+      const sorted = sortPosts(posts).filter(post => activeArchiveFilter === 'All' || post.category === activeArchiveFilter);
+      if (!sorted.length) {
+        wrap.innerHTML = '';
+        return;
+      }
+      wrap.innerHTML = sorted.map(post => `
+        <article id="post-${escapeHtml(post.id)}" class="story-post">
+          <div class="story-post-art" style="${post.art ? `--story-art: url('${escapeHtml(post.art)}');` : ''}"></div>
+          <div class="story-post-content">
+            <div>
+              <div class="story-post-meta">
+                <span>${escapeHtml(post.category)}</span>
+                <span>${escapeHtml(formatDisplayDate(post.date))}</span>
+                <span>${escapeHtml(post.readTime)}</span>
+              </div>
+              <h3>${escapeHtml(post.title)}</h3>
+              <p class="story-post-body">${escapeHtml(post.body)}</p>
+            </div>
+            <a class="story-post-link" href="#latest">Back to tiles -></a>
+          </div>
+        </article>
       `).join('');
     }
 
@@ -1538,6 +1677,7 @@
       renderHero(posts);
       renderFilters(posts);
       renderFeed(posts);
+      renderStoryPosts(posts);
       renderLaunchAnnouncement();
     }
 
