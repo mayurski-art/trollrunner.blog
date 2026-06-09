@@ -571,6 +571,149 @@
       font-weight: 600;
     }
 
+    .archive-hero {
+      padding: 2.4rem 0 1.6rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .archive-eyebrow {
+      margin: 0 0 0.8rem;
+      color: var(--accent-deep);
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .archive-title {
+      max-width: 920px;
+      margin: 0;
+      font-family: "Libre Baskerville", serif;
+      font-size: clamp(2.4rem, 7vw, 6rem);
+      line-height: 0.96;
+      letter-spacing: -0.06em;
+    }
+
+    .archive-copy {
+      max-width: 680px;
+      margin: 1rem 0 0;
+      color: #465042;
+      font-size: clamp(1rem, 2vw, 1.18rem);
+    }
+
+    .activation-archive {
+      padding: 1.4rem 0 2.4rem;
+    }
+
+    .activation-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin: 0 0 1.2rem;
+    }
+
+    .activation-filter {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--text);
+      padding: 0.72rem 1rem;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+    }
+
+    .activation-filter:hover,
+    .activation-filter:focus-visible,
+    .activation-filter.is-active {
+      background: #11140f;
+      border-color: #11140f;
+      color: #f8f4df;
+      transform: translateY(-1px);
+    }
+
+    .activation-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1px;
+      padding-bottom: 2rem;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+
+    .activation-card {
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1.3rem;
+      padding: 1.25rem;
+      background: var(--bg);
+      transition: background 0.18s ease, color 0.18s ease;
+    }
+
+    .activation-card:hover,
+    .activation-card:focus-visible {
+      background: #11140f;
+      color: #f8f4df;
+    }
+
+    .activation-card:hover .activation-meta,
+    .activation-card:focus-visible .activation-meta,
+    .activation-card:hover .activation-excerpt,
+    .activation-card:focus-visible .activation-excerpt,
+    .activation-card:hover .activation-status,
+    .activation-card:focus-visible .activation-status {
+      color: rgba(248, 244, 223, 0.72);
+    }
+
+    .activation-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .activation-card h3 {
+      margin: 0;
+      font-family: "Libre Baskerville", serif;
+      font-size: clamp(1.45rem, 2.5vw, 2.2rem);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+    }
+
+    .activation-excerpt {
+      margin: 0;
+      color: #465042;
+      line-height: 1.55;
+    }
+
+    .activation-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .activation-status {
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .activation-arrow {
+      font-weight: 900;
+    }
+
     .empty-state {
       padding: 1.6rem;
     }
@@ -813,6 +956,10 @@
         min-height: 240px;
       }
 
+      .activation-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
       .dropdown-menu {
         position: fixed;
         left: 50%;
@@ -870,6 +1017,18 @@
       .section-head {
         align-items: start;
         flex-direction: column;
+      }
+
+      .archive-title {
+        font-size: clamp(2.5rem, 15vw, 4rem);
+      }
+
+      .activation-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .activation-card {
+        min-height: 210px;
       }
 
       .field-grid,
@@ -1044,80 +1203,23 @@
       </div>
     </section>
 
-    <section class="hero">
-      <article class="hero-card">
-        <div id="hero-image" class="hero-image">
-          <div class="hero-badge">Featured post</div>
-          <div class="hero-image-text">
-            <span id="hero-category">Marathon training</span>
-            <h2 id="hero-title">Building a plan that fits real life, not an ideal week that never happens.</h2>
-          </div>
-        </div>
-        <div class="hero-copy">
-          <div class="meta">
-            <span id="hero-date">April 29, 2026</span>
-            <span id="hero-category-meta">Training plans</span>
-            <span id="hero-read-time">6 min read</span>
-          </div>
-          <p id="hero-body">
-            This lead story area is modeled after the polished running-blog layout you liked:
-            one strong featured article up top, then a tidy stream of readable posts underneath.
-            The tone is calmer, cleaner, and more coach-like than the earlier troll-typography direction.
-          </p>
-          <a class="hero-link" href="#latest">Read the latest posts</a>
-        </div>
-      </article>
-
-      <aside class="sidebar-column">
-        <section class="sidebar-card" id="nutrition">
-          <div class="sidebar-label">Nutrition hub</div>
-          <h3>Fuel smarter, train stronger</h3>
-          <div class="nutrition-highlight">
-            <h4>New: Troll Runner Nutrition</h4>
-            <p>A dedicated destination for practical, research-inspired nutrition explainers, meal strategy breakdowns, and runner-friendly guidance.</p>
-            <a class="nutrition-link" href="https://nutrition.trollrunner.net" target="_blank" rel="noopener noreferrer">Visit nutrition.trollrunner.net -></a>
-          </div>
-          <ul class="topic-list">
-            <li><a href="#latest">Pre-run fueling timing</a></li>
-            <li><a href="#latest">Hydration & electrolyte basics</a></li>
-            <li><a href="#latest">Recovery plates and protein</a></li>
-          </ul>
-        </section>
-
-        <section class="sidebar-card" id="gardening">
-          <div class="sidebar-label">Gardening hub</div>
-          <h3>Grow something between runs</h3>
-          <div class="nutrition-highlight">
-            <h4>New: Troll Runner Gardening</h4>
-            <p>A dedicated destination for garden notes, planting updates, and the slower side of the Troll Runner universe.</p>
-            <a class="nutrition-link" href="https://gardening.trollrunner.net" target="_blank" rel="noopener noreferrer">Visit gardening.trollrunner.net -></a>
-          </div>
-          <ul class="topic-list">
-            <li><a href="#latest">Seasonal planting ideas</a></li>
-            <li><a href="#latest">Backyard progress logs</a></li>
-            <li><a href="#latest">Low-maintenance garden wins</a></li>
-          </ul>
-        </section>
-
-        <section class="sidebar-card" id="topics">
-          <div class="sidebar-label">Popular topics</div>
-          <h3>What this blog can grow into</h3>
-          <ul class="topic-list">
-            <li><a href="#">Race week diaries</a></li>
-            <li><a href="#">Recovery and injury prevention</a></li>
-            <li><a href="#">People and moments on route</a></li>
-          </ul>
-        </section>
-      </aside>
+    <section class="archive-hero" aria-label="Blog archive introduction">
+      <p class="archive-eyebrow">Troll Runner archive</p>
+      <h2 class="archive-title">Stories, logs, and notes from the run.</h2>
+      <p class="archive-copy">
+        A placeholder archive for future posts. Use the category buttons to shape the collection now,
+        then replace these entries with real articles later this week.
+      </p>
     </section>
 
-    <section id="latest">
+    <section id="latest" class="activation-archive">
       <div class="section-head">
-        <h2>Latest from the blog</h2>
-        <p>Sleek, readable, and now expanded for nutrition and performance content as you add real entries.</p>
+        <h2>Blog activations</h2>
+        <p>Filter by topic, then open a placeholder card. Real article links can drop into this same structure later.</p>
       </div>
 
-      <div id="post-feed" class="post-feed"></div>
+      <div id="post-filters" class="activation-filters" aria-label="Filter posts"></div>
+      <div id="post-feed" class="post-feed activation-grid"></div>
       <div id="empty-state" class="empty-state hidden">
         <strong>No posts yet.</strong>
         <p class="admin-help">Use the admin box in the footer to unlock the editor and publish your first entry.</p>
@@ -1137,7 +1239,7 @@
   <script>
     const ADMIN_PASSWORD = '#Mayur2626';
     const BLOG_ADMIN_AUTH_KEY = 'trollrunner_blog_admin_auth';
-    const BLOG_POSTS_KEY = 'trollrunner_blog_posts';
+    const BLOG_POSTS_KEY = 'trollrunner_blog_posts_v2';
     const BLOG_CURRENT_EDIT_KEY = 'trollrunner_blog_editing_id';
     const BLOG_LAUNCH_KEY = 'trollrunner_blog_launch_announcement';
 
@@ -1151,47 +1253,87 @@
     const DEFAULT_POSTS = [
       {
         id: 'post-1',
-        title: 'Why a paper training plan still works when your life feels chaotic.',
-        category: 'Training plans',
-        date: '2026-04-29',
-        readTime: '6 min read',
-        excerpt: 'Some plans fail because they are too advanced, but a lot of them fail because they do not leave room for work, fatigue, weather, appointments, or plain human messiness.',
-        body: 'Some plans fail because they are too advanced, but a lot of them fail because they do not leave room for work, fatigue, weather, appointments, or plain human messiness. A good plan should feel supportive instead of bossy, clear instead of punishing, and flexible enough to survive a real week.',
-        tags: ['planning', 'routine', 'consistency'],
+        title: 'Troll Runner Essentials',
+        category: 'Essentials',
+        date: '2026-06-08',
+        readTime: 'Placeholder',
+        excerpt: 'A future starting point for the core Troll Runner story, philosophy, routes, habits, and the reason this project keeps moving.',
+        body: 'A future starting point for the core Troll Runner story, philosophy, routes, habits, and the reason this project keeps moving.',
+        tags: ['intro', 'identity', 'running'],
         visual: 'visual-1',
         featured: true,
-        createdAt: '2026-04-29T08:00:00.000Z'
+        createdAt: '2026-06-08T08:00:00.000Z'
       },
       {
         id: 'post-2',
-        title: 'A simple runner nutrition plate for busy weekdays.',
-        category: 'Nutrition',
-        date: '2026-04-29',
-        readTime: '5 min read',
-        excerpt: 'Inspired by evidence-based nutrition explainers, this post template balances carbs, protein, colorful produce, and hydration into a practical meal framework.',
-        body: 'Inspired by evidence-based nutrition explainers, this post template balances carbs, protein, colorful produce, and hydration into a practical meal framework. It is not about perfection; it is about repeatable choices that support recovery and consistent training volume.',
-        tags: ['nutrition', 'fueling', 'recovery'],
+        title: 'Mile Log: Training Notes',
+        category: 'Training',
+        date: '2026-06-08',
+        readTime: 'Placeholder',
+        excerpt: 'A slot for training-plan breakdowns, mileage reflections, recovery lessons, and what actually happened on the road.',
+        body: 'A slot for training-plan breakdowns, mileage reflections, recovery lessons, and what actually happened on the road.',
+        tags: ['training', 'miles', 'recovery'],
         visual: 'visual-2',
         featured: false,
-        createdAt: '2026-04-29T07:00:00.000Z'
+        createdAt: '2026-06-08T07:00:00.000Z'
       },
       {
         id: 'post-3',
-        title: 'The people you meet during training end up shaping the race too.',
-        category: 'Marathon diary',
-        date: '2026-04-29',
-        readTime: '4 min read',
-        excerpt: 'This gives you room for the more personal side of the site: training partners, volunteers, strangers on the route, and the tiny interactions that break up heavy weeks.',
-        body: 'This gives you room for the more personal side of the site: training partners, volunteers, strangers on the route, and the tiny interactions that break up heavy weeks. Those small exchanges keep the training from becoming only a spreadsheet with sore legs attached to it.',
-        tags: ['community', 'marathon', 'journal'],
+        title: 'Sticker Field Notes',
+        category: 'Stickers',
+        date: '2026-06-08',
+        readTime: 'Placeholder',
+        excerpt: 'A future article lane for sticker drops, map updates, city notes, and the stories behind where the stickers land.',
+        body: 'A future article lane for sticker drops, map updates, city notes, and the stories behind where the stickers land.',
+        tags: ['stickers', 'map', 'field notes'],
         visual: 'visual-3',
         featured: false,
-        createdAt: '2026-04-29T06:00:00.000Z'
+        createdAt: '2026-06-08T06:00:00.000Z'
+      },
+      {
+        id: 'post-4',
+        title: 'Fueling Experiments',
+        category: 'Nutrition',
+        date: '2026-06-08',
+        readTime: 'Placeholder',
+        excerpt: 'A placeholder for practical fueling notes, pre-run timing, recovery plates, hydration, and honest trial-and-error.',
+        body: 'A placeholder for practical fueling notes, pre-run timing, recovery plates, hydration, and honest trial-and-error.',
+        tags: ['nutrition', 'fueling', 'recovery'],
+        visual: 'visual-1',
+        featured: false,
+        createdAt: '2026-06-08T05:00:00.000Z'
+      },
+      {
+        id: 'post-5',
+        title: 'Video Drops and Edits',
+        category: 'Videos',
+        date: '2026-06-08',
+        readTime: 'Placeholder',
+        excerpt: 'A future home for edited clips, behind-the-scenes notes, route footage, and links into the videos site.',
+        body: 'A future home for edited clips, behind-the-scenes notes, route footage, and links into the videos site.',
+        tags: ['video', 'edits', 'routes'],
+        visual: 'visual-2',
+        featured: false,
+        createdAt: '2026-06-08T04:00:00.000Z'
+      },
+      {
+        id: 'post-6',
+        title: 'Community and Route Moments',
+        category: 'Community',
+        date: '2026-06-08',
+        readTime: 'Placeholder',
+        excerpt: 'A slot for people, places, small interactions, volunteer moments, and the stories that make the run feel bigger.',
+        body: 'A slot for people, places, small interactions, volunteer moments, and the stories that make the run feel bigger.',
+        tags: ['community', 'routes', 'journal'],
+        visual: 'visual-3',
+        featured: false,
+        createdAt: '2026-06-08T03:00:00.000Z'
       }
     ];
 
     let adminFailedAttempts = 0;
     let currentEditingId = null;
+    let activeArchiveFilter = 'All';
     const DEFAULT_LAUNCH = {
       visible: false,
       title: 'New Nutrition Section Added',
@@ -1329,6 +1471,7 @@
       const featured = getFeaturedPost(posts);
       if (!featured) return;
       const heroImage = document.getElementById('hero-image');
+      if (!heroImage) return;
       heroImage.className = `hero-image ${featured.visual}`;
       document.getElementById('hero-category').textContent = featured.category;
       document.getElementById('hero-title').textContent = featured.title;
@@ -1338,10 +1481,30 @@
       document.getElementById('hero-body').textContent = featured.body;
     }
 
+    function getArchiveCategories(posts) {
+      const categories = posts.map(post => post.category).filter(Boolean);
+      return ['All', ...new Set(categories)];
+    }
+
+    function renderFilters(posts) {
+      const wrap = document.getElementById('post-filters');
+      if (!wrap) return;
+      const categories = getArchiveCategories(posts);
+      if (!categories.includes(activeArchiveFilter)) activeArchiveFilter = 'All';
+      wrap.innerHTML = categories.map(category => `
+        <button
+          class="activation-filter${category === activeArchiveFilter ? ' is-active' : ''}"
+          type="button"
+          data-filter="${escapeHtml(category)}"
+          aria-pressed="${category === activeArchiveFilter ? 'true' : 'false'}"
+        >${escapeHtml(category)}</button>
+      `).join('');
+    }
+
     function renderFeed(posts) {
       const feed = document.getElementById('post-feed');
       const emptyState = document.getElementById('empty-state');
-      const sorted = sortPosts(posts);
+      const sorted = sortPosts(posts).filter(post => activeArchiveFilter === 'All' || post.category === activeArchiveFilter);
       if (!sorted.length) {
         feed.innerHTML = '';
         emptyState.classList.remove('hidden');
@@ -1349,22 +1512,20 @@
       }
       emptyState.classList.add('hidden');
       feed.innerHTML = sorted.map(post => `
-        <article class="post-card">
-          <div class="post-visual ${escapeHtml(post.visual)}" aria-hidden="true"></div>
-          <div class="post-copy">
-            <div class="meta">
-              <span>${escapeHtml(post.category)}</span>
-              <span>${escapeHtml(formatDisplayDate(post.date))}</span>
-              <span>${escapeHtml(post.readTime)}</span>
-            </div>
+        <a class="activation-card" href="#blog-admin" aria-label="${escapeHtml(post.title)}">
+          <span class="activation-meta">
+            <span>${escapeHtml(post.category)}</span>
+            <span>${escapeHtml(formatDisplayDate(post.date))}</span>
+          </span>
+          <span>
             <h3>${escapeHtml(post.title)}</h3>
-            <p>${escapeHtml(post.excerpt)}</p>
-            <div class="post-tags">
-              ${post.tags.map(tag => `<span>${escapeHtml(tag)}</span>`).join('')}
-            </div>
-            <a class="read-more" href="#blog-admin">Read more</a>
-          </div>
-        </article>
+            <p class="activation-excerpt">${escapeHtml(post.excerpt)}</p>
+          </span>
+          <span class="activation-footer">
+            <span class="activation-status">${escapeHtml(post.readTime)}</span>
+            <span class="activation-arrow" aria-hidden="true">-></span>
+          </span>
+        </a>
       `).join('');
     }
 
@@ -1392,6 +1553,7 @@
     function renderBlog() {
       const posts = getPosts();
       renderHero(posts);
+      renderFilters(posts);
       renderFeed(posts);
       renderAdminList(posts);
       renderLaunchAnnouncement();
@@ -1573,6 +1735,13 @@
       }
     }
 
+    function handleFilterClick(event) {
+      const button = event.target.closest('.activation-filter');
+      if (!button) return;
+      activeArchiveFilter = button.dataset.filter || 'All';
+      renderBlog();
+    }
+
     function initAdmin() {
       savePosts(getPosts());
       renderBlog();
@@ -1598,6 +1767,7 @@
       document.getElementById('delete-post-btn').addEventListener('click', deleteCurrentPost);
       document.getElementById('admin-post-list').addEventListener('click', handleAdminListClick);
       document.getElementById('save-launch-btn').addEventListener('click', saveLaunchFromForm);
+      document.getElementById('post-filters').addEventListener('click', handleFilterClick);
     }
 
     function initTrainingPlanMenus() {
