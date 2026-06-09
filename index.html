@@ -687,32 +687,32 @@
 
     .activation-card.visual-1::before {
       background-image:
-        radial-gradient(circle at 18% 22%, rgba(255, 212, 122, 0.98) 0 12%, rgba(255, 212, 122, 0.12) 12.5%, transparent 13%),
-        radial-gradient(circle at 23% 72%, rgba(254, 210, 115, 0.38) 0 4%, transparent 5%),
-        linear-gradient(180deg, rgba(255, 190, 92, 0.18), rgba(255, 120, 68, 0.08)),
-        linear-gradient(150deg, #2d1f18 0%, #5a3821 38%, #d99d5d 69%, #f8dca7 100%);
+        radial-gradient(circle at 20% 18%, rgba(255, 237, 168, 0.95) 0 9%, transparent 9.5%),
+        radial-gradient(circle at 22% 74%, rgba(255, 199, 103, 0.34) 0 5%, transparent 5.5%),
+        linear-gradient(130deg, rgba(62, 35, 25, 0.2), rgba(15, 18, 17, 0.08)),
+        linear-gradient(150deg, #201612 0%, #5a3525 34%, #9c6340 62%, #f1cd90 100%);
     }
 
     .activation-card.visual-1::after {
       background:
-        linear-gradient(180deg, rgba(7, 9, 10, 0.05) 0%, rgba(7, 9, 10, 0.48) 100%),
-        linear-gradient(90deg, rgba(7, 9, 10, 0.68) 0%, rgba(7, 9, 10, 0.18) 54%, rgba(7, 9, 10, 0.38) 100%);
+        linear-gradient(180deg, rgba(7, 9, 10, 0.02) 0%, rgba(7, 9, 10, 0.52) 100%),
+        linear-gradient(90deg, rgba(7, 9, 10, 0.7) 0%, rgba(7, 9, 10, 0.12) 56%, rgba(7, 9, 10, 0.42) 100%);
     }
 
     .activation-card.visual-2::before {
       background-image:
-        radial-gradient(circle at 20% 18%, rgba(211, 160, 102, 0.86) 0 8%, transparent 8.5%),
-        radial-gradient(circle at 28% 28%, rgba(237, 225, 201, 0.28) 0 10%, transparent 10.5%),
-        linear-gradient(135deg, rgba(90, 63, 39, 0.18), rgba(40, 29, 21, 0.06)),
-        linear-gradient(160deg, #36251c 0%, #6d4f3b 30%, #b58a64 59%, #f2dfbf 100%);
+        radial-gradient(circle at 22% 20%, rgba(241, 208, 154, 0.72) 0 7%, transparent 7.5%),
+        radial-gradient(circle at 28% 30%, rgba(255, 255, 255, 0.18) 0 9%, transparent 9.5%),
+        linear-gradient(135deg, rgba(88, 63, 34, 0.18), rgba(20, 18, 18, 0.1)),
+        linear-gradient(160deg, #231d18 0%, #5a4334 32%, #9a7556 64%, #efe2cc 100%);
     }
 
     .activation-card.visual-3::before {
       background-image:
-        radial-gradient(circle at 76% 22%, rgba(255, 163, 76, 0.88) 0 8%, transparent 8.5%),
-        radial-gradient(circle at 46% 56%, rgba(79, 138, 255, 0.44) 0 2.5%, transparent 3%),
-        radial-gradient(circle at 52% 57%, rgba(79, 138, 255, 0.18) 0 18%, transparent 18.5%),
-        linear-gradient(160deg, #121622 0%, #1d2835 37%, #344a5a 64%, #9fb2bd 100%);
+        radial-gradient(circle at 22% 24%, rgba(177, 224, 255, 0.24) 0 10%, transparent 10.5%),
+        radial-gradient(circle at 78% 24%, rgba(255, 210, 159, 0.24) 0 10%, transparent 10.5%),
+        linear-gradient(160deg, rgba(21, 26, 35, 0.24), rgba(10, 10, 14, 0.1)),
+        linear-gradient(150deg, #10131b 0%, #284055 34%, #56788f 62%, #d8e0ea 100%);
     }
 
     .activation-card:hover,
@@ -734,7 +734,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 0.65rem;
-      color: var(--muted);
+      color: rgba(255, 255, 255, 0.88);
       font-size: 0.72rem;
       font-weight: 800;
       letter-spacing: 0.12em;
@@ -751,8 +751,9 @@
 
     .activation-excerpt {
       margin: 0;
-      color: #465042;
+      color: rgba(255, 255, 255, 0.82);
       line-height: 1.55;
+      max-width: 32ch;
     }
 
     .activation-footer {
@@ -763,7 +764,7 @@
     }
 
     .activation-status {
-      color: var(--muted);
+      color: rgba(255, 255, 255, 0.78);
       font-size: 0.78rem;
       font-weight: 800;
       letter-spacing: 0.1em;
@@ -772,6 +773,7 @@
 
     .activation-arrow {
       font-weight: 900;
+      color: rgba(255, 255, 255, 0.88);
     }
 
     .empty-state {
@@ -969,13 +971,17 @@
       flex-wrap: wrap;
     }
 
+    .hidden {
+      display: none !important;
+    }
+
     #admin-access {
       display: inline-flex;
       align-items: center;
       gap: 0.45rem;
       padding: 0.4rem;
       border: 1px solid rgba(33, 37, 31, 0.14);
-      border-radius: 14px;
+      border-radius: 999px;
       background: rgba(33, 37, 31, 0.92);
       box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
       backdrop-filter: blur(10px);
@@ -986,22 +992,21 @@
       cursor: var(--cursor-admin);
     }
 
-    #admin-pass {
-      width: 160px;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.08);
+    #admin-go {
+      border: 0;
+      border-radius: 999px;
+      background: #11140f;
       color: #fff;
-      padding: 0.7rem 0.8rem;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 0.72rem 1rem;
+      text-transform: uppercase;
     }
 
-    #admin-pass::placeholder {
-      color: rgba(255, 255, 255, 0.55);
-    }
-
-    .hidden {
-      display: none !important;
+    #admin-go:hover,
+    #admin-go:focus-visible {
+      background: #21291a;
     }
 
     @media (max-width: 920px) {
@@ -1096,9 +1101,6 @@
         grid-template-columns: 1fr;
       }
 
-      #admin-pass {
-        width: 126px;
-      }
     }
   </style>
 </head>
@@ -1282,16 +1284,16 @@
       <div id="post-feed" class="post-feed activation-grid"></div>
       <div id="empty-state" class="empty-state hidden">
         <strong>No posts yet.</strong>
-        <p class="admin-help">Use the admin box in the footer to unlock the editor and publish your first entry.</p>
+        <p class="admin-help">Use the unlock button in the footer to publish your first entry.</p>
       </div>
     </section>
   </main>
 
   <footer class="shell footer">
     <div class="footer-row">
-      <div>Troll Runner Blog now has in-page admin access for writing and publishing posts.</div>
+      <div>Troll Runner Blog keeps the archive public while the editor stays behind a password.</div>
       <div id="admin-access">
-        <input id="admin-pass" type="password" placeholder="Admin password" />
+        <button id="admin-go" type="button">Unlock admin</button>
       </div>
     </div>
   </footer>
@@ -1313,12 +1315,12 @@
     const DEFAULT_POSTS = [
       {
         id: 'post-1',
-        title: 'Troll Runner Essentials',
-        category: 'Essentials',
+        title: 'Troll Runner Stories',
+        category: 'Stories',
         date: '2026-06-08',
         readTime: 'Placeholder',
-        excerpt: 'A future starting point for the core Troll Runner story, philosophy, routes, habits, and the reason this project keeps moving.',
-        body: 'A future starting point for the core Troll Runner story, philosophy, routes, habits, and the reason this project keeps moving.',
+        excerpt: 'A place for longer-form stories, route snapshots, and the little moments that turn a run into a narrative.',
+        body: 'A place for longer-form stories, route snapshots, and the little moments that turn a run into a narrative.',
         tags: ['intro', 'identity', 'running'],
         visual: 'visual-1',
         featured: true,
@@ -1327,11 +1329,11 @@
       {
         id: 'post-2',
         title: 'Mile Log: Training Notes',
-        category: 'Training',
+        category: 'Logs',
         date: '2026-06-08',
         readTime: 'Placeholder',
-        excerpt: 'A slot for training-plan breakdowns, mileage reflections, recovery lessons, and what actually happened on the road.',
-        body: 'A slot for training-plan breakdowns, mileage reflections, recovery lessons, and what actually happened on the road.',
+        excerpt: 'A place for training breakdowns, mileage reflections, recovery notes, and what actually happened on the road.',
+        body: 'A place for training breakdowns, mileage reflections, recovery notes, and what actually happened on the road.',
         tags: ['training', 'miles', 'recovery'],
         visual: 'visual-2',
         featured: false,
@@ -1339,26 +1341,26 @@
       },
       {
         id: 'post-3',
-        title: 'Sticker Field Notes',
-        category: 'Stickers',
+        title: 'Notes From The Run',
+        category: 'Notes From The Run',
         date: '2026-06-08',
         readTime: 'Placeholder',
-        excerpt: 'A future article lane for sticker drops, map updates, city notes, and the stories behind where the stickers land.',
-        body: 'A future article lane for sticker drops, map updates, city notes, and the stories behind where the stickers land.',
-        tags: ['stickers', 'map', 'field notes'],
+        excerpt: 'A compact home for quick notes, route observations, and the kind of field details that can become a post later.',
+        body: 'A compact home for quick notes, route observations, and the kind of field details that can become a post later.',
+        tags: ['notes', 'map', 'field notes'],
         visual: 'visual-3',
         featured: false,
         createdAt: '2026-06-08T06:00:00.000Z'
       },
       {
         id: 'post-4',
-        title: 'Fueling Experiments',
-        category: 'Nutrition',
+        title: 'Troll Runner Essentials',
+        category: 'Essentials',
         date: '2026-06-08',
         readTime: 'Placeholder',
-        excerpt: 'A placeholder for practical fueling notes, pre-run timing, recovery plates, hydration, and honest trial-and-error.',
-        body: 'A placeholder for practical fueling notes, pre-run timing, recovery plates, hydration, and honest trial-and-error.',
-        tags: ['nutrition', 'fueling', 'recovery'],
+        excerpt: 'The core home for gear notes, route habits, and the practical pieces that keep the miles moving.',
+        body: 'The core home for gear notes, route habits, and the practical pieces that keep the miles moving.',
+        tags: ['essentials', 'gear', 'running'],
         visual: 'visual-1',
         featured: false,
         createdAt: '2026-06-08T05:00:00.000Z'
@@ -1543,7 +1545,13 @@
 
     function getArchiveCategories(posts) {
       const categories = posts.map(post => post.category).filter(Boolean);
-      return ['All', ...new Set(categories)];
+      const uniqueCategories = [...new Set(categories)];
+      const preferredOrder = ['Stories', 'Logs', 'Notes From The Run'];
+      return [
+        'All',
+        ...preferredOrder.filter(category => uniqueCategories.includes(category)),
+        ...uniqueCategories.filter(category => !preferredOrder.includes(category))
+      ];
     }
 
     function renderFilters(posts) {
@@ -1572,7 +1580,7 @@
       }
       emptyState.classList.add('hidden');
       feed.innerHTML = sorted.map(post => `
-        <a class="activation-card ${escapeHtml(post.visual)}" href="#blog-admin" aria-label="${escapeHtml(post.title)}">
+        <a class="activation-card ${escapeHtml(post.visual)}" href="#latest" aria-label="${escapeHtml(post.title)}">
           <span class="activation-meta">
             <span>${escapeHtml(post.category)}</span>
             <span>${escapeHtml(formatDisplayDate(post.date))}</span>
@@ -1701,7 +1709,8 @@
     }
 
     function goToAdmin() {
-      const pass = document.getElementById('admin-pass').value;
+      const pass = prompt('Enter the blog admin password');
+      if (pass === null) return;
       if (pass !== ADMIN_PASSWORD) {
         adminFailedAttempts += 1;
         const index = Math.min(adminFailedAttempts - 1, BLOG_PASSWORD_TROLL_MESSAGES.length - 1);
@@ -1709,7 +1718,6 @@
         return;
       }
       unlockAdmin();
-      document.getElementById('admin-pass').value = '';
       document.getElementById('blog-admin').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
@@ -1817,9 +1825,7 @@
       }
       fillLaunchForm();
 
-      document.getElementById('admin-pass').addEventListener('keydown', event => {
-        if (event.key === 'Enter') goToAdmin();
-      });
+      document.getElementById('admin-go').addEventListener('click', goToAdmin);
       document.getElementById('new-post-btn').addEventListener('click', resetForm);
       document.getElementById('close-admin-btn').addEventListener('click', closeAdminPanel);
       document.getElementById('save-post-btn').addEventListener('click', savePostFromForm);
