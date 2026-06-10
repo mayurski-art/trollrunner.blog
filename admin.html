@@ -370,11 +370,22 @@
   </div>
 
   <script>
-    const ADMIN_PASSWORD = '#Mayur2626';
+    const ADMIN_PASSWORD_SALT = 'trollrunner-public-lock-v2';
+    const ADMIN_PASSWORD_HASH = 'f7bd3dc03b760781a16bcafb96650c619632b1610903352272804046815b6f8d';
     const BLOG_ADMIN_AUTH_KEY = 'trollrunner_blog_admin_auth';
     const BLOG_POSTS_KEY = 'trollrunner_blog_posts_v2';
     const BLOG_CURRENT_EDIT_KEY = 'trollrunner_blog_editing_id';
     const BLOG_LAUNCH_KEY = 'trollrunner_blog_launch_announcement';
+
+    async function hashAdminText(value) {
+      const bytes = new TextEncoder().encode(String(value || ''));
+      const hashBuffer = await window.crypto.subtle.digest('SHA-256', bytes);
+      return Array.from(new Uint8Array(hashBuffer)).map(byte => byte.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function verifyAdminPassword(password) {
+      return await hashAdminText(ADMIN_PASSWORD_SALT + ':' + password) === ADMIN_PASSWORD_HASH;
+    }
 
     const DEFAULT_LAUNCH = {
       visible: false,
@@ -805,9 +816,9 @@
         fillLaunchForm();
       }
 
-      document.getElementById('unlock-btn').addEventListener('click', () => {
+      document.getElementById('unlock-btn').addEventListener('click', async () => {
         const pass = document.getElementById('admin-pass').value;
-        if (pass !== ADMIN_PASSWORD) {
+        if (!(await verifyAdminPassword(pass))) {
           alert('Wrong password. Try again.');
           return;
         }
@@ -827,5 +838,8 @@
 
     init();
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/site-lock.js"></script>
+  <script src="assets/js/admin-auth.js"></script>
 </body>
 </html>

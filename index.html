@@ -1224,11 +1224,22 @@
   </footer>
 
   <script>
-    const ADMIN_PASSWORD = '#Mayur2626';
+    const ADMIN_PASSWORD_SALT = 'trollrunner-public-lock-v2';
+    const ADMIN_PASSWORD_HASH = 'f7bd3dc03b760781a16bcafb96650c619632b1610903352272804046815b6f8d';
     const BLOG_ADMIN_AUTH_KEY = 'trollrunner_blog_admin_auth';
     const BLOG_POSTS_KEY = 'trollrunner_blog_posts_v2';
     const BLOG_CURRENT_EDIT_KEY = 'trollrunner_blog_editing_id';
     const BLOG_LAUNCH_KEY = 'trollrunner_blog_launch_announcement';
+
+    async function hashAdminText(value) {
+      const bytes = new TextEncoder().encode(String(value || ''));
+      const hashBuffer = await window.crypto.subtle.digest('SHA-256', bytes);
+      return Array.from(new Uint8Array(hashBuffer)).map(byte => byte.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function verifyAdminPassword(password) {
+      return await hashAdminText(ADMIN_PASSWORD_SALT + ':' + password) === ADMIN_PASSWORD_HASH;
+    }
 
     const BLOG_PASSWORD_TROLL_MESSAGES = [
       'Wrong password. Back to the warm-up lap.',
@@ -1667,7 +1678,7 @@
       setAdminStatus('Admin locked.');
     }
 
-    function goToAdmin(event) {
+    async function goToAdmin(event) {
       if (event?.preventDefault) event.preventDefault();
       if (isAdminUnlocked()) {
         openAdminPanel();
@@ -1676,7 +1687,7 @@
       }
       const pass = prompt('Enter the blog admin password');
       if (pass === null) return;
-      if (pass !== ADMIN_PASSWORD) {
+      if (!(await verifyAdminPassword(pass))) {
         adminFailedAttempts += 1;
         const index = Math.min(adminFailedAttempts - 1, BLOG_PASSWORD_TROLL_MESSAGES.length - 1);
         alert(BLOG_PASSWORD_TROLL_MESSAGES[index]);
@@ -1686,10 +1697,10 @@
       document.getElementById('blog-admin').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    function handleFooterAdminLogin() {
+    async function handleFooterAdminLogin() {
       const input = document.getElementById('admin-pass');
       const pass = input.value;
-      if (pass !== ADMIN_PASSWORD) {
+      if (!(await verifyAdminPassword(pass))) {
         alert(BLOG_PASSWORD_TROLL_MESSAGES[0]);
         return;
       }
@@ -1849,5 +1860,8 @@
     initTrainingPlanMenus();
     initBlogPage();
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/site-lock.js"></script>
+  <script src="assets/js/admin-auth.js"></script>
 </body>
 </html>
