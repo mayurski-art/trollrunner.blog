@@ -1239,8 +1239,8 @@
   <header class="shell brand-wrap">
     <h1 class="site-title">Troll Runner Blog</h1>
     <p class="site-tagline">
-      A cleaner home for training plans, marathon notes, recovery lessons, and the stories that happen
-      around the run instead of after it. Now with a nutrition-focused section inspired by evidence-first guides.
+      A cleaner home for training plans, marathon notes, healthy aging lessons, and the stories that happen
+      around the run instead of after it. Nutrition lives in its own kitchen at nutrition.trollrunner.net.
     </p>
     <p class="text-view-note">Recommended text view be 50% for mobile and 100% tablet devices</p>
   </header>
@@ -1266,6 +1266,7 @@
             </div>
           </div>
         </div>
+        <a class="nav-item" href="#latest">Healthy Aging</a>
         <a class="nav-item" href="https://nutrition.trollrunner.net" target="_blank" rel="noopener noreferrer">Nutrition</a>
         <a class="nav-item" href="https://gardening.trollrunner.net" target="_blank" rel="noopener noreferrer">Gardening</a>
       </div>
@@ -1290,15 +1291,15 @@
       <p class="archive-eyebrow">Troll Runner archive</p>
       <h2 class="archive-title">Stories, logs, and notes from the run.</h2>
       <p class="archive-copy">
-        A placeholder archive for future posts. Use the category buttons to shape the collection now,
-        then replace these entries with real articles later this week.
+        Training notes, race prep, healthy aging, home fitness tools, and real conversations turned into practical articles.
+        Use the category buttons to shape the collection.
       </p>
     </section>
 
     <section id="latest" class="activation-archive">
       <div class="section-head">
         <h2>Blog activations</h2>
-        <p>Filter by topic, then open one of the six image-led cards below.</p>
+        <p>Filter by topic, then open an article roadmap card.</p>
       </div>
 
       <div id="post-filters" class="activation-filters" aria-label="Filter posts"></div>
@@ -1338,7 +1339,7 @@
     const ADMIN_PASSWORD_SALT = 'trollrunner-public-lock-v2';
     const ADMIN_PASSWORD_HASH = 'f7bd3dc03b760781a16bcafb96650c619632b1610903352272804046815b6f8d';
     const BLOG_ADMIN_AUTH_KEY = 'trollrunner_blog_admin_auth';
-    const BLOG_POSTS_KEY = 'trollrunner_blog_posts_v4';
+    const BLOG_POSTS_KEY = 'trollrunner_blog_posts_v5';
     const BLOG_CURRENT_EDIT_KEY = 'trollrunner_blog_editing_id';
     const BLOG_LAUNCH_KEY = 'trollrunner_blog_launch_announcement';
 
@@ -1443,6 +1444,118 @@
         art: 'assets/images/blog-activations/community-and-route-moments.png',
         featured: false,
         createdAt: '2026-06-08T03:00:00.000Z'
+      },
+      {
+        id: 'post-7',
+        title: "You're Not Too Old to Start Strength Training",
+        category: 'Healthy Aging',
+        date: '2026-06-11',
+        readTime: '5 min read',
+        excerpt: 'Strength training after 50 or 60 does not need a gym, heavy weights, or one-hour workouts.',
+        body: 'The goal is not to become an elite athlete. The goal is to keep enough strength, mobility, balance, and confidence to do normal life with less friction.\n\nYou do not need:\n- A gym membership.\n- Heavy weights.\n- One-hour workouts.\n\nYou do need a repeatable starting point. Sit-to-stands, wall pushups, step-ups, carries, and short walks can become a real training plan when they are practiced consistently.\n\nKey message:\nThe body adapts to what it repeatedly does. If we move more, we become better at moving. If we move less, strength, balance, and mobility usually drift downward over time.\n\nTroll Runner note:\nStart smaller than your ego wants. Repeat it until your body starts believing you.',
+        tags: ['healthy aging', 'strength', 'beginner fitness'],
+        visual: 'visual-1',
+        art: 'assets/images/blog-activations/troll-runner-essentials.png',
+        featured: false,
+        createdAt: '2026-06-11T11:00:00.000Z'
+      },
+      {
+        id: 'post-8',
+        title: 'The 15-Minute Home Workout for Beginners Over 60',
+        category: 'Healthy Aging',
+        date: '2026-06-11',
+        readTime: '4 min read',
+        excerpt: 'A simple home routine for beginners who want strength, balance, and mobility without gym pressure.',
+        body: 'A useful workout does not have to be long. For beginners over 60, the first win is showing the body a pattern it can repeat.\n\nThe 15-minute structure:\n- 3 minutes easy walking or marching in place.\n- 3 rounds of sit-to-stands, wall pushups, heel raises, and supported balance holds.\n- 2 minutes of gentle mobility for ankles, hips, shoulders, and spine.\n\nMake it easier:\nUse a chair, wall, countertop, or railing. Stop before form falls apart.\n\nMake it harder:\nAdd one round, slow down the lowering phase, or carry light household items.\n\nTroll Runner note:\nThe workout is allowed to be boring. Boring is often where the progress hides.',
+        tags: ['healthy aging', 'home workout', '60 plus'],
+        visual: 'visual-2',
+        art: 'assets/images/blog-activations/mile-log-training-notes.png',
+        featured: false,
+        createdAt: '2026-06-11T10:00:00.000Z'
+      },
+      {
+        id: 'post-9',
+        title: 'The Beginner Guide to Protein After 60',
+        category: 'Healthy Aging',
+        date: '2026-06-11',
+        readTime: '4 min read',
+        excerpt: 'Protein is not just bodybuilding talk. It supports muscle maintenance, recovery, and independence.',
+        body: 'After 60, protein becomes a practical independence topic. It helps support muscle repair, training recovery, and the daily strength needed for stairs, groceries, yard work, and getting up from chairs.\n\nBeginner approach:\n- Include a protein source at breakfast, lunch, and dinner.\n- Pair protein with strength training for a stronger signal.\n- Keep meals simple enough to repeat.\n\nExamples:\nGreek yogurt, eggs, chicken, fish, beans, tofu, lentils, cottage cheese, milk, soy milk, and protein shakes can all fit depending on preferences and medical needs.\n\nImportant note:\nPeople with kidney disease or medical nutrition restrictions should ask a qualified clinician before changing protein intake.\n\nTroll Runner note:\nProtein is not magic. It is building material. The body still needs you to pick up the hammer.',
+        tags: ['healthy aging', 'protein', 'nutrition'],
+        visual: 'visual-3',
+        art: 'assets/images/blog-activations/fueling-experiments.png',
+        featured: false,
+        createdAt: '2026-06-11T09:00:00.000Z'
+      },
+      {
+        id: 'post-10',
+        title: 'Balance Training: The Fitness Skill Nobody Talks About',
+        category: 'Healthy Aging',
+        date: '2026-06-11',
+        readTime: '4 min read',
+        excerpt: 'Balance is trainable, practical, and worth practicing before it becomes a problem.',
+        body: 'Balance is easy to ignore until it starts changing daily choices. The good news is that balance is a skill, and skills improve with practice.\n\nStart safely:\n- Stand near a counter or wall.\n- Practice feet-together holds.\n- Try heel-to-toe stance.\n- Add slow weight shifts.\n- Progress only when the current version feels controlled.\n\nWhy it matters:\nBalance training supports confidence, walking, stairs, uneven surfaces, and the ability to recover from small slips or stumbles.\n\nTroll Runner note:\nBalance work is quiet training. It rarely looks dramatic, which is part of why people skip it.',
+        tags: ['healthy aging', 'balance', 'mobility'],
+        visual: 'visual-1',
+        art: 'assets/images/blog-activations/community-and-route-moments.png',
+        featured: false,
+        createdAt: '2026-06-11T08:00:00.000Z'
+      },
+      {
+        id: 'post-11',
+        title: 'The $30 Piece of Wood That Makes Squats Easier After 60',
+        category: 'Home Fitness',
+        date: '2026-06-11',
+        readTime: '5 min read',
+        excerpt: 'A slant board can make heel-elevated squats more approachable while you work on ankle mobility and balance.',
+        body: 'A slant board is simple: a wedge that elevates the heels. For some beginners, that small change makes squats feel more controlled because it reduces the ankle mobility demand.\n\nWhat it can help with:\n- Heel-elevated squats.\n- Ankle mobility practice.\n- Balance awareness.\n- Beginner-friendly home strength training.\n\nPros:\nIt is inexpensive, compact, and easy to use at home.\n\nCons:\nIt is not magic, and it should not replace gradually improving strength and mobility. People with pain, dizziness, balance concerns, or medical restrictions should be cautious and use support.\n\nWho should consider one:\nBeginners who struggle to squat comfortably with flat feet, especially if a chair or counter is available for support.\n\nTroll Runner note:\nThe board helps the movement. You still have to do the movement.',
+        tags: ['home fitness', 'slant board', 'mobility'],
+        visual: 'visual-2',
+        art: 'assets/images/blog-activations/trail-runner-essentials.png',
+        featured: false,
+        createdAt: '2026-06-11T07:00:00.000Z'
+      },
+      {
+        id: 'post-12',
+        title: 'My Mobility Will Fix Itself',
+        category: 'Dialogue Series',
+        date: '2026-06-11',
+        readTime: '5 min read',
+        excerpt: 'A real-conversation style article about why mobility rarely improves from waiting alone.',
+        body: 'Common belief:\nMy mobility will come back on its own.\n\nThe conversation:\nSomeone notices squats, stairs, or bending down feel harder than they used to. The first instinct is to wait, stretch randomly, or assume the body will solve it later.\n\nMain lesson:\nMobility rarely improves from waiting alone. The body adapts to what it repeatedly does. If we move more, we usually become better at moving. If we move less, strength, balance, and mobility generally fade over time.\n\nPractical next step:\nPick one movement you want back. Practice a supported version for a few minutes most days. For squats, that might mean sit-to-stands, heel-elevated squats, or counter-supported squats.\n\nTroll Runner note:\nDo not shame the body for adapting. Give it a new signal.',
+        tags: ['dialogue series', 'mobility', 'healthy aging'],
+        visual: 'visual-3',
+        art: 'assets/images/blog-activations/troll-runner-essentials.png',
+        featured: false,
+        createdAt: '2026-06-11T06:00:00.000Z'
+      },
+      {
+        id: 'post-13',
+        title: "I Don't Have Time to Exercise",
+        category: 'Dialogue Series',
+        date: '2026-06-11',
+        readTime: '4 min read',
+        excerpt: 'Short workouts can still count when they are specific, repeatable, and honest about real schedules.',
+        body: 'Common belief:\nI do not have time to exercise.\n\nThe useful reframe:\nMost people do not need a perfect hour. They need a realistic minimum they can repeat on busy days.\n\nTry this:\n- 5 minutes walking.\n- 5 minutes sit-to-stands and wall pushups.\n- 5 minutes mobility or balance practice.\n\nWhy it works:\nSmall sessions lower the starting barrier. They also keep the identity alive: I am someone who moves today.\n\nTroll Runner note:\nA tiny workout beats the imaginary perfect one that never clocks in.',
+        tags: ['dialogue series', 'beginner fitness', 'consistency'],
+        visual: 'visual-1',
+        art: 'assets/images/blog-activations/video-drops-and-edits.png',
+        featured: false,
+        createdAt: '2026-06-11T05:00:00.000Z'
+      },
+      {
+        id: 'post-14',
+        title: 'Walking Is Enough',
+        category: 'Dialogue Series',
+        date: '2026-06-11',
+        readTime: '4 min read',
+        excerpt: 'Walking is excellent, but strength and balance fill gaps that walking does not always cover.',
+        body: 'Common belief:\nWalking is enough.\n\nBalanced answer:\nWalking is one of the most underrated exercises. It supports heart health, mood, endurance, and daily consistency. Keep walking.\n\nThe missing pieces:\nWalking does not always train upper-body strength, full-range leg strength, grip, loaded carries, or balance under challenge.\n\nPractical add-on:\nTwo or three short strength and balance sessions per week can complement walking without replacing it.\n\nTroll Runner note:\nWalking is the base camp. Strength and balance are the supplies you bring up the mountain.',
+        tags: ['dialogue series', 'walking', 'strength'],
+        visual: 'visual-2',
+        art: 'assets/images/blog-activations/community-and-route-moments.png',
+        featured: false,
+        createdAt: '2026-06-11T04:00:00.000Z'
       }
     ];
 
