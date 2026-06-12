@@ -466,6 +466,94 @@
       color: var(--accent-deep);
     }
 
+    .race-planning-board {
+      margin-top: 1.2rem;
+      padding: clamp(1rem, 3vw, 1.5rem);
+      border: 1px solid #dbe5d1;
+      border-radius: 20px;
+      background: linear-gradient(130deg, #f4f9ec, #ffffff);
+      box-shadow: var(--shadow);
+      scroll-margin-top: 90px;
+    }
+
+    .race-planning-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .race-planning-head h2 {
+      margin: 0 0 0.4rem;
+      font-family: "Libre Baskerville", serif;
+      font-size: clamp(1.7rem, 3vw, 2.35rem);
+      line-height: 1.1;
+    }
+
+    .race-planning-head p,
+    .race-card p,
+    .support-card p {
+      margin: 0;
+      color: #465042;
+    }
+
+    .race-grid,
+    .support-grid {
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    .race-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .support-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 0.8rem;
+    }
+
+    .race-card,
+    .support-card {
+      padding: 1rem;
+      border: 1px solid #e1e9d8;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.72);
+      scroll-margin-top: 90px;
+    }
+
+    .race-card h3,
+    .support-card h3 {
+      margin: 0 0 0.45rem;
+      font-family: "Libre Baskerville", serif;
+      font-size: 1.05rem;
+      line-height: 1.2;
+    }
+
+    .race-tags,
+    .support-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-top: 0.75rem;
+    }
+
+    .race-tags span,
+    .support-tags span {
+      display: inline-flex;
+      width: fit-content;
+      border-radius: 999px;
+      background: var(--surface-soft);
+      color: var(--accent-deep);
+      padding: 0.38rem 0.6rem;
+      font-size: 0.76rem;
+      font-weight: 800;
+    }
+
+    .support-tags a {
+      color: inherit;
+    }
+
     .nutrition-highlight {
       margin-bottom: 1.3rem;
       padding: 1.2rem;
@@ -1154,6 +1242,11 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
+      .race-grid,
+      .support-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
       .dropdown-menu {
         position: fixed;
         left: 50%;
@@ -1213,6 +1306,16 @@
         flex-direction: column;
       }
 
+      .race-planning-head {
+        align-items: start;
+        flex-direction: column;
+      }
+
+      .race-grid,
+      .support-grid {
+        grid-template-columns: 1fr;
+      }
+
       .archive-title {
         font-size: clamp(2.5rem, 15vw, 4rem);
       }
@@ -1252,10 +1355,10 @@
         <div class="dropdown">
           <a class="dropdown-toggle" href="#training-guides" aria-expanded="false">Training Plans</a>
           <div class="dropdown-menu" aria-label="Training plan categories">
-            <a class="dropdown-link" href="#latest">5K plans</a>
-            <a class="dropdown-link" href="#latest">10K plans</a>
-            <a class="dropdown-link" href="#latest">Half marathon plans</a>
-            <a class="dropdown-link" href="#latest">Marathon plans</a>
+            <a class="dropdown-link" href="#race-5k">5K plans</a>
+            <a class="dropdown-link" href="#race-10k">10K plans</a>
+            <a class="dropdown-link" href="#race-half">Half marathon plans</a>
+            <a class="dropdown-link" href="#race-marathon">Marathon plans</a>
             <div class="dropdown-nested">
               <a class="dropdown-link dropdown-submenu-toggle" href="#weightlifting" aria-expanded="false">Weightlifting <span class="dropdown-caret" aria-hidden="true">&#9656;</span></a>
               <div class="dropdown-submenu" aria-label="Weightlifting training plans">
@@ -1294,6 +1397,86 @@
         Training notes, race prep, healthy aging, home fitness tools, and real conversations turned into practical articles.
         Use the category buttons to shape the collection.
       </p>
+    </section>
+
+    <section id="race-planning" class="race-planning-board" aria-labelledby="race-planning-title">
+      <div class="race-planning-head">
+        <div>
+          <h2 id="race-planning-title">Upcoming Race Planning</h2>
+          <p>Use this as the nutrition-first planning board for your next 5K, 10K, half marathon, or marathon.</p>
+        </div>
+      </div>
+
+      <div class="race-grid">
+        <article id="race-5k" class="race-card">
+          <h3>5K Training Plan</h3>
+          <p>Beginner-friendly walk-run structure, simple speed practice, and easy pre-run meals that do not overcomplicate the start.</p>
+          <div class="race-tags">
+            <span>8-week starter path</span>
+            <span>Walk-run options</span>
+            <span>Light fuel</span>
+          </div>
+        </article>
+        <article id="race-10k" class="race-card">
+          <h3>10K Training Plan</h3>
+          <p>A steady bridge into more durable weekly mileage with hydration habits and recovery meals practiced before race week.</p>
+          <div class="race-tags">
+            <span>10-week progression</span>
+            <span>Long-run confidence</span>
+            <span>Recovery rhythm</span>
+          </div>
+        </article>
+        <article id="race-half" class="race-card">
+          <h3>Half Marathon Training Plan</h3>
+          <p>Long-run fueling, pacing practice, and repeatable breakfast choices for runners balancing training with real life.</p>
+          <div class="race-tags">
+            <span>12-week build</span>
+            <span>Fueling rehearsals</span>
+            <span>Pacing strategy</span>
+          </div>
+        </article>
+        <article id="race-marathon" class="race-card">
+          <h3>Marathon Training Plan</h3>
+          <p>A sustainable build centered on consistency, tapering, carb practice, hydration, and calm race-day execution.</p>
+          <div class="race-tags">
+            <span>16-week build</span>
+            <span>Taper guidance</span>
+            <span>Course planning</span>
+          </div>
+        </article>
+      </div>
+
+      <div class="support-grid">
+        <article class="support-card">
+          <h3>Nutrition & Fueling</h3>
+          <p>Pre-workout nutrition, post-workout recovery, race-day fueling, hydration, protein basics, and safe fueling experiments.</p>
+          <div class="support-tags">
+            <span>Pre-workout</span>
+            <span>Recovery</span>
+            <span>Hydration</span>
+            <span>Protein</span>
+          </div>
+        </article>
+        <article class="support-card">
+          <h3>Race Preparation</h3>
+          <p>Gear checklists, tapering guides, race-day strategy, and course planning with food and fluid decisions built in.</p>
+          <div class="support-tags">
+            <span>Gear</span>
+            <span>Taper</span>
+            <span>Strategy</span>
+            <span>Course</span>
+          </div>
+        </article>
+        <article class="support-card">
+          <h3>More Practical Fitness</h3>
+          <p>Healthy aging, home workouts, mobility, balance, and real conversation articles live here on the Troll Runner Blog.</p>
+          <div class="support-tags">
+            <span><a href="#latest">Open Blog</a></span>
+            <span>Healthy aging</span>
+            <span>Dialogue series</span>
+          </div>
+        </article>
+      </div>
     </section>
 
     <section id="latest" class="activation-archive">
