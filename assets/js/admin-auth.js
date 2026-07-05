@@ -1,32 +1,58 @@
 (function () {
+  const SUPABASE_URL = 'https://tjsyhfplxjtakdfkpdtg.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRqc3loZnBseGp0YWtkZmtwZHRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzOTc0ODksImV4cCI6MjA5MTk3MzQ4OX0.xLUcPUUguRBQttNwiIRWJHxjJjLqrQDMu4Ubsk5yZoQ';
   const ADMIN_AUTH_KEY = 'trollrunner_admin_auth';
-  const ADMIN_PASSWORD_SALT = 'trollrunner-public-lock-v2';
-  const ADMIN_PASSWORD_HASH = 'f7bd3dc03b760781a16bcafb96650c619632b1610903352272804046815b6f8d';
+  const ADMIN_EMAIL = 'admin@login.trollrunner.net';
+  const ADMIN_AUTH_STORAGE_KEY = 'trollrunner-admin-auth';
 
-  async function hashText(text) {
-    const bytes = new TextEncoder().encode(String(text || ''));
-    const hashBuffer = await window.crypto.subtle.digest('SHA-256', bytes);
-    return Array.from(new Uint8Array(hashBuffer)).map(byte => byte.toString(16).padStart(2, '0')).join('');
-  }
+  let client = null;
 
   function getAuthClient() {
-    return null;
+    if (client) return client;
+    if (!window.supabase?.createClient) return null;
+    client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: false,
+        storageKey: ADMIN_AUTH_STORAGE_KEY,
+      },
+    });
+    return client;
   }
 
   async function getSession() {
-    return localStorage.getItem(ADMIN_AUTH_KEY) === '1'
-      ? { provider: 'local-password' }
-      : null;
+    const sb = getAuthClient();
+    if (!sb) return null;
+    const { data } = await sb.auth.getSession();
+    return data?.session || null;
   }
 
   async function getUser() {
-    return localStorage.getItem(ADMIN_AUTH_KEY) === '1'
-      ? { role: 'admin' }
-      : null;
+    const session = await getSession();
+    return session ? { role: 'admin', id: session.user?.id } : null;
   }
 
+  // Real, server-verified: reflects an actual live Supabase Auth session,
+  // not just a localStorage flag a visitor could set by hand. RLS on the
+  // backend enforces this independently either way.
   async function hasAdminSession() {
-    return localStorage.getItem(ADMIN_AUTH_KEY) === '1';
+    const sb = getAuthClient();
+    if (!sb) return localStorage.getItem(ADMIN_AUTH_KEY) === '1';
+    try {
+      const { data } = await sb.auth.getSession();
+      const authed = Boolean(data?.session);
+      if (authed) localStorage.setItem(ADMIN_AUTH_KEY, '1');
+      else localStorage.removeItem(ADMIN_AUTH_KEY);
+      return authed;
+    } catch {
+      return localStorage.getItem(ADMIN_AUTH_KEY) === '1';
+    }
+  }
+
+  async function getAccessToken() {
+    const session = await getSession();
+    return session?.access_token || null;
   }
 
   function promptForAdminPassword() {
@@ -35,20 +61,29 @@
     return String(password);
   }
 
-  async function verifyAdminPassword(password) {
-    const candidateHash = await hashText(`${ADMIN_PASSWORD_SALT}:${password}`);
-    return candidateHash === ADMIN_PASSWORD_HASH;
+  function friendlyAuthError(error) {
+    const raw = String(error?.message || error || '');
+    if (/invalid login credentials/i.test(raw)) return new Error('Wrong admin password.');
+    if (/rate limit|security purposes/i.test(raw)) return new Error('Too many attempts — wait a minute and try again.');
+    return new Error(raw || 'Unable to unlock the website.');
   }
 
-  async function signInWithAdminPassword(password) {
-    const valid = await verifyAdminPassword(password);
-    if (!valid) throw new Error('Wrong admin password.');
+  async function signInWithAdminPassword(password, options = {}) {
+    const sb = getAuthClient();
+    if (!sb) throw new Error('Admin login service failed to load. Refresh and try again.');
+    const { error } = await sb.auth.signInWithPassword({ email: ADMIN_EMAIL, password: String(password) });
+    if (error) throw friendlyAuthError(error);
     localStorage.setItem(ADMIN_AUTH_KEY, '1');
+    if (!options.silent) await refreshUi();
     return true;
   }
 
   async function signOut() {
+    const sb = getAuthClient();
+    if (sb) await sb.auth.signOut().catch(() => {});
     localStorage.removeItem(ADMIN_AUTH_KEY);
+    window.TrollrunnerSiteGate?.resetAfterLogout?.();
+    await refreshUi();
     return true;
   }
 
@@ -72,19 +107,13 @@
     const authed = await hasAdminSession();
     const footerStatus = document.getElementById('admin-auth-status');
     const gateStatus = document.getElementById('gate-admin-status');
-    const gateLockToggle = document.getElementById('gate-lock-toggle');
     const footerButton = document.getElementById('admin-go');
-    const gateButton = document.getElementById('gate-admin-link');
     if (authed) {
-      writeStatus([footerStatus, gateStatus], 'Admin controls are unlocked.', 'success');
-      setButtonState(footerButton, true, 'Unlock site', 'Unlock site');
-      setButtonState(gateButton, true, 'Unlock site', 'Unlock site');
-      if (gateLockToggle) gateLockToggle.disabled = false;
+      writeStatus([footerStatus, gateStatus], '', 'success');
+      setButtonState(footerButton, true, 'Admin', 'Admin');
     } else {
       writeStatus([footerStatus, gateStatus], '', 'info');
-      if (gateLockToggle) gateLockToggle.disabled = true;
-      setButtonState(footerButton, true, 'Unlock site', 'Unlock site');
-      setButtonState(gateButton, true, 'Unlock site', 'Unlock site');
+      setButtonState(footerButton, true, 'Admin', 'Admin');
     }
 
     return authed;
@@ -104,7 +133,8 @@
       if (lockHelper?.requestLockTransition) {
         lockHelper.requestLockTransition(false);
       }
-      writeStatus([footerStatus, gateStatus], 'Website unlocked.', 'success');
+      await refreshUi();
+      writeStatus([footerStatus, gateStatus], '', 'success');
       return true;
     } catch (error) {
       const message = error?.message ? String(error.message) : 'Unable to unlock the website.';
@@ -131,6 +161,37 @@
     return false;
   }
 
+  // One-time setup utility — NOT wired to any button on purpose. Run this
+  // yourself from the browser devtools console once, after running
+  // assets/supabase/troll_admin_lockdown.sql, to create the real admin
+  // Supabase Auth account. Your password is typed into a native prompt()
+  // and goes straight to Supabase — it never appears in this file, in any
+  // chat/session log, or on the network to anywhere else.
+  //   TrollrunnerAdminAuth.bootstrapAdminAccount()
+  async function bootstrapAdminAccount() {
+    const sb = getAuthClient();
+    if (!sb) {
+      window.alert('Supabase failed to load — refresh and try again.');
+      return false;
+    }
+    const password = window.prompt('Choose a new admin password (this replaces the old one):');
+    if (password == null) return false;
+    if (String(password).length < 8) {
+      window.alert('Use a password with at least 8 characters.');
+      return false;
+    }
+    const { error } = await sb.auth.signUp({ email: ADMIN_EMAIL, password: String(password) });
+    if (error) {
+      window.alert(`Could not create the admin account: ${error.message}`);
+      return false;
+    }
+    window.alert(
+      'Admin account created. Now run this once in the Supabase SQL editor:\n\n'
+      + "insert into public.troll_admins (user_id)\nselect id from auth.users where email = 'admin@login.trollrunner.net'\non conflict (user_id) do nothing;"
+    );
+    return true;
+  }
+
   function init() {
     void refreshUi();
     window.addEventListener('storage', event => {
@@ -143,6 +204,7 @@
     getAuthClient,
     getSession,
     getUser,
+    getAccessToken,
     hasAdminSession,
     signInWithAdminPassword,
     requestAdminLink,
@@ -150,6 +212,7 @@
     openAdminPageOrLink,
     signOut,
     refreshUi,
+    bootstrapAdminAccount,
   };
 
   window.requestAdminLoginLink = () => requestAdminLink();
