@@ -19,7 +19,6 @@
   let statusEl = null;
   let countdownEl = null;
   let adminActionEl = null;
-  let authClient = null;
 
   function safeParse(raw, fallback) {
     try {
@@ -46,33 +45,23 @@
     return normalizeRecord(safeParse(localStorage.getItem(SITE_LOCK_STORAGE_KEY), {}));
   }
 
-  function getAuthClient() {
-    if (authClient) return authClient;
-    if (!window.supabase?.createClient) return null;
-    authClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-      auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-        detectSessionInUrl: true,
-      },
-    });
-    return authClient;
-  }
-
-  async function getAuthHeaders() {
-    const headers = {
+  function getReadHeaders() {
+    return {
       'Content-Type': 'application/json',
       apikey: SUPABASE_ANON_KEY,
       Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
     };
-    const client = getAuthClient();
-    if (!client?.auth?.getSession) return headers;
+  }
+
+  // Writes go through the troll_admin_replace_site_row RPC (see
+  // assets/supabase/troll_admin_lockdown.sql on the main site repo), which
+  // requires a real admin session — the anon key alone is no longer enough
+  // to write site_updates.
+  async function getAdminWriteHeaders() {
+    const headers = getReadHeaders();
     try {
-      const { data } = await client.auth.getSession();
-      const token = data?.session?.access_token;
-      if (token) {
-        headers.Authorization = `Bearer ${token}`;
-      }
+      const token = await window.TrollrunnerAdminAuth?.getAccessToken?.();
+      if (token) headers.Authorization = `Bearer ${token}`;
     } catch {}
     return headers;
   }
@@ -296,25 +285,17 @@
         id: `eq.${SUPABASE_ROW_ID}`,
         limit: '1',
       });
-      const headers = await getAuthHeaders();
-      const existingResponse = await fetch(`${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}?${qs.toString()}`, { headers });
+      const existingResponse = await fetch(`${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}?${qs.toString()}`, { headers: getReadHeaders() });
       if (!existingResponse.ok) return false;
       const json = await existingResponse.json();
       const payload = Array.isArray(json) ? json[0] : json;
       const existingUpdates = Array.isArray(payload?.updates) ? payload.updates : [];
       const nextUpdates = existingUpdates.filter(item => item && item.id !== SITE_LOCK_META_ID);
       nextUpdates.push(buildMetaItem(normalized));
-      const writeResponse = await fetch(`${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}`, {
+      const writeResponse = await fetch(`${SUPABASE_URL}/rest/v1/rpc/troll_admin_replace_site_row`, {
         method: 'POST',
-        headers: {
-          ...headers,
-          Prefer: 'resolution=merge-duplicates,return=minimal',
-        },
-        body: JSON.stringify([{
-          id: SUPABASE_ROW_ID,
-          updates: nextUpdates,
-          updated_at: new Date().toISOString(),
-        }]),
+        headers: await getAdminWriteHeaders(),
+        body: JSON.stringify({ p_updates: nextUpdates }),
       });
       return writeResponse.ok;
     } catch {
@@ -334,7 +315,7 @@
         limit: '1',
       });
       const response = await fetch(`${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}?${qs.toString()}`, {
-        headers: await getAuthHeaders(),
+        headers: getReadHeaders(),
       });
       if (!response.ok) return;
       const json = await response.json();
