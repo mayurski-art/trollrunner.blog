@@ -256,8 +256,24 @@
         ? 'Public access will lock shortly.'
         : (state.mode === 'locked' ? 'Public access is locked.' : '');
     }
+    setBackgroundInert(state.mode === 'locked');
     void refreshAdminControls(state);
     return state;
+  }
+
+  // While truly locked (not just the pending countdown warning), nothing
+  // on the page should be usable except the overlay itself (including its
+  // own "Unlock site" button) -- covers login/register, feedback, chat,
+  // games, and everything else. `inert` blocks both pointer AND
+  // keyboard/AT interaction for the whole subtree; admin.html is a
+  // separate document and is never affected.
+  function setBackgroundInert(isLocked) {
+    if (!document.body) return;
+    Array.from(document.body.children).forEach(child => {
+      if (child === overlayEl) return;
+      if (isLocked) child.setAttribute('inert', '');
+      else child.removeAttribute('inert');
+    });
   }
 
   async function refreshAdminControls(state = getComputedRecord()) {
