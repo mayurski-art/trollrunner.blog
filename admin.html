@@ -246,6 +246,8 @@
   </style>
 </head>
 <body>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/admin-auth.js"></script>
   <div class="wrap">
     <div class="topbar">
       <div class="brand">
@@ -261,14 +263,12 @@
 
     <section id="login-panel" class="panel auth-panel">
       <h2 class="section-title">Unlock access</h2>
-      <p class="admin-meta">Enter the blog password to reveal the editor, the announcement bar, and the current post list.</p>
-      <div class="field">
-        <label for="admin-pass">Admin password</label>
-        <input id="admin-pass" type="password" placeholder="Enter password" autocomplete="current-password">
-      </div>
+      <p class="admin-meta">This unlocks with the same admin account as the rest of the site — the real
+         check happens server-side against your Supabase admin session, not a password stored in this page.</p>
       <div class="button-row">
         <button id="unlock-btn" type="button">Unlock admin</button>
       </div>
+      <p class="admin-meta" id="login-status"></p>
     </section>
 
     <section id="dashboard" class="grid hidden" aria-label="Blog admin dashboard">
@@ -370,22 +370,9 @@
   </div>
 
   <script>
-    const ADMIN_PASSWORD_SALT = 'trollrunner-public-lock-v2';
-    const ADMIN_PASSWORD_HASH = 'f7bd3dc03b760781a16bcafb96650c619632b1610903352272804046815b6f8d';
-    const BLOG_ADMIN_AUTH_KEY = 'trollrunner_blog_admin_auth';
     const BLOG_POSTS_KEY = 'trollrunner_blog_posts_v4';
     const BLOG_CURRENT_EDIT_KEY = 'trollrunner_blog_editing_id';
     const BLOG_LAUNCH_KEY = 'trollrunner_blog_launch_announcement';
-
-    async function hashAdminText(value) {
-      const bytes = new TextEncoder().encode(String(value || ''));
-      const hashBuffer = await window.crypto.subtle.digest('SHA-256', bytes);
-      return Array.from(new Uint8Array(hashBuffer)).map(byte => byte.toString(16).padStart(2, '0')).join('');
-    }
-
-    async function verifyAdminPassword(password) {
-      return await hashAdminText(ADMIN_PASSWORD_SALT + ':' + password) === ADMIN_PASSWORD_HASH;
-    }
 
     const DEFAULT_LAUNCH = {
       visible: false,
@@ -608,21 +595,19 @@
       localStorage.setItem(BLOG_LAUNCH_KEY, JSON.stringify(announcement));
     }
 
-    function isAdminUnlocked() {
-      return localStorage.getItem(BLOG_ADMIN_AUTH_KEY) === '1';
+    // The real gate: an actual Supabase Auth admin session, checked
+    // server-side (see assets/js/admin-auth.js) — same account as the
+    // "Admin" link on the public blog. No password lives in this file.
+    async function isAdminUnlocked() {
+      const helper = window.TrollrunnerAdminAuth;
+      return helper?.hasAdminSession ? await helper.hasAdminSession() : false;
     }
 
-    function unlockAdmin() {
-      localStorage.setItem(BLOG_ADMIN_AUTH_KEY, '1');
+    async function lockAdmin() {
+      const helper = window.TrollrunnerAdminAuth;
+      if (helper?.signOut) await helper.signOut();
       editingId = null;
-      render();
-      fillLaunchForm();
-    }
-
-    function lockAdmin() {
-      localStorage.removeItem(BLOG_ADMIN_AUTH_KEY);
-      editingId = null;
-      render();
+      await render();
       resetForm();
     }
 
@@ -661,8 +646,8 @@
       `).join('');
     }
 
-    function render() {
-      const unlocked = isAdminUnlocked();
+    async function render() {
+      const unlocked = await isAdminUnlocked();
       document.getElementById('login-panel').classList.toggle('hidden', unlocked);
       document.getElementById('dashboard').classList.toggle('hidden', !unlocked);
       if (unlocked) {
@@ -809,25 +794,30 @@
       document.getElementById('launch-visible').checked = announcement.visible;
     }
 
-    function init() {
+    async function init() {
       savePosts(getPosts());
-      render();
-      if (isAdminUnlocked()) {
+      await render();
+      if (await isAdminUnlocked()) {
         fillLaunchForm();
       }
 
       document.getElementById('unlock-btn').addEventListener('click', async () => {
-        const pass = document.getElementById('admin-pass').value;
-        if (!(await verifyAdminPassword(pass))) {
-          alert('Wrong password. Try again.');
+        const statusEl = document.getElementById('login-status');
+        const helper = window.TrollrunnerAdminAuth;
+        if (!helper?.requestAdminLink) {
+          if (statusEl) statusEl.textContent = 'Admin login service failed to load. Refresh and try again.';
           return;
         }
-        unlockAdmin();
+        const unlocked = await helper.requestAdminLink();
+        if (unlocked) {
+          editingId = null;
+          await render();
+          fillLaunchForm();
+        } else if (statusEl) {
+          statusEl.textContent = 'Unlock canceled or failed.';
+        }
       });
 
-      document.getElementById('admin-pass').addEventListener('keydown', event => {
-        if (event.key === 'Enter') document.getElementById('unlock-btn').click();
-      });
       document.getElementById('save-post-btn').addEventListener('click', savePostFromForm);
       document.getElementById('reset-post-btn').addEventListener('click', resetForm);
       document.getElementById('delete-post-btn').addEventListener('click', deleteCurrentPost);
@@ -838,8 +828,6 @@
 
     init();
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/js/site-lock.js"></script>
-  <script src="assets/js/admin-auth.js"></script>
 </body>
 </html>
