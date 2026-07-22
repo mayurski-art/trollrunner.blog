@@ -14,11 +14,51 @@
       auth: {
         persistSession: true,
         autoRefreshToken: true,
-        detectSessionInUrl: false,
+        detectSessionInUrl: true,
         storageKey: ADMIN_AUTH_STORAGE_KEY,
       },
     });
+    client.auth.onAuthStateChange((event) => {
+      if (event === 'PASSWORD_RECOVERY') void handlePasswordRecovery();
+    });
     return client;
+  }
+
+  // Fires when a Supabase password-reset email link lands back on this page.
+  // detectSessionInUrl above turns the link's one-time token into a real
+  // session and emits PASSWORD_RECOVERY instead of the normal SIGNED_IN event.
+  async function handlePasswordRecovery() {
+    try {
+      const sb = getAuthClient();
+      if (!sb) return;
+      const newPassword = window.prompt('Reset link verified. Choose a new admin password:');
+      if (newPassword == null) return;
+      if (String(newPassword).length < 8) {
+        window.alert('Use a password with at least 8 characters. Reset link is still valid — refresh this page and click it again to retry.');
+        return;
+      }
+      const { error } = await sb.auth.updateUser({ password: String(newPassword) });
+      if (error) {
+        window.alert(`Could not set the new password: ${error.message}`);
+        return;
+      }
+      localStorage.setItem(ADMIN_AUTH_KEY, '1');
+      window.alert('Password updated. You are now signed in.');
+      history.replaceState(null, '', location.pathname + location.search);
+      await refreshUi();
+    } finally {
+      window.dispatchEvent(new Event('trollrunner-admin-recovery-settled'));
+    }
+  }
+
+  // Pages that gate on hasAdminSession() at load must await this before
+  // deciding to redirect, otherwise they race the async recovery-link
+  // handling above and bounce the user away before the prompt can appear.
+  function awaitPasswordRecoverySettled() {
+    if (!/type=recovery/.test(location.hash)) return Promise.resolve();
+    return new Promise(resolve => {
+      window.addEventListener('trollrunner-admin-recovery-settled', resolve, { once: true });
+    });
   }
 
   async function getSession() {
@@ -206,6 +246,7 @@
     getUser,
     getAccessToken,
     hasAdminSession,
+    awaitPasswordRecoverySettled,
     signInWithAdminPassword,
     requestAdminLink,
     ensureAdminSession,
